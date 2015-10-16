@@ -1,5 +1,12 @@
 class CollectionsController < ApplicationController
   include Sufia::CollectionsControllerBehavior
+  before_action :verify_admin
+
+  def create
+    current_time = Time.now
+    @collection[:date_created] =   [current_time.strftime("%Y-%m-%d")]
+    super
+  end
 
   def presenter_class
     MyCollectionPresenter
@@ -15,10 +22,11 @@ class CollectionsController < ApplicationController
                                          subject: [], identifier: [], tag: [])
     )
   end
-  
-  def new
-  	if not current_user.admin?
-  		redirect_to root_path
-  	end
+
+  def collection_params
+    form_class.model_attributes(
+        params.require(:collection).permit(:institution, :title, :description, :contact_person, :address, :members, :date_created, :institution_url,
+                                           subject: [], identifier: [], tag: [])
+    )
   end
 end
