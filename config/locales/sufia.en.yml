@@ -202,6 +202,8 @@ en:
         tag:              "Keyword"
         date_created:     "Date Created"
         related_url:      "Related URL"
+        alternative:      "Alternative Title"
+        summary:          "Description"
       collection:
         institution:      "Institution Name"
         description:      "Institutional Information"

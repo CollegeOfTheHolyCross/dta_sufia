@@ -1,0 +1,2 @@
+class MyBatchEditForm < MyFileEditForm
+end

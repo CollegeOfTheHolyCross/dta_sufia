@@ -27,4 +27,8 @@ class User < ActiveRecord::Base
   def to_s
     email
   end
+  
+  def superuser?
+  	roles.where(name: 'superuser').exists?
+  end
 end

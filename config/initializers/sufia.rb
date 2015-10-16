@@ -9,15 +9,9 @@ Sufia.config do |config|
   config.max_notifications_for_dashboard = 5
 
   config.cc_licenses = {
-    'Attribution 3.0 United States' => 'http://creativecommons.org/licenses/by/3.0/us/',
-    'Attribution-ShareAlike 3.0 United States' => 'http://creativecommons.org/licenses/by-sa/3.0/us/',
-    'Attribution-NonCommercial 3.0 United States' => 'http://creativecommons.org/licenses/by-nc/3.0/us/',
-    'Attribution-NoDerivs 3.0 United States' => 'http://creativecommons.org/licenses/by-nd/3.0/us/',
-    'Attribution-NonCommercial-NoDerivs 3.0 United States' => 'http://creativecommons.org/licenses/by-nc-nd/3.0/us/',
-    'Attribution-NonCommercial-ShareAlike 3.0 United States' => 'http://creativecommons.org/licenses/by-nc-sa/3.0/us/',
-    'Public Domain Mark 1.0' => 'http://creativecommons.org/publicdomain/mark/1.0/',
-    'CC0 1.0 Universal' => 'http://creativecommons.org/publicdomain/zero/1.0/',
-    'All rights reserved' => 'All rights reserved'
+    'No known restrictions on use' => 'No known restrictions on use',
+    'All rights reserved' => 'All rights reserved',
+    'Contact host institution for more information' => 'Contact host institution for more information'
   }
 
   config.cc_licenses_reverse = Hash[*config.cc_licenses.to_a.flatten.reverse]
@@ -77,6 +71,13 @@ Sufia.config do |config|
   config.owner_permission_levels = {
     "Edit" => "edit"
   }
+  
+  config.language_list = {
+  	"English" => "English",
+  	"French" => "French",
+  	"Spanish" => "Spanish",
+  	"German" => "German"
+  }
 
   config.queue = Sufia::Resque::Queue
 
@@ -118,7 +119,7 @@ Sufia.config do |config|
   # config.redis_namespace = "sufia"
 
   # Specify the path to the file characterization tool:
-  # config.fits_path = "fits.sh"
+  config.fits_path = "/usr/local/Cellar/fits/0.8.6-1/bin/fits"
 
   # Specify how many seconds back from the current time that we should show by default of the user's activity on the user's dashboard
   # config.activity_to_show_default_seconds_since_now = 24*60*60
