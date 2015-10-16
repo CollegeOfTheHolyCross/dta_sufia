@@ -16,15 +16,17 @@ class Ability
     # if user_groups.include? 'special_group'
     #   can [:create], ActiveFedora::Base
     # end
-		#if current_user.superuser?
-	#		can [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], Role
-		#end
+    
+    
+		if current_user.superuser?
+			can [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], Role
+		end
 		
-		#if !current_user.admin?
-	#		cannot [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], Collection
-	#		cannot [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], GenericFile
-		#end
+		if not user_groups.include? 'admin'
+			cannot [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], Collection
+			cannot [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], GenericFile
+		end
 		
-		cannot :new, ::Collection unless current_user.superuser?
+		#cannot :manage, ::Collection unless current_user.superuser?
   end
 end

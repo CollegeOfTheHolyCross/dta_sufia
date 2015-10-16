@@ -15,4 +15,10 @@ class CollectionsController < ApplicationController
                                          subject: [], identifier: [], tag: [])
     )
   end
+  
+  def new
+  	if not current_user.admin?
+  		redirect_to root_path
+  	end
+  end
 end
