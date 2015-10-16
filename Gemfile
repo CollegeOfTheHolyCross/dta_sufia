@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'blacklight', '5.14'
 gem 'sufia', '6.3.0'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'  # required to handle pagination properly in dashboard. See https://github.com/amatsuda/kaminari/pull/322
 
