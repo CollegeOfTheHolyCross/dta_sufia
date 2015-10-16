@@ -207,7 +207,7 @@ en:
         description:      "Institutional Information"
         tag:              "Keyword(s)"
         date_created:     "Date Created"
-        related_url:      "Institutional URL"
+        institution_url:  "Institutional URL"
         address:          "Institution Address"
         contact_person:   "Contact People"
         identifier:       "Any Local Identifiers"
@@ -231,6 +231,15 @@ en:
         language: "The language of the file content."
         publisher: "The person or group making the file available. Generally this is the institution."
         rights: "Licensing and distribution information governing access to the file. Select from the provided drop-down list. &lt;em&gt;This is a required field&lt;/em&gt;."
+      collection:
+        institution:      "The name of the institution an object or collection belongs."
+        title:            "The name of the collection an object is stored."
+        description:      "A brief description of the institution and its collection."
+        tag:              "A keyword which can be used to describe and filter a collection or object."
+        institution_url:  "The URL to the institution or its collection"
+        address:          "The institution's address."
+        contact_person:   "Contact information for the primary contact(s) of an institution or collection."
+        identifier:       "Any identifiers used by the institution to find and object or collection. This could be an accession number or catalog number."
 
     aria_label:
       generic_file:

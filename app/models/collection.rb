@@ -12,5 +12,9 @@ class Collection < Sufia::Collection
     index.type :text
     index.as :stored_searchable
   end
+  
+  property :institution_url, predicate: ::RDF::RDFS.seeAlso, multiple: false do |index|
+    index.as :stored_searchable
+  end
 
 end
