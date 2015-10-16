@@ -1,0 +1,5 @@
+<% if f.object.class.multiple? key %>
+    <%= f.input :address, as: :multi_value_with_help, input_html: { rows: '9', type: 'textarea'}, required: f.object.required?(key)  %>
+<% else %>
+    <%= f.input :address, as: :single_text_with_help, input_html: { rows: '9' }, required: f.object.required?(key) %>
+<% end %>

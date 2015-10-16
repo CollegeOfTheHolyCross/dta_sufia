@@ -8,6 +8,7 @@ Bundler.require(*Rails.groups)
 
 module Dta
   class Application < Rails::Application
+    config.autoload_paths += %W(#{config.root}/lib)
     
     config.generators do |g|
       g.test_framework :rspec, :spec => true
