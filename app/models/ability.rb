@@ -22,9 +22,11 @@ class Ability
 			can [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], Role
 		end
 		
-		if not user_groups.include? 'admin'
-			cannot [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], Collection
-			cannot [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], GenericFile
+		if current_user.admin? || current_user.superuser?
+			can [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], Collection
+	#		cannot [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], GenericFile
+	  else
+	    cannot [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], Collection
 		end
 		
 		#cannot :manage, ::Collection unless current_user.superuser?
