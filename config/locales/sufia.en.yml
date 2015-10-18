@@ -2,7 +2,7 @@ en:
   sufia:
     account_name:       "My Institution Account Id"
     account_label:      "User"
-    deposit_agreement:  "Sufia's Deposit Agreement"
+    deposit_agreement:  "Digital Transgender Archive Deposit Agreement"
     document_language:  "en"
     upload_tooltip:     "Please accept Deposit Agreement before you can upload."
     share_button:       "Share Your Work"
@@ -13,12 +13,12 @@ en:
     search:
       form:
         q:
-          label:          "Search Sufia"
+          label:          "Search DTA"
           placeholder:    "Enter search terms"
         option:
           all:
             label_short:  "All"
-            label_long:   "All of Sufia"
+            label_long:   "All of DTA"
           my_files:
             label_short:  "My Files"
             label_long:   "My Files"
@@ -181,7 +181,7 @@ en:
     generic_file:
       browse_view: "Browse View"
     footer:
-      copyright_html: "<strong>Copyright &copy; 2015 Project Hydra</strong> Licensed under the Apache License, Version 2.0"
+      copyright_html: "<strong>Copyright &copy; 2015 Holy Cross College</strong>"
     admin:
       stats:
         registered: "Registered"
