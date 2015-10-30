@@ -181,7 +181,7 @@ en:
     generic_file:
       browse_view: "Browse View"
     footer:
-      copyright_html: "<strong>Copyright &copy; 2015 Holy Cross College</strong>"
+      copyright_html: "<strong>Copyright &copy; 2015 College of the Holy Cross</strong>"
     admin:
       stats:
         registered: "Registered"
