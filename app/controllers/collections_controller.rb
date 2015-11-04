@@ -5,7 +5,7 @@ class CollectionsController < ApplicationController
   def create
     current_time = Time.now
     @collection[:date_created] =   [current_time.strftime("%Y-%m-%d")]
-    @generic_file.permissions_attributes = [{type: 'group', name: 'admin', access: 'edit'}, {type: 'group', name: 'superuser', access: 'edit'}]
+    @collection.permissions_attributes = [{type: 'group', name: 'admin', access: 'edit'}, {type: 'group', name: 'superuser', access: 'edit'}]
     super
   end
 
