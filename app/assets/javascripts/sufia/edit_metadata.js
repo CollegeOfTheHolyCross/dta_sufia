@@ -33,7 +33,7 @@ Blacklight.onLoad(function() {
                     style: "full",
                     maxRows: 12,
                     name_startsWith: request.term,
-                    username: 'boston_library'
+                    username: 'boston_library' //FIXME still
                 },
                 success: function( data ) {        response( $.map( data.geonames, function( item ) {
                     return {

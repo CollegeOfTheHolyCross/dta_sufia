@@ -22,8 +22,9 @@ class Ability
 			can [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], Role
 		end
 		
-		if current_user.admin? || current_user.superuser?
+		if current_user.admin? || current_user.superuser? || current_user.contributor?
 			can [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], Collection
+			can [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], GenericFile
 	#		cannot [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], GenericFile
 	  else
 	    cannot [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], Collection

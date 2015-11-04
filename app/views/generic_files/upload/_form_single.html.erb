@@ -1,0 +1,37 @@
+ <%= simple_form_for [sufia, @form], html: { multipart: true, id: 'fileuploadsingle' } do |f| %>
+     <%= hidden_field_tag 'upload_type', 'single' %>
+     <%= hidden_field_tag 'terms_of_service', 1%>
+     <%= hidden_field_tag 'batch_id', @batch_id %>
+     <%= hidden_field_tag "file_coming_from", "local" %>
+     <%= hidden_field_tag "visibility", Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE %>
+    <% unless current_user.can_make_deposits_for.empty? %>
+        <div class="controls">
+          <%= label_tag :on_behalf_of, 'On Behalf of' %>
+          <%= select_tag :on_behalf_of, options_for_select(current_user.can_make_deposits_for), prompt: "Yourself" %>
+        </div>
+    <% end %>
+    <div class="well">
+      <% if Sufia.config.upload_to_collection %>
+          <%= render partial: 'generic_files/upload/to_collection' %>
+      <% end %>
+
+
+      <p>Select a file to upload: <%= file_field_tag "filedata", required: 'required' %></p>
+
+      <div class="form-group">
+        <div class="col-xs-12">
+
+        </div>
+      </div>
+
+      <% f.object.terms.each do |term| %>
+          <%= render_edit_field_partial(term, f: f) %>
+      <% end %>
+    </div>
+
+     <div>
+       <%= button_tag class: 'btn btn-primary btn-lg', id: "upload_submit", name: "update_descriptions" do %>
+           <i class="glyphicon glyphicon-floppy-disk"></i> Save Item
+       <% end %>
+     </div>
+<% end %>

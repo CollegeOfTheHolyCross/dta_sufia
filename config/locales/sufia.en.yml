@@ -35,9 +35,12 @@ en:
         html: '<span class="glyphicon glyphicon-search"></span> Go'
         text: "Search"
     upload:
+      single_file_computer:
+          sr_tab_label: ""
+          tab_label: "Single File Upload"
       my_computer:
-        sr_tab_label: "Access Files from"
-        tab_label: "My Computer"
+        sr_tab_label: ""
+        tab_label: "Batch Upload"
         sr_instructions: "Agree to the deposit agreement and then select files.  Press the Start Upload Button once all files have been selected."
       browse_everything:
         sr_tab_label: "Access Files from"
@@ -233,6 +236,7 @@ en:
         language: "The language of the file content."
         publisher: "The person or group making the file available. Generally this is the institution."
         rights: "Licensing and distribution information governing access to the file. Select from the provided drop-down list. &lt;em&gt;This is a required field&lt;/em&gt;."
+        flagged: "Indicate whether the content may not be suitable for minors."
       collection:
         institution:      "The name of the institution an object or collection belongs."
         title:            "The name of the collection an object is stored."

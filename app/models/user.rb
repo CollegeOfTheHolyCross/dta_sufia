@@ -27,8 +27,25 @@ class User < ActiveRecord::Base
   def to_s
     email
   end
+
+  def admin?
+    roles.where(name: 'admin').exists? || roles.where(name: 'superuser').exists?
+  end
   
   def superuser?
   	roles.where(name: 'superuser').exists?
+  end
+
+  def contributor?
+    roles.where(name: 'contributor').exists?
+  end
+
+  #FIXME: Cache this...
+  def groups
+    groups = []
+    groups += ['admin'] if roles.where(name: 'admin').exists? || roles.where(name: 'superuser').exists?
+    groups += ['superuser'] if roles.where(name: 'superuser').exists?
+    groups += ['contributor'] if roles.where(name: 'contributor').exists? || roles.where(name: 'admin').exists? || roles.where(name: 'superuser').exists?
+    return groups
   end
 end

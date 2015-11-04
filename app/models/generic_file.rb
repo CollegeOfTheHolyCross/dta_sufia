@@ -16,8 +16,8 @@ class GenericFile < ActiveFedora::Base
   property :date_issued, predicate: ::RDF::DC.issued do |index|
     index.as :stored_searchable
   end
-  
-  property :genre, predicate: ::RDF::SCHEMA.genre do |index|
+  #::RDF::SCHEMA.
+  property :genre, predicate: ::RDF::Vocab::EDM.hasType do |index|
     index.as :stored_searchable
   end
   
@@ -26,6 +26,10 @@ class GenericFile < ActiveFedora::Base
   end
   
   property :summary, predicate: ::RDF::DC.description, multiple: false do |index|
+    index.as :stored_searchable
+  end
+
+  property :flagged, predicate: ::RDF::URI.new('http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#adultContent'), multiple: false do |index|
     index.as :stored_searchable
   end
   
