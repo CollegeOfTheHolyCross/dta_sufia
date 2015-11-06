@@ -29,8 +29,17 @@ class GenericFile < ActiveFedora::Base
     index.as :stored_searchable
   end
 
-  property :flagged, predicate: ::RDF::URI.new('http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#adultContent'), multiple: false do |index|
+  #http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#adultContent is boolean only :(
+  property :flagged, predicate: ::RDF::URI.new('http://digitaltransgenderarchive.net/ns/flagged'), multiple: false do |index|
     index.as :stored_searchable
+  end
+
+  property :lcsh_subject, predicate: ::RDF::DC.subject do |index|
+    index.as :stored_searchable, :facetable
+  end
+
+  property :other_subject, predicate: ::RDF::DC.subject do |index|
+    index.as :stored_searchable, :facetable
   end
   
 end

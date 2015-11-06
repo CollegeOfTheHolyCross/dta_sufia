@@ -50,7 +50,7 @@ Blacklight.onLoad(function() {
 
     var autocomplete_vocab = new Object();
 
-    autocomplete_vocab.url_var = ['subject', 'language'];   // the url variable to pass to determine the vocab to attach to
+    autocomplete_vocab.url_var = ['lcsh_subject', 'other_subject', 'language'];   // the url variable to pass to determine the vocab to attach to
     autocomplete_vocab.field_name = new Array(); // the form name to attach the event for autocomplete
 
     // loop over the autocomplete fields and attach the

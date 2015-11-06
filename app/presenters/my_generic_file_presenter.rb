@@ -1,6 +1,7 @@
 class MyGenericFilePresenter < Sufia::GenericFilePresenter
-  self.terms = [:title,:alternative, :resource_type, :creator, :rights, :subject,  :genre, :summary, :contributor,
-                :publisher, :date_created,  :date_issued, :temporal_coverage, :based_near,
-                :identifier,
-                :analog_format, :digital_format, :language,  :related_url, :tag, :flagged]
+  self.terms = [:title,:alternative, :creator, :contributor, :date_created,  :date_issued,
+                :temporal_coverage, :based_near,
+                :lcsh_subject, :other_subject,
+                :flagged,:resource_type,:genre, :analog_format, :digital_format, :summary,:language,
+                :publisher,:related_url, :rights,:identifier]
 end

@@ -16,6 +16,7 @@ Sufia.config do |config|
 
   config.cc_licenses_reverse = Hash[*config.cc_licenses.to_a.flatten.reverse]
 
+=begin
   config.resource_types = {
     "Article" => "Article",
     "Audio" => "Audio",
@@ -61,6 +62,128 @@ Sufia.config do |config|
     "Video" => "http://schema.org/VideoObject",
     "Other" => "http://schema.org/CreativeWork"
   }
+=end
+
+  config.resource_types = {
+      "Artifact" => "Artifact",
+      "Audio" => "Audio",
+      "Cartographic" => "Cartographic",
+      "Collection" => "Collection",
+      "Dataset" => "Dataset",
+      "Digital [indicates born­digital]" => "Digital [indicates born­digital]",
+      "Manuscript" => "Manuscript",
+      "Mixed material" => "Mixed material",
+      "Moving image" => "Moving image",
+      "Multimedia" => "Multimedia",
+      "Notated music" => "Notated music",
+      "Still Image" => "Still Image",
+      "Tactile" => "Tactile",
+      "Text" => "Text",
+      "Unspecified" => "Unspecified"
+  }
+
+  config.resource_types_to_schema = {
+      "Artifact" => "http://id.loc.gov/vocabulary/resourceTypes/art",
+      "Audio" => "http://id.loc.gov/vocabulary/resourceTypes/aud",
+      "Cartographic" => "http://id.loc.gov/vocabulary/resourceTypes/car",
+      "Collection" => "http://id.loc.gov/vocabulary/resourceTypes/col",
+      "Dataset" => "http://id.loc.gov/vocabulary/resourceTypes/dat",
+      "Digital [indicates born­digital]" => "http://id.loc.gov/vocabulary/resourceTypes/dig",
+      "Manuscript" => "http://id.loc.gov/vocabulary/resourceTypes/man",
+      "Mixed material" => "http://id.loc.gov/vocabulary/resourceTypes/mix",
+      "Moving image" => "http://id.loc.gov/vocabulary/resourceTypes/mov",
+      "Multimedia" => "http://id.loc.gov/vocabulary/resourceTypes/mul",
+      "Notated music" => "http://id.loc.gov/vocabulary/resourceTypes/not",
+      "Still Image" => "http://id.loc.gov/vocabulary/resourceTypes/img",
+      "Tactile" => "http://id.loc.gov/vocabulary/resourceTypes/tac",
+      "Text" => "http://id.loc.gov/vocabulary/resourceTypes/txt",
+      "Unspecified" => "http://id.loc.gov/vocabulary/resourceTypes/unk"
+  }
+
+  config.genre_list = {
+      "Advertisements" => "Advertisements",
+      "Albums" => "Albums",
+      "Art" => "Art",
+      "Articles" => "Articles",
+      "Awards" => "Awards",
+      "Autobiographies" => "Autobiographies",
+      "Bibliographies" => "Bibliographies",
+      "Birth Certificates" => "Birth Certificates",
+      "Books" => "Books",
+      "Calendars" => "Calendars",
+      "Cards" => "Cards",
+      "Catalogs" => "Catalogs",
+      "Charts" => "Charts",
+      "Clippings" => "Clippings",
+      "Correspondence" => "Correspondence",
+      "Dictionaries" => "Dictionaries",
+      "Directories" => "Directories",
+      "Documents" => "Documents",
+      "Drama" => "Drama",
+      "Drawings" => "Drawings",
+
+      "Ephemera" => "Ephemera",
+      "Encyclopedias" => "Encyclopedias",
+      "Erotica" => "Erotica",
+      "Essays" => "Essays",
+      "Fiction" => "Fiction",
+      "Finding Aids" => "Finding Aids",
+      "Government Publications" => "Government Publications",
+      "Government Records" => "Government Records",
+      "Handbooks" => "Handbooks",
+      "Leaflets" => "Leaflets",
+      "Lecture Notes" => "Lecture Notes",
+      "Legal Cases" => "Legal Cases",
+      "Manuscripts" => "Manuscripts",
+      "Maps" => "Maps",
+      "Motion Pictures" => "Motion Pictures",
+      "Musical Notation" => "Musical Notation",
+      "Newsletters" => "Newsletters",
+      "Newspapers" => "Newspapers",
+      "Oral Histories" => "Oral Histories",
+      "Paintings" => "Paintings",
+
+      "Pamphlets" => "Pamphlets",
+      "Periodicals" => "Periodicals",
+      "Petitions" => "Petitions",
+      "Photographs" => "Photographs",
+      "Physical Objects" => "Physical Objects",
+      "Poetry" => "Poetry",
+      "Posters" => "Posters",
+      "Prints" => "Prints",
+      "Programs" => "Programs",
+      "Records" => "Records",
+      "Reviews" => "Reviews",
+      "Sound Recordings" => "Sound Recordings",
+      "Speeches" => "Speeches",
+      "Surveys" => "Surveys",
+      "Theses" => "Theses",
+      "Transcriptions" => "Transcriptions",
+      "Websites" => "Websites",
+      "Yearbooks" => "Yearbooks"
+  }
+
+  config.genre_to_loc = {
+      "Albums" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm000229",
+      "Books" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm001221",
+      "Cards" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm001686",
+      "Correspondence" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm002590",
+      "Documents" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm003185",
+      "Drawings" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm003279",
+      "Ephemera" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm003634",
+      "Manuscripts" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm012286",
+      "Maps" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm006261",
+      "Motion Pictures" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm006804",
+      "Music" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm006906",
+      "Musical Notation" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm006926",
+      "Newspapers" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm007068",
+      "Paintings" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm007393",
+      "Periodicals" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm007641",
+      "Photographs" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm007721",
+      "Posters" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm008104",
+      "Prints" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm008237",
+      "Sound Recordings" => "http://id.loc.gov/vocabulary/graphicMaterials/tgm009874"
+  }
 
   config.permission_levels = {
     "Choose Access" => "none",
@@ -77,6 +200,12 @@ Sufia.config do |config|
   	"French" => "French",
   	"Spanish" => "Spanish",
   	"German" => "German"
+  }
+
+  config.flagged_list = {
+      "No Objectionable Content" => "No Objectionable Content",
+      "Content Only Flagged" => "Content Only Flagged",
+      "Both Thumbnail And Content Flagged" => "Thumbnail and Content Flagged"
   }
 
   config.queue = Sufia::Resque::Queue

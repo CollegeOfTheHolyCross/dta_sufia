@@ -38,6 +38,7 @@ class BatchEditsController < ApplicationController
 
     initialize_fields(h, @generic_file)
 
+    #FIXME: This seems broken...
     @generic_file.permissions_attributes = [{ type: 'group', name: 'public', access: 'read' }]
   end
 

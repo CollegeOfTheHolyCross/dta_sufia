@@ -1,5 +1,3 @@
-<% if f.object.class.multiple? key %>
-    <%= f.input :flagged, as: :boolean_with_help, required: f.object.required?(key) %>
-<% else %>
-    <%= f.input :flagged, as: :boolean_with_help,  required: f.object.required?(key), as: :radio_buttons,  selected: false %>
-<% end %>
+<%= f.input :flagged, as: :select_with_modal_single, collection: Sufia.config.flagged_list,
+            input_html: { class: 'form-control', multiple: false }, include_blank: false, required: true
+%>
