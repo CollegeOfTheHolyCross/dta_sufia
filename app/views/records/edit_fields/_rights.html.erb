@@ -5,7 +5,7 @@
     }
 </style>
 
-<%= f.input :rights, as: :select_with_modal_single, collection: Sufia.config.flagged_list,
+<%= f.input :rights, as: :select_with_modal_single, collection: Sufia.config.cc_licenses,
             input_html: { class: 'form-control', multiple: false }, include_blank: false, required: true
 %>
 
