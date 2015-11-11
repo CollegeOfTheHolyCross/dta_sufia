@@ -9,9 +9,10 @@ Sufia.config do |config|
   config.max_notifications_for_dashboard = 5
 
   config.cc_licenses = {
+      'Contact host institution for more information' => 'Contact host institution for more information',
     'No known restrictions on use' => 'No known restrictions on use',
-    'All rights reserved' => 'All rights reserved',
-    'Contact host institution for more information' => 'Contact host institution for more information'
+    'All rights reserved' => 'All rights reserved'
+
   }
 
   config.cc_licenses_reverse = Hash[*config.cc_licenses.to_a.flatten.reverse]
@@ -63,6 +64,8 @@ Sufia.config do |config|
     "Other" => "http://schema.org/CreativeWork"
   }
 =end
+
+
 
   config.resource_types = {
       "Artifact" => "Artifact",
@@ -117,6 +120,7 @@ Sufia.config do |config|
       "Clippings" => "Clippings",
       "Correspondence" => "Correspondence",
       "Dictionaries" => "Dictionaries",
+      "Diaries" => "Diaries",
       "Directories" => "Directories",
       "Documents" => "Documents",
       "Drama" => "Drama",
@@ -203,12 +207,14 @@ Sufia.config do |config|
   }
 
   config.flagged_list = {
-      "No Objectionable Content" => "No Objectionable Content",
-      "Content Only Flagged" => "Content Only Flagged",
-      "Both Thumbnail And Content Flagged" => "Thumbnail and Content Flagged"
+      "No explicit content" => "No explicit content",
+      "Explicit content in thumbnail" => "Explicit content in thumbnail",
+      "Explicit content, but not in thumbnail" => "Explicit content, but not in thumbnail"
   }
 
   config.queue = Sufia::Resque::Queue
+
+  config.geonames_username = 'boston_library'
 
   # Enable displaying usage statistics in the UI
   # Defaults to FALSE

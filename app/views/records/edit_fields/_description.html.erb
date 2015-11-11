@@ -1,3 +1,4 @@
+
 <% if f.object.class.multiple? key %>
     <%= f.input :description, as: :multi_value_with_help, input_html: { rows: '9', type: 'textarea'}, required: f.object.required?(key)  %>
 <% else %>

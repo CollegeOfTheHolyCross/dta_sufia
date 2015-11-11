@@ -31,6 +31,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'qa'
 
+#gem 'rdf-edtf', :git=>'https://github.com/dpla/rdf-edtf.git'
+gem 'edtf'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

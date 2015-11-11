@@ -1,5 +1,8 @@
+<%= render partial: 'mei/form' %>
+
 <% if f.object.class.multiple? key %>
-    <%= f.input key, as: :lcsh_subject_with_help, input_html: { class: 'form-control' }, required: f.object.required?(key) %>
+    <%= f.input key, as: :lcsh_subject_with_help, input_html: { class: 'form-control', style: 'width:25em;' }, required: f.object.required?(key) %>
+    <!-- , disabled: true -->
 <% else %>
     <%= f.input key, required: f.object.required?(key) %>
 <% end %>
