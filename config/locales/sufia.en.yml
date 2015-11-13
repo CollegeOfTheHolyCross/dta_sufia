@@ -201,13 +201,13 @@ en:
   simple_form:
     labels:
       generic_file:
-        title:            "Primary Title"
+        title:            "Title"
         alternative:      "Alternative Title"
         creator:          "Creator"
         contributor:      "Contributor"
         date_created:     "Date Created"
         date_issued:      "Date Issued"
-        temporal_coverage: "Temporary Coverage"
+        temporal_coverage: "Temporal Coverage"
         based_near:       "Spatial Coverage"
         lcsh_subject:     "Subject Coverage–LC Subject Headings"
         other_subject:    "Subject Coverage–Other"

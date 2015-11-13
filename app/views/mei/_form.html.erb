@@ -76,16 +76,31 @@
 
               for (var j in json_obj[i].broader)
               {
-                  output+='<a href="' + json_obj[i].broader[j].uri_link + '" target="_blank">' + json_obj[i].broader[j].label + '</a><br />';
+                  output+= '<a href="#" onClick="setMeiSearchField(\'' + json_obj[i].broader[j].label + '\'); return false">' + json_obj[i].broader[j].label + '</a> &nbsp;';
+                  output+='<a href="' + json_obj[i].broader[j].uri_link + '" target="_blank"><span class="glyphicon glyphicon-globe" aria-hidden="true"><span></a><br />';
               }
-              output+="</td><td>";
+              output+="</td><td width='35%'>";
 
-              output+='<a href="' + json_obj[i].uri_link + '" target="_blank"><strong>' + json_obj[i].label + '</strong></a> (' + json_obj[i].count + ')<br />';
+              output+='<a href="#" onClick="alert(\'URI is: ' + json_obj[i].uri_link + '\'); return false;"><strong>' + json_obj[i].label + '</strong></a> (' + json_obj[i].count + ') &nbsp;';
+              output+= '<a href="' + json_obj[i].uri_link + '" target="_blank"><span class="glyphicon glyphicon-globe" aria-hidden="true"><span></a><br />';
+              if(json_obj[i].variants)
+              {
+                  output+='(<em>'
+                  /*              for (var j in json_obj[i].variants)
+                   {
+                   output+='<em>'
+                   }*/
+                  output+=json_obj[i].variants.join(', ')
+                  output+='</em>)'
+              }
+
+
               output+="</td><td>";
 
               for (var j in json_obj[i].narrower)
               {
-                  output+='<a href="' + json_obj[i].narrower[j].uri_link + '" target="_blank">' + json_obj[i].narrower[j].label + '</a><br />';
+                  output+= '<a href="#" onClick="setMeiSearchField(\'' + json_obj[i].narrower[j].label + '\'); return false">' + json_obj[i].narrower[j].label + '</a> &nbsp;';
+                  output+='<a href="' + json_obj[i].narrower[j].uri_link + '" target="_blank"><span class="glyphicon glyphicon-globe" aria-hidden="true"><span></a><br />';
               }
               output+="</td><td>";
 
@@ -118,6 +133,11 @@
       });
 
   }
+
+    function setMeiSearchField(val) {
+        $('#mei_lcsh_term').val(val)
+        mei_lookup();
+    }
 
         function setMeiLCSHSubjVal(val) {
             mei_element_to_update.val(val);
