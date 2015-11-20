@@ -2,9 +2,10 @@ source 'https://rubygems.org'
 
 gem "rdf-vocab"
 
-gem 'blacklight', '5.14'
-#gem 'sufia', '6.3.0'
-gem 'sufia', :git=>'https://github.com/projecthydra/sufia.git'
+#gem 'blacklight', '5.14'
+gem 'blacklight', '5.16'
+gem 'sufia', '6.4.0'
+#gem 'sufia', :git=>'https://github.com/projecthydra/sufia.git'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'  # required to handle pagination properly in dashboard. See https://github.com/amatsuda/kaminari/pull/322
 gem "hydra-role-management"
 
