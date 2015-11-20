@@ -1,3 +1,3 @@
-<%= f.input :flagged, as: :select_with_modal_single, collection: Sufia.config.flagged_list,
+<%= f.input :flagged, as: :single_select, collection: Sufia.config.flagged_list,
             input_html: { class: 'form-control', multiple: false }, include_blank: false, required: true
 %>

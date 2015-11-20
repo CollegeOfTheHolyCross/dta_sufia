@@ -1,7 +1,11 @@
 class Collection < Sufia::Collection
-  property :institution, predicate: ::RDF::URI.new("http://dbpedia.org/ontology/institution"), multiple: false do |index|
+  has_and_belongs_to_many :institutions, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.isMemberOfCollection, class_name: "Institution"
+
+=begin
+  property :institutions, predicate: ::RDF::URI.new("http://dbpedia.org/ontology/institution"), multiple: false do |index|
       index.as :stored_searchable, :facetable
   end
+=end
 
   property :contact_person, predicate: ::RDF::URI.new("http://digitaltransgenderarchive.net/ns/contactPerson"), multiple: false do |index|
     index.type :text

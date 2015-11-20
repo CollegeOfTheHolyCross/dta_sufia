@@ -1,5 +1,1 @@
-<% if f.object.class.multiple? key %>
-    <%= f.input key, as: :other_subject_with_help, input_html: { class: 'form-control' }, required: f.object.required?(key) %>
-<% else %>
-    <%= f.input key, required: f.object.required?(key) %>
-<% end %>
+<%= f.input key, as: :other_subject, input_html: { class: 'form-control' }, required: f.object.required?(key) %>

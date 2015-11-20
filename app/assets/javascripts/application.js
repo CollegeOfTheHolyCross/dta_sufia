@@ -16,3 +16,4 @@
 //= require blacklight/blacklight
 
 //= require sufia
+//= require custom_form_functions

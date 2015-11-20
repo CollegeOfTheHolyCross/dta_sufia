@@ -4,19 +4,26 @@ class OtherSubjectResource
     #solr_response = ActiveFedora::Base.find_with_conditions({subject_tesim: "test"} , rows: '10', fl: 'subject_tesim' )
     #ActiveFedora::Base.find_each("subject_tesim:tes*") { |x| puts 'hi' }
 
-    solr_response = ActiveFedora::Base.find_with_conditions("subject_tesim:#{URI.escape(subject)}*", rows: '10', fl: 'subject_tesim' )
+    exclude_lcsh = 'http://id.loc.gov/authorities/subjects/'
+    exclude_homosaurus= 'http://www.homosaurus.org/terms/'
+    solr_response = ActiveFedora::Base.find_with_conditions("other_subject_ssim:#{solr_clean(subject)}*", rows: '50', fl: 'other_subject_ssim' )
 
+    #FIXME - A result for "http" gives back the entire array of values...
     if solr_response.present?
       values = []
       solr_response.each do |indv_response|
-        indv_response["subject_tesim"].each do |indv_subj|
-          values << indv_subj
+        indv_response["other_subject_ssim"].each do |indv_subj|
+          if indv_subj.match(/#{subject}/) && !indv_subj.match(/http:\/\/id.loc.gov\/authorities\/subjects\//) && !indv_subj.match(/http:\/\/www.homosaurus.org\/terms\//)
+            values << indv_subj
+          end
         end
       end
 
       values = values.uniq.take(10)
+
       return values.map! { |item|
-        count = ActiveFedora::Base.find_with_conditions("subject_tesim:#{URI.escape(item)}", rows: '100', fl: 'subject_tesim' ).length
+        ##{URI.escape(item)}
+        count = ActiveFedora::Base.find_with_conditions("other_subject_ssim:#{solr_clean(item)}", rows: '100', fl: 'other_subject_ssim' ).length
         if count >= 99
           count = "99+"
         else
@@ -30,5 +37,9 @@ class OtherSubjectResource
     else
       return []
     end
+  end
+
+  def self.solr_clean(term)
+    return term.gsub('\\', '\\\\').gsub(':', '\\:').gsub(' ', '\ ')
   end
 end

@@ -1,0 +1,12 @@
+<h1>Homosaurus Vocabulary Terms</h1>
+
+<%= button_to "Add A New Term", new_homosauru_path, :method => "get", class: 'btn btn-default' %>
+
+<h4>Current Term List</h4>
+<ul>
+  <% @terms.each do |term| %>
+      <li>
+        <%= link_to term['prefLabel_tesim'].first, homosauru_path(:id => term['id']) %>
+      </li>
+  <% end %>
+</ul>

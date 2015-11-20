@@ -9,6 +9,8 @@ class AuthoritiesController < ApplicationController
           GeoNamesResource.find_location(s)
         elsif params[:term] == "lcsh_subject"
           LcshSubjectResource.find_location(s)
+        elsif params[:term] == "homosaurus_subject"
+          HomosaurusSubjectResource.find_location(s)
         elsif params[:term] == "other_subject"
           OtherSubjectResource.find_location(s)
         elsif params[:term] == "language"

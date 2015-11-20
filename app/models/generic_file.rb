@@ -24,23 +24,28 @@ class GenericFile < ActiveFedora::Base
   property :alternative, predicate: ::RDF::DC.alternative do |index|
     index.as :stored_searchable
   end
-  
-  property :summary, predicate: ::RDF::DC.description, multiple: false do |index|
-    index.as :stored_searchable
-  end
 
   #http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#adultContent is boolean only :(
   #FIXME: Both rights and flagged have multiple set to true and their forms generate with that...
-  property :flagged, predicate: ::RDF::URI.new('http://digitaltransgenderarchive.net/ns/flagged'), multiple: true do |index|
+  property :flagged, predicate: ::RDF::URI.new('http://digitaltransgenderarchive.net/ns/flagged'), multiple: false do |index|
     index.as :stored_searchable
   end
 
   property :lcsh_subject, predicate: ::RDF::DC.subject do |index|
-    index.as :stored_searchable, :facetable
+    index.as :stored_searchable, :facetable, :symbol
   end
 
   property :other_subject, predicate: ::RDF::DC.subject do |index|
-    index.as :stored_searchable, :facetable
+    index.as :stored_searchable, :facetable, :symbol
   end
+
+  property :homosaurus_subject, predicate: ::RDF::DC.subject do |index|
+    index.as :stored_searchable, :facetable, :symbol
+  end
+
+  def lcsh_subject_label
+    ['hello']
+  end
+
   
 end

@@ -1,9 +1,12 @@
-<div id="sidebar" class="col-md-3 col-sm-4">
-  <%= render 'search_sidebar' %>
-</div>
+<h1>Insitutions</h1>
 
-<div id="content" class="col-md-9 col-sm-8">
-  <h2>Collections</h2>
-  <%= render 'search_results' %>
-</div>
+<%= button_to "Add A New Institution", new_institution_path, :method => "get", class: 'btn btn-default' %>
 
+<h4>Current Institution List</h4>
+<ul>
+  <% @institutions.each do |institution| %>
+      <li>
+        <%= link_to institution['name_ssim'].first, institution_path(:id => institution['id']) %>
+      </li>
+  <% end %>
+</ul>

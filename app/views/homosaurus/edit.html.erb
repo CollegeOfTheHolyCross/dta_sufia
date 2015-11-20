@@ -1,0 +1,16 @@
+<h1>Edit</h1>
+<div style="width:50em;">
+  <%= simple_form_for(@homosaurus, :url => homosauru_path(:id => @homosaurus.id), :as => :homosaurus) do |f| %>
+      <%= render "form_id", :f => f %>
+      <% @homosaurus.terms.each do |key| %>
+          <%= render :partial => "/records/edit_fields/default", :locals => {:key => key, :f => f} %>
+      <% end %>
+
+      <%= render :partial => "form_relations", :locals => {:f => f, :key=>:broader_ids} %>
+
+      <%= render :partial => "form_relations", :locals => {:f => f, :key=>:narrower_ids} %>
+
+      <%= render :partial => "form_relations", :locals => {:f => f, :key=>:related_ids} %>
+      <%= f.button :submit %>
+  <% end %>
+</div>

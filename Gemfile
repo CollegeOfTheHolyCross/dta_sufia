@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem "rdf-vocab"
+
 gem 'blacklight', '5.14'
 #gem 'sufia', '6.3.0'
 gem 'sufia', :git=>'https://github.com/projecthydra/sufia.git'

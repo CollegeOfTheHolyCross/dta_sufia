@@ -228,22 +228,21 @@ en:
 
 
 
-
-
+      homosaurus:
+        broader_ids:  "Broader Terms (BT)"
+        narrower_ids:  "Narrower Terms (NT)"
+        related_ids:  "Related Terms (RT)"
+        identifier:      "Identifier"
+        prefLabel:         "Preferred Term (USE)"
+        altLabel:      "Use For (UF)"
+        description:      "Scope Note (SN)"
 
 
       collection:
-        institution:      "Institution Name"
-        description:      "Institutional Information"
-        tag:              "Keyword(s)"
-        date_created:     "Date Created"
-        institution_url:  "Institutional URL"
-        address:          "Institution Address"
-        contact_person:   "Contact People"
-        identifier:       "Any Local Identifiers"
+        institution_ids:  "Institution"
+        description:      "Collection Abstract"
         title:            "Collection Name"
         total_items:      "Total Items"
-        size:             "Size"
 
     metadata_help:
       generic_file:
@@ -266,14 +265,18 @@ en:
         rights: "Licensing and distribution information governing access to the file. Select from the provided drop-down list. &lt;em&gt;This is a required field&lt;/em&gt;."
         flagged: "Indicate whether the content may not be suitable for minors."
       collection:
-        institution:      "The name of the institution an object or collection belongs."
-        title:            "The name of the collection an object is stored."
-        description:      "A brief description of the institution and its collection."
-        tag:              "A keyword which can be used to describe and filter a collection or object."
-        institution_url:  "The URL to the institution or its collection"
-        address:          "The institution's address."
-        contact_person:   "Contact information for the primary contact(s) of an institution or collection."
-        identifier:       "Any identifiers used by the institution to find and object or collection. This could be an accession number or catalog number."
+        institution_ids:      "The institution a collection belongs to."
+        title:            "The name of the collection itself."
+        description:      "A brief description of this collection."
+
+      homosaurus:
+        broader_ids:  "These are the broader terms that are above this term in a hierarchy."
+        narrower_ids:  "These are the narrower terms that are below this term in a hierarchy."
+        related_ids:  "These are related terms that may be of interest to one looking at this particular subject."
+        prefLabel:         "This is the primary label one should use for this term."
+        altLabel:      "These are other labels some people may refer to this term as."
+        description:      "This is a description of the content of the term."
+        identifier:      "The identifier for this term on the web. <strong>DO NOT USE SPACES!</strong> Instead, use camelcase such as peopleWithDisabilities for 'people with disabilities'."
 
     aria_label:
       generic_file:

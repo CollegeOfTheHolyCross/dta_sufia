@@ -32,6 +32,7 @@ module Mei
           end_response[local_pos] = loc_response_to_qa(response_to_struct(response))
         }
         position_counter+=1
+        sleep(0.15)
         #loc_response_to_qa(response_to_struct(response))
       end
       threaded_responses.each { |thr|  thr.join }
@@ -50,7 +51,7 @@ module Mei
 
       #count = ActiveFedora::Base.find_with_conditions("subject_tesim:#{data.id.gsub('info:lc', 'http://id.loc.gov').gsub(':','\:')}", rows: '100', fl: 'id' ).length
       #FIXME
-      count = ActiveFedora::Base.find_with_conditions("subject_tesim:*#{data.id.split('/').last}", rows: '100', fl: 'id' ).length
+      count = ActiveFedora::Base.find_with_conditions("lcsh_subject_ssim:#{solr_clean(data.id.gsub('info:lc', 'http://id.loc.gov'))}", rows: '100', fl: 'id' ).length
 
       if count >= 99
         count = "99+"
@@ -68,6 +69,11 @@ module Mei
           "variants" => variants,
           "count" => count
       }
+    end
+
+
+    def solr_clean(term)
+      return term.gsub('\\', '\\\\').gsub(':', '\\:').gsub(' ', '\ ')
     end
 
     def response_to_struct response
