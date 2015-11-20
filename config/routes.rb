@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+
+  resources :institutions
+
+  resources :homosaurus
+
   mount Qa::Engine => '/qa'
 
   
@@ -12,9 +17,7 @@ Rails.application.routes.draw do
     mount Sufia::Engine => '/'
   root to: 'homepage#index'
 
-  resources :institutions
 
-  resources :homosaurus
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
