@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem "rdf-vocab"
-
+gem 'mysql2'
 #gem 'blacklight', '5.14'
 gem 'blacklight', '5.16'
 gem 'sufia', '6.4.0'
