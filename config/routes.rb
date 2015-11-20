@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   resources :institutions
 
   resources :homosaurus
@@ -16,7 +15,6 @@ Rails.application.routes.draw do
     # This behavior seems to show up only in production mode.
     mount Sufia::Engine => '/'
   root to: 'homepage#index'
-
 
 
   # The priority is based upon order of creation: first created -> highest priority.
