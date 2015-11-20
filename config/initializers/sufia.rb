@@ -254,7 +254,7 @@ Sufia.config do |config|
   # config.redis_namespace = "sufia"
 
   # Specify the path to the file characterization tool:
-  config.fits_path = "/home/bluewolf/tools/fits-0.6.2/fits.sh"
+  config.fits_path = ENV["FITS_PATH"]
 
   config.upload_to_collection = true
 
