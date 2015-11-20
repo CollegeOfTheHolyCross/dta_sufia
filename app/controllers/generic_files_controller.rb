@@ -1,6 +1,7 @@
 class GenericFilesController < ApplicationController
   include Sufia::Controller
   include Sufia::FilesControllerBehavior
+  before_action :verify_admin
 
   self.presenter_class = MyGenericFilePresenter
   self.edit_form_class = MyFileEditForm
