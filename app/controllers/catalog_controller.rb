@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # -*- encoding : utf-8 -*-
-#require 'blacklight/catalog'
+require 'blacklight/catalog'
 require 'blacklight_advanced_search'
 
 # bl_advanced_search 1.2.4 is doing unitialized constant on these because we're calling ParseBasicQ directly
@@ -8,7 +8,7 @@ require 'parslet'
 require 'parsing_nesting/tree'
 
 class CatalogController < ApplicationController
-  include Hydra::Catalog
+  #include Hydra::Catalog
   #include Hydra::Controller::ControllerBehavior
   #include Sufia::Catalog
 
