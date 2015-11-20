@@ -1,7 +1,7 @@
 <h1>Edit</h1>
 <div style="width:50em;">
   <%= simple_form_for(@homosaurus, :url => homosauru_path(:id => @homosaurus.id), :as => :homosaurus) do |f| %>
-      <%= render "form_id", :f => f %>
+      <%= render :partial => "form_id", :locals => {:f => f, :key=>:identifier} %>
       <% @homosaurus.terms.each do |key| %>
           <%= render :partial => "/records/edit_fields/default", :locals => {:key => key, :f => f} %>
       <% end %>

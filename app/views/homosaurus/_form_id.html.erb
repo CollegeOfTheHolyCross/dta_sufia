@@ -1,4 +1,1 @@
-<%= f.input :id, :wrapper => :vertical_input_group, required: @homosaurus.required?('identifier'), :label => "Identifier:" do %>
-  <span class="input-group-addon">http://www.homosaurus.org/terms/</span>
-  <%= f.input_field :identifier, :class => "form-control", :value => @homosaurus.identifier.to_s %>
-<% end %>
+<%= f.input key, as: :prefix_single_string, input_html: { class: 'form-control' }, required: true %>
