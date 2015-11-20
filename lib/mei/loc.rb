@@ -104,18 +104,26 @@ module Mei
         if resp.has_key?("http://www.loc.gov/mads/rdf/v1#hasBroaderAuthority")
           resp["http://www.loc.gov/mads/rdf/v1#hasBroaderAuthority"].each do |broader|
             if broader["@id"].present?
+              #broken for stuff like labor
+              begin
+
               broader_uri = broader["@id"]
 
               broader_label = response.select { |broader_resp| broader_resp["@id"] == broader_uri and broader_resp.has_key?("http://www.loc.gov/mads/rdf/v1#authoritativeLabel") and !broader_resp.has_key?("http://www.loc.gov/mads/rdf/v1#elementList") }
+
               broader_label = broader_label[0]["http://www.loc.gov/mads/rdf/v1#authoritativeLabel"][0]["@value"]
 
               broader_list << {:uri_link=>broader_uri, :label=>broader_label}
+              rescue
+                #ignored for now
+              end
             end
           end
         end
         if resp.has_key?("http://www.loc.gov/mads/rdf/v1#hasNarrowerAuthority")
           resp["http://www.loc.gov/mads/rdf/v1#hasNarrowerAuthority"].each do |narrower|
             if narrower["@id"].present?
+              begin
               narrower_uri = narrower["@id"]
 
 
@@ -123,6 +131,8 @@ module Mei
               narrower_label = narrower_label[0]["http://www.loc.gov/mads/rdf/v1#authoritativeLabel"][0]["@value"]
 
               narrower_list << {:uri_link=>narrower_uri, :label=>narrower_label}
+              rescue
+              end
             end
 
           end
