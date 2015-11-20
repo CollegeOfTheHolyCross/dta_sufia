@@ -10,7 +10,9 @@ require 'parsing_nesting/tree'
 class CatalogController < ApplicationController
   include Hydra::Catalog
   include Hydra::Controller::ControllerBehavior
-  include Sufia::Catalog
+  #include Sufia::Catalog
+
+  self.search_params_logic += [:only_generic_files_and_collections]
 
   # These before_filters apply the hydra access controls
   before_filter :enforce_show_permissions, only: :show
