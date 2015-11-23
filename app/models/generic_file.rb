@@ -27,7 +27,7 @@ class GenericFile < ActiveFedora::Base
 
   #http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#adultContent is boolean only :(
   #FIXME: Both rights and flagged have multiple set to true and their forms generate with that...
-  property :flagged, predicate: ::RDF::URI.new('http://digitaltransgenderarchive.net/ns/flagged'), multiple: false do |index|
+  property :flagged, predicate: ::RDF::URI.new('http://digitaltransgenderarchive.net/ns/flagged'), multiple: true do |index|
     index.as :stored_searchable
   end
 
