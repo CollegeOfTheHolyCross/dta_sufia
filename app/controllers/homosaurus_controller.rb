@@ -215,7 +215,7 @@ class HomosaurusController < ApplicationController
 
 
     @homosaurus.related.each do |related|
-      related.delete(@homosaurus)
+      related.related.delete(@homosaurus)
       related.save
     end
     @homosaurus.reload
