@@ -284,5 +284,5 @@ end
 
 Date::DATE_FORMATS[:standard] = "%m/%d/%Y"
 
-Hydra::Derivatives.libreoffice_path = ENV["LIBREOFFICE_PATH"]
-Hydra::Derivatives.kdu_compress_path = ENV["KDU_PATH"]
+#Hydra::Derivatives.libreoffice_path = ENV["LIBREOFFICE_PATH"]
+#Hydra::Derivatives.kdu_compress_path = ENV["KDU_PATH"]
