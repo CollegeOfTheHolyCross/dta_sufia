@@ -96,7 +96,7 @@ class HomosaurusController < ApplicationController
 
   def update
     if !params[:homosaurus][:identifier].match(/^[a-zA-Z_\-]+$/) || params[:homosaurus][:identifier].match(/ /)
-      redirect_to homosauru_path(:id => 'homosaurus/terms/' + params[:homosaurus][:identifier]), notice: "Please use camel case for identifier like 'discrimationWithAbleism'... do not use spaces. Contact K.J. if this is seen for some other valid entry."
+      redirect_to homosauru_path(:id => params[:id]), notice: "Please use camel case for identifier like 'discrimationWithAbleism'... do not use spaces. Contact K.J. if this is seen for some other valid entry."
     else
 
       @homosaurus = Homosaurus.find(params[:id])
