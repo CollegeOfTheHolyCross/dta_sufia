@@ -5,7 +5,7 @@ class OtherSubjectResource
     #ActiveFedora::Base.find_each("subject_tesim:tes*") { |x| puts 'hi' }
 
     exclude_lcsh = 'http://id.loc.gov/authorities/subjects/'
-    exclude_homosaurus= 'http://www.homosaurus.org/terms/'
+    exclude_homosaurus= 'http://homosaurus.org/terms/'
     solr_response = ActiveFedora::Base.find_with_conditions("other_subject_ssim:#{solr_clean(subject)}*", rows: '50', fl: 'other_subject_ssim' )
 
     #FIXME - A result for "http" gives back the entire array of values...
@@ -13,7 +13,7 @@ class OtherSubjectResource
       values = []
       solr_response.each do |indv_response|
         indv_response["other_subject_ssim"].each do |indv_subj|
-          if indv_subj.match(/#{subject}/) && !indv_subj.match(/http:\/\/id.loc.gov\/authorities\/subjects\//) && !indv_subj.match(/http:\/\/www.homosaurus.org\/terms\//)
+          if indv_subj.match(/#{subject}/) && !indv_subj.match(/http:\/\/id\.loc\.gov\/authorities\/subjects\//) && !indv_subj.match(/http:\/\/homosaurus\.org\/terms\//)
             values << indv_subj
           end
         end

@@ -58,7 +58,7 @@ class HomosaurusSubjectResource
 
       return matches.map! { |item|
         ##{URI.escape(item)}
-        full_uri = 'http://www.homosaurus.org/terms/' + item['identifier_ssi']
+        full_uri = 'http://homosaurus.org/terms/' + item['identifier_ssi']
 
         count = ActiveFedora::Base.find_with_conditions("homosaurus_subject_ssim:#{solr_clean(full_uri)}", rows: '100', fl: 'subject_tesim' ).length
         if count >= 99
@@ -90,7 +90,7 @@ class HomosaurusSubjectResource
     if broader_uris.present?
       broader_uris.each do |broader_single_uri|
         broader_label = Homosaurus.find_with_conditions("id:#{solr_clean(broader_single_uri)}", rows: '1', fl: 'prefLabel_ssim' )
-        broader_list << {:uri_link=>"http://www.homosaurus.org/terms/#{broader_single_uri.split('/').last}", :label=>broader_label[0]["prefLabel_ssim"][0]}
+        broader_list << {:uri_link=>"http://homosaurus.org/terms/#{broader_single_uri.split('/').last}", :label=>broader_label[0]["prefLabel_ssim"][0]}
       end
     end
 
@@ -103,7 +103,7 @@ class HomosaurusSubjectResource
     if narrower_uris.present?
       narrower_uris.each do |narrower_single_uri|
         narrower_label = Homosaurus.find_with_conditions("id:#{solr_clean(narrower_single_uri)}", rows: '1', fl: 'prefLabel_ssim' )
-        narrower_list << {:uri_link=>"http://www.homosaurus.org/terms/#{narrower_single_uri.split('/').last}", :label=>narrower_label[0]["prefLabel_ssim"][0]}
+        narrower_list << {:uri_link=>"http://homosaurus.org/terms/#{narrower_single_uri.split('/').last}", :label=>narrower_label[0]["prefLabel_ssim"][0]}
       end
     end
 
@@ -116,7 +116,7 @@ class HomosaurusSubjectResource
     if related_uris.present?
       related_uris.each do |related_single_uri|
         related_label = Homosaurus.find_with_conditions("id:#{solr_clean(related_single_uri)}", rows: '1', fl: 'prefLabel_ssim' )
-        related_list << {:uri_link=>"http://www.homosaurus.org/terms/#{related_single_uri.split('/').last}", :label=>related_label[0]["prefLabel_ssim"][0]}
+        related_list << {:uri_link=>"http://homosaurus.org/terms/#{related_single_uri.split('/').last}", :label=>related_label[0]["prefLabel_ssim"][0]}
       end
     end
 

@@ -86,12 +86,16 @@ class HomosaurusController < ApplicationController
     @homosaurus = Homosaurus.find(params[:id])
     term_query = Homosaurus.find_with_conditions("*:*", rows: '100000', fl: 'id,identifier_ssi' )
     @all_terms = []
-    term_query.each { |term| @all_terms << [term["identifier_ssi"], term["id"]] }
+    term_query.each { |term|
+      if params[:id] != term["id"]
+        @all_terms << [term["identifier_ssi"], term["id"]]
+      end
+    }
   end
 
   def update
     if !params[:homosaurus][:identifier].match(/^[a-zA-Z_\-]+$/)
-      redirect_to homosauru_path(:id => @homosaurus.id), notice: "Please use camel case for identifier like 'discrimationWithAbleism'... do not use spaces. Contact K.J. if this is seen for some other valid entry."
+      redirect_to homosauru_path(:id => 'homosaurus/terms/' + params[:homosaurus][:identifier]), notice: "Please use camel case for identifier like 'discrimationWithAbleism'... do not use spaces. Contact K.J. if this is seen for some other valid entry."
     end
 
     @homosaurus = Homosaurus.find(params[:id])

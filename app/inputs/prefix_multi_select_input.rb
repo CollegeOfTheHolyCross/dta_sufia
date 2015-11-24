@@ -5,7 +5,7 @@ class PrefixMultiSelectInput < MultiSelectInput
     <<-HTML
           <li class="field-wrapper">
              <div class="input-group col-sm-12">
-              <span class="input-group-addon">http://www.homosaurus.org/terms/</span>
+              <span class="input-group-addon">http://homosaurus.org/terms/</span>
               #{yield}
 
               <span class="input-group-btn regular_dta_duplicate_span">
