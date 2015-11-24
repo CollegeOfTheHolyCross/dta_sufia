@@ -27,6 +27,10 @@ class HomosaurusController < ApplicationController
   end
 
   def create
+    if !params[:homosaurus][:identifier].match(/^[a-zA-Z_\-]+$/)
+      redirect_to new_homosauru_path, notice: "Please use camel case for identifier like 'discrimationWithAbleism'... do not use spaces. Contact K.J. if this is seen for some other valid entry."
+    end
+
     id = 'homosaurus/terms/' + params[:homosaurus][:identifier]
 
     @homosaurus = Homosaurus.new(id)
@@ -86,6 +90,10 @@ class HomosaurusController < ApplicationController
   end
 
   def update
+    if !params[:homosaurus][:identifier].match(/^[a-zA-Z_\-]+$/)
+      redirect_to homosauru_path(:id => @homosaurus.id), notice: "Please use camel case for identifier like 'discrimationWithAbleism'... do not use spaces. Contact K.J. if this is seen for some other valid entry."
+    end
+
     @homosaurus = Homosaurus.find(params[:id])
 
     #FIXME: Only do this if changed...
@@ -102,7 +110,7 @@ class HomosaurusController < ApplicationController
 
 
     @homosaurus.related.each do |related|
-      related.delete(@homosaurus)
+      related.related.delete(@homosaurus)
       related.save
     end
     @homosaurus.reload
@@ -180,7 +188,7 @@ class HomosaurusController < ApplicationController
       #flash[:success] = "Homosaurus term was updated!"
       redirect_to homosauru_path(:id => @homosaurus.id), notice: "Homosaurus term was updated!"
     else
-      redirect_to new_homosauru_path
+      redirect_to homosauru_path(:id => @homosaurus.id), notice: "Failure! Term was not updated."
     end
   end
 
