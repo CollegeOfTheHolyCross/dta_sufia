@@ -27,58 +27,59 @@ class HomosaurusController < ApplicationController
   end
 
   def create
-    if !params[:homosaurus][:identifier].match(/^[a-zA-Z_\-]+$/)
+    if !params[:homosaurus][:identifier].match(/^[a-zA-Z_\-]+$/) || params[:homosaurus][:identifier].match(/ /)
       redirect_to new_homosauru_path, notice: "Please use camel case for identifier like 'discrimationWithAbleism'... do not use spaces. Contact K.J. if this is seen for some other valid entry."
-    end
-
-    id = 'homosaurus/terms/' + params[:homosaurus][:identifier]
-
-    @homosaurus = Homosaurus.new(id)
-
-    if params[:homosaurus][:broader_ids].present?
-      params[:homosaurus][:broader_ids].each do |broader|
-        if broader.present?
-          broader_object = Homosaurus.find(broader)
-          @homosaurus.broader = @homosaurus.broader + [broader_object]
-          broader_object.narrower = broader_object.narrower + [@homosaurus]
-          broader_object.save
-        end
-      end
-    end
-
-    if params[:homosaurus][:narrower_ids].present?
-      params[:homosaurus][:narrower_ids].each do |narrower|
-        if narrower.present?
-          narrower_object = Homosaurus.find(narrower)
-          @homosaurus.narrower = @homosaurus.narrower + [narrower_object]
-          narrower_object.broader = narrower_object.broader + [@homosaurus]
-          narrower_object.save
-        end
-
-      end
-    end
-
-    if params[:homosaurus][:related_ids].present?
-      params[:homosaurus][:related_ids].each do |related|
-        if related.present?
-          related_object = Homosaurus.find(related)
-          @homosaurus.related = @homosaurus.related + [related_object]
-          related_object.related = related_object.related + [@homosaurus]
-          related_object.save
-        end
-
-      end
-    end
-
-    @homosaurus.issued = RDF::Literal::Date.new(Time.now)
-    @homosaurus.modified = RDF::Literal::Date.new(Time.now)
-
-    @homosaurus.update(homosaurus_params)
-
-    if @homosaurus.save
-      redirect_to homosauru_path(:id => @homosaurus.id)
     else
-      redirect_to new_homosauru_path
+
+      id = 'homosaurus/terms/' + params[:homosaurus][:identifier]
+
+      @homosaurus = Homosaurus.new(id)
+
+      if params[:homosaurus][:broader_ids].present?
+        params[:homosaurus][:broader_ids].each do |broader|
+          if broader.present?
+            broader_object = Homosaurus.find(broader)
+            @homosaurus.broader = @homosaurus.broader + [broader_object]
+            broader_object.narrower = broader_object.narrower + [@homosaurus]
+            broader_object.save
+          end
+        end
+      end
+
+      if params[:homosaurus][:narrower_ids].present?
+        params[:homosaurus][:narrower_ids].each do |narrower|
+          if narrower.present?
+            narrower_object = Homosaurus.find(narrower)
+            @homosaurus.narrower = @homosaurus.narrower + [narrower_object]
+            narrower_object.broader = narrower_object.broader + [@homosaurus]
+            narrower_object.save
+          end
+
+        end
+      end
+
+      if params[:homosaurus][:related_ids].present?
+        params[:homosaurus][:related_ids].each do |related|
+          if related.present?
+            related_object = Homosaurus.find(related)
+            @homosaurus.related = @homosaurus.related + [related_object]
+            related_object.related = related_object.related + [@homosaurus]
+            related_object.save
+          end
+
+        end
+      end
+
+      @homosaurus.issued = RDF::Literal::Date.new(Time.now)
+      @homosaurus.modified = RDF::Literal::Date.new(Time.now)
+
+      @homosaurus.update(homosaurus_params)
+
+      if @homosaurus.save
+        redirect_to homosauru_path(:id => @homosaurus.id)
+      else
+        redirect_to new_homosauru_path
+      end
     end
   end
 
@@ -94,38 +95,38 @@ class HomosaurusController < ApplicationController
   end
 
   def update
-    if !params[:homosaurus][:identifier].match(/^[a-zA-Z_\-]+$/)
+    if !params[:homosaurus][:identifier].match(/^[a-zA-Z_\-]+$/) || params[:homosaurus][:identifier].match(/ /)
       redirect_to homosauru_path(:id => 'homosaurus/terms/' + params[:homosaurus][:identifier]), notice: "Please use camel case for identifier like 'discrimationWithAbleism'... do not use spaces. Contact K.J. if this is seen for some other valid entry."
-    end
+    else
 
-    @homosaurus = Homosaurus.find(params[:id])
+      @homosaurus = Homosaurus.find(params[:id])
 
-    #FIXME: Only do this if changed...
-    @homosaurus.broader.each do |broader|
-      broader.narrower.delete(@homosaurus)
-      broader.save
-    end
-
-
-    @homosaurus.narrower.each do |narrower|
-      narrower.broader.delete(@homosaurus)
-      narrower.save
-    end
+      #FIXME: Only do this if changed...
+      @homosaurus.broader.each do |broader|
+        broader.narrower.delete(@homosaurus)
+        broader.save
+      end
 
 
-    @homosaurus.related.each do |related|
-      related.related.delete(@homosaurus)
-      related.save
-    end
-    @homosaurus.reload
+      @homosaurus.narrower.each do |narrower|
+        narrower.broader.delete(@homosaurus)
+        narrower.save
+      end
 
-    @homosaurus.broader = []
-    @homosaurus.narrower = []
-    @homosaurus.related = []
 
-    id = 'homosaurus/terms/' + params[:homosaurus][:identifier]
+      @homosaurus.related.each do |related|
+        related.related.delete(@homosaurus)
+        related.save
+      end
+      @homosaurus.reload
 
-    if @homosaurus.id != id
+      @homosaurus.broader = []
+      @homosaurus.narrower = []
+      @homosaurus.related = []
+
+      id = 'homosaurus/terms/' + params[:homosaurus][:identifier]
+
+      if @homosaurus.id != id
 =begin
       @homosaurus.broader.each do |broader|
         broader.narrower = broader.narrower - [@homosaurus]
@@ -143,56 +144,57 @@ class HomosaurusController < ApplicationController
       end
 =end
 
-      @homosaurus.delete
+        @homosaurus.delete
 
-      @homosaurus = Homosaurus.new(id)
-      @homosaurus.issued = RDF::Literal::Date.new(Time.now)
-    end
+        @homosaurus = Homosaurus.new(id)
+        @homosaurus.issued = RDF::Literal::Date.new(Time.now)
+      end
 
-    if params[:homosaurus][:broader_ids].present?
-      params[:homosaurus][:broader_ids].each do |broader|
-        if broader.present?
-          broader_object = Homosaurus.find(broader)
-          @homosaurus.broader = @homosaurus.broader + [broader_object]
-          broader_object.narrower = broader_object.narrower + [@homosaurus]
-          broader_object.save
+      if params[:homosaurus][:broader_ids].present?
+        params[:homosaurus][:broader_ids].each do |broader|
+          if broader.present?
+            broader_object = Homosaurus.find(broader)
+            @homosaurus.broader = @homosaurus.broader + [broader_object]
+            broader_object.narrower = broader_object.narrower + [@homosaurus]
+            broader_object.save
+          end
         end
       end
-    end
 
-    if params[:homosaurus][:narrower_ids].present?
-      params[:homosaurus][:narrower_ids].each do |narrower|
-        if narrower.present?
-          narrower_object = Homosaurus.find(narrower)
-          @homosaurus.narrower = @homosaurus.narrower + [narrower_object]
-          narrower_object.broader = narrower_object.broader + [@homosaurus]
-          narrower_object.save
+      if params[:homosaurus][:narrower_ids].present?
+        params[:homosaurus][:narrower_ids].each do |narrower|
+          if narrower.present?
+            narrower_object = Homosaurus.find(narrower)
+            @homosaurus.narrower = @homosaurus.narrower + [narrower_object]
+            narrower_object.broader = narrower_object.broader + [@homosaurus]
+            narrower_object.save
+          end
+
         end
-
       end
-    end
 
-    if params[:homosaurus][:related_ids].present?
-      params[:homosaurus][:related_ids].each do |related|
-        if related.present?
-          related_object = Homosaurus.find(related)
-          @homosaurus.related = @homosaurus.related + [related_object]
-          related_object.related = related_object.related + [@homosaurus]
-          related_object.save
+      if params[:homosaurus][:related_ids].present?
+        params[:homosaurus][:related_ids].each do |related|
+          if related.present?
+            related_object = Homosaurus.find(related)
+            @homosaurus.related = @homosaurus.related + [related_object]
+            related_object.related = related_object.related + [@homosaurus]
+            related_object.save
+          end
+
         end
-
       end
-    end
 
-    @homosaurus.modified = RDF::Literal::Date.new(Time.now)
+      @homosaurus.modified = RDF::Literal::Date.new(Time.now)
 
-    @homosaurus.update(homosaurus_params)
+      @homosaurus.update(homosaurus_params)
 
-    if @homosaurus.save
-      #flash[:success] = "Homosaurus term was updated!"
-      redirect_to homosauru_path(:id => @homosaurus.id), notice: "Homosaurus term was updated!"
-    else
-      redirect_to homosauru_path(:id => @homosaurus.id), notice: "Failure! Term was not updated."
+      if @homosaurus.save
+        #flash[:success] = "Homosaurus term was updated!"
+        redirect_to homosauru_path(:id => @homosaurus.id), notice: "Homosaurus term was updated!"
+      else
+        redirect_to homosauru_path(:id => @homosaurus.id), notice: "Failure! Term was not updated."
+      end
     end
   end
 
