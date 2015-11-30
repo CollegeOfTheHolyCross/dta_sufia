@@ -6,12 +6,6 @@ class MeiMultiLookupInput < MultiBaseInput
     'repeat_field_value'.freeze
   end
 
-  def buffer_each(collection)
-    collection.each_with_object('').with_index do |(value, buffer), index|
-      buffer << yield(value, index) if value.match(/http:\/\/id.loc.gov\/authorities\/subjects\//) || value.blank?
-    end
-  end
-
   def inner_wrapper
     <<-HTML
           <li class="field-wrapper">

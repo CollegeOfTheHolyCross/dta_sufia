@@ -44,7 +44,7 @@ module Mei
       json_link = data.links.select { |link| link.first == 'application/json' }
       if json_link.present?
         json_link = json_link[0][1]
-        puts 'Json Link is: ' + json_link
+        #puts 'Json Link is: ' + json_link
         item_response = get_json(json_link)
         broader, narrower, variants = get_skos_concepts(item_response)
       end

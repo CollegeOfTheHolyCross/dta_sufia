@@ -16,7 +16,7 @@
       <% end %>
     </div>
   <% end %>
-  <% if can?(:create, Collection) %>
+  <% if can?(:create, Collection) and current_user.admin? %>
     <div class="col-xs-6 col-sm-2 heading-tile">
       <%= link_to collections.new_collection_path, id: "hydra-collection-add" do %>
           <span class="glyphicon glyphicon-plus"></span>

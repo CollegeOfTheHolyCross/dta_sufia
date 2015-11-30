@@ -18,4 +18,10 @@ class ApplicationController < ActionController::Base
       redirect_to root_path
     end
   end
+
+  def verify_contributor
+    if !current_user.admin? && !current_user.superuser? && !current_user.contributor?
+      redirect_to root_path
+    end
+  end
 end

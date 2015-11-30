@@ -1,7 +1,7 @@
 class GenericFilesController < ApplicationController
   include Sufia::Controller
   include Sufia::FilesControllerBehavior
-  before_action :verify_admin
+  before_action :verify_contributor
 
   self.presenter_class = MyGenericFilePresenter
   self.edit_form_class = MyFileEditForm
@@ -72,6 +72,13 @@ class GenericFilesController < ApplicationController
     params[:generic_file][:date_created].each do |date_created|
       if date_created.present? and Date.edtf(date_created).nil?
         flash[:error] = 'Incorrect format for date_created. Please check the EDTF guidelines.'
+        return false
+      end
+    end
+
+    params[:generic_file][:language].each do |language|
+      if language.present? and !language.match(/id\.loc\.gov\/vocabulary\/iso639\-2\/\w\w\w/)
+        flash[:error] = 'Language was not selected from the autocomplete?'
         return false
       end
     end

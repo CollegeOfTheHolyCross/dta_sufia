@@ -46,7 +46,8 @@ Blacklight.onLoad(function() {
         },
         minLength: 2
     };
-    $("input.generic_file_based_near").autocomplete(get_autocomplete_opts("location"));
+
+    //$("input.generic_file_based_near").autocomplete(get_autocomplete_opts("location"));
 
     var autocomplete_vocab = new Object();
 
@@ -71,7 +72,7 @@ Blacklight.onLoad(function() {
 
 
     // attach an auto complete based on the field
-    function setup_autocomplete(e, cloneElem) {
+    /*function setup_autocomplete(e, cloneElem) {
         var $cloneElem = $(cloneElem);
         // FIXME this code (comparing the id) depends on a bug. Each input has an id and the id is
         // duplicated when you press the plus button. This is not valid html.
@@ -83,6 +84,6 @@ Blacklight.onLoad(function() {
     }
 
     $('.multi_value.form-group').manage_fields({add: setup_autocomplete});
-
+    */
 
 });

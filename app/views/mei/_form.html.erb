@@ -60,6 +60,7 @@
             return false;
         } else if(mei_last_value_<%=key%> == '') {
             alert('No stored last value to search by!');
+            return false;
         }
         $('#mei_lcsh_term_<%=key%>').val(mei_last_value_<%=key%>);
         mei_lookup_<%=key%>();
