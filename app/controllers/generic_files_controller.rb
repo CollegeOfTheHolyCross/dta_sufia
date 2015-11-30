@@ -87,10 +87,27 @@ class GenericFilesController < ApplicationController
 
   # this is provided so that implementing application can override this behavior and map params to different attributes
   def update_metadata
+=begin
     if params[:generic_file][:lcsh_subject].present? and params[:generic_file][:other_subject].present?
       params[:generic_file][:other_subject] += params[:generic_file][:lcsh_subject]
       params[:generic_file].delete(:lcsh_subject)
     end
+=end
+    if params[:generic_file][:lcsh_subject].present? and !params[:generic_file][:other_subject].nil?
+      params[:generic_file][:other_subject] += params[:generic_file][:lcsh_subject]
+      params[:generic_file].delete(:lcsh_subject)
+    end
+
+    if params[:generic_file][:homosaurus_subject].present? and !params[:generic_file][:other_subject].nil?
+      params[:generic_file][:other_subject] += params[:generic_file][:homosaurus_subject]
+      params[:generic_file].delete(:homosaurus_subject)
+    end
+
+    if params[:generic_file][:homosaurus_subject].present? and params[:generic_file][:lcsh_subject].present? and params[:generic_file][:other_subject].nil?
+      params[:generic_file][:lcsh_subject] += params[:generic_file][:homosaurus_subject]
+      params[:generic_file].delete(:homosaurus_subject)
+    end
+
     file_attributes = edit_form_class.model_attributes(params[:generic_file])
     actor.update_metadata(file_attributes, params[:visibility])
   end
