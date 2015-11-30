@@ -16,7 +16,8 @@
                 </div>
                 <div class="col-xs-4">
 
-                  <div style="padding-top:23px;"><button type="button" class="btn btn-default" onClick="mei_lookup_<%=key%>();">Lookup</button></div>
+                  <div style="padding-top:23px;float:left;"><button type="button" class="btn btn-default" onClick="mei_lookup_<%=key%>();">Lookup</button></div>
+                  <div style="padding-top:23px;margin-left:40px;float:left;"><button type="button" class="btn btn-default" onClick="mei_use_last_<%=key%>();">Use Last Search</button></div>
                 </div></div>
 
           </div>
@@ -38,12 +39,13 @@
 
 <script type="text/javascript">
     var mei_element_to_update_<%=key%>;
+    var mei_last_value_<%=key%> = '';
     $("#meiLookupModal_<%=key%>").on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         //alert(button.prev().val());
         mei_element_to_update_<%=key%> = button.prev();
         $('#mei_results_<%=key%>').text('');
-        $('#mei_lcsh_term_<%=key%>').val('')
+        $('#mei_lcsh_term_<%=key%>').val('');
         //var recipient = button.data('whatever') // Extract info from data-* attributes
         // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
         // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
@@ -52,9 +54,22 @@
         //modal.find('.modal-body input').val(recipient)
     })
 
+    function mei_use_last_<%=key%>() {
+        if(mei_last_value_<%=key%> == '' &&  $('#mei_lcsh_term_<%=key%>').val() != '') {
+            alert('No last search value present. Are you sure you didn\'t mean to click "Lookup"?');
+            return false;
+        } else if(mei_last_value_<%=key%> == '') {
+            alert('No stored last value to search by!');
+        }
+        $('#mei_lcsh_term_<%=key%>').val(mei_last_value_<%=key%>);
+        mei_lookup_<%=key%>();
+    }
+
   function mei_lookup_<%=key%>()
   {
       $('#mei_results_<%=key%>').text('LOADING...');
+      mei_last_value_<%=key%> = $('#mei_lcsh_term_<%=key%>').val();
+
       $.getJSON( "/authorities/generic_files/<%=key%>", {
           q: $('#mei_lcsh_term_<%=key%>').val()
       }, function( data ) {
