@@ -59,9 +59,11 @@ module Mei
 
     def broader(row)
       broader_list = []
-      broader_list << {:uri_link=>"http://www.geonames.org/#{row["adminId1"]}", :label=>row["adminName1"]} if row["adminId1"].present? && row["adminName1"].present?
-      broader_list << {:uri_link=>"http://www.geonames.org/#{row["adminId2"]}", :label=>row["adminName2"]} if row["adminId2"].present? && row["adminName2"].present?
-      broader_list << {:uri_link=>"http://www.geonames.org/#{row["countryId"]}", :label=>row["countryName"]} if row["countryId"].present? && row["countryName"].present?
+      if row["fcl"] == "P" || row["fcl"] == "A"
+        broader_list << {:uri_link=>"http://www.geonames.org/#{row["adminId1"]}", :label=>row["adminName1"]} if row["adminId1"].present? && row["adminName1"].present?
+        broader_list << {:uri_link=>"http://www.geonames.org/#{row["adminId2"]}", :label=>row["adminName2"]} if row["adminId2"].present? && row["adminName2"].present?
+        broader_list << {:uri_link=>"http://www.geonames.org/#{row["countryId"]}", :label=>row["countryName"]} if row["countryId"].present? && row["countryName"].present?
+      end
 
       return broader_list
     end

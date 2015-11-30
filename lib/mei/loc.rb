@@ -45,7 +45,8 @@ module Mei
       if json_link.present?
         json_link = json_link[0][1]
         #puts 'Json Link is: ' + json_link
-        item_response = get_json(json_link)
+        #item_response = get_json(json_link.gsub('.json','.rdf'))
+        item_response = Nokogiri::XML(get_xml(json_link.gsub('.json','.rdf'))).remove_namespaces!
         broader, narrower, variants = get_skos_concepts(item_response)
       end
 
@@ -95,12 +96,47 @@ module Mei
       OpenStruct.new(result)
     end
 
-    def get_skos_concepts response
+    def get_skos_concepts xml_response
       broader_list = []
       narrower_list = []
       variant_list = []
 
-      response.each do |resp|
+      #xml_response = Nokogiri::XML(response).remove_namespaces!
+
+      xml_response.xpath("//broader/Description[@about]").each do |broader|
+        broader_uri = broader.attributes['about'].value
+
+        broader_label = nil
+        broader.xpath("./prefLabel").each do |prefLabel|
+          broader_label ||= prefLabel.text
+        end
+        broader_label ||= broader_uri
+        broader_list << {:uri_link=>broader_uri, :label=>broader_label}
+      end
+
+      xml_response.xpath("//narrower/Description[@about]").each do |narrower|
+        narrower_uri = narrower.attributes['about'].value
+        narrower_label = nil
+        narrower.xpath("./prefLabel").each do |prefLabel|
+          narrower_label ||= prefLabel.text
+        end
+        narrower_label ||= narrower_uri
+        narrower_list << {:uri_link=>narrower_uri, :label=>narrower_label}
+      end
+
+      xml_response.xpath("//altLabel/Description/literalForm").each do |varient|
+        variant_list << varient.text
+      end
+
+      return broader_list, narrower_list, variant_list
+    end
+
+    def get_skos_concepts_loc_broke response
+      broader_list = []
+      narrower_list = []
+      variant_list = []
+
+      response.each_with_index do |resp, index|
         if resp.has_key?("http://www.loc.gov/mads/rdf/v1#hasBroaderAuthority")
           resp["http://www.loc.gov/mads/rdf/v1#hasBroaderAuthority"].each do |broader|
             if broader["@id"].present?

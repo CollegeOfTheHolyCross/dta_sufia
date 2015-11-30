@@ -14,6 +14,11 @@ module Mei
       { accept: :json }
     end
 
+    def get_xml(url)
+      r = RestClient.get url
+      r
+    end
+
 
 
   end
