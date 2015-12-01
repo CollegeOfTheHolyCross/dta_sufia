@@ -71,7 +71,21 @@ class GenericFilesController < ApplicationController
 
     params[:generic_file][:date_created].each do |date_created|
       if date_created.present? and Date.edtf(date_created).nil?
-        flash[:error] = 'Incorrect format for date_created. Please check the EDTF guidelines.'
+        flash[:error] = 'Incorrect format for date created. Please check the EDTF guidelines.'
+        return false
+      end
+    end
+
+    params[:generic_file][:date_issued].each do |date_issued|
+      if date_issued.present? and Date.edtf(date_issued).nil?
+        flash[:error] = 'Incorrect format for date issued. Please check the EDTF guidelines.'
+        return false
+      end
+    end
+
+    params[:generic_file][:temporal_coverage].each do |temporal_coverage|
+      if temporal_coverage.present? and Date.edtf(temporal_coverage).nil?
+        flash[:error] = 'Incorrect format for temporal coverage. Please check the EDTF guidelines.'
         return false
       end
     end
