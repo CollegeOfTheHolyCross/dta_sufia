@@ -123,6 +123,10 @@ class GenericFilesController < ApplicationController
       params[:generic_file].delete(:homosaurus_subject)
     end
 
+    if params[:generic_file][:title].present?
+      params[:generic_file][:title] = [params[:generic_file][:title]]
+    end
+
     file_attributes = edit_form_class.model_attributes(params[:generic_file])
     actor.update_metadata(file_attributes, params[:visibility])
   end
