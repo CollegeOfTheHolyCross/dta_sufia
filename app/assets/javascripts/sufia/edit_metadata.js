@@ -1,22 +1,5 @@
 Blacklight.onLoad(function() {
-    function get_autocomplete_opts(field) {
-        var autocomplete_opts = {
-            minLength: 2,
-            source: function( request, response ) {
-                $.getJSON( "/authorities/generic_files/" + field, {
-                    q: request.term
-                }, response );
-            },
-            focus: function() {
-                // prevent value inserted on focus
-                return false;
-            },
-            complete: function(event) {
-                $('.ui-autocomplete-loading').removeClass("ui-autocomplete-loading");
-            }
-        };
-        return autocomplete_opts;
-    }
+
 
     // there are two levels of vocabulary auto complete.
     // currently we have this externally hosted vocabulary
@@ -48,27 +31,6 @@ Blacklight.onLoad(function() {
     };
 
     //$("input.generic_file_based_near").autocomplete(get_autocomplete_opts("location"));
-
-    var autocomplete_vocab = new Object();
-
-    autocomplete_vocab.url_var = ['other_subject', 'language'];   // the url variable to pass to determine the vocab to attach to
-    autocomplete_vocab.field_name = new Array(); // the form name to attach the event for autocomplete
-
-    // loop over the autocomplete fields and attach the
-    // events for autocomplete and create other array values for autocomplete
-    for (var i=0; i < autocomplete_vocab.url_var.length; i++) {
-        autocomplete_vocab.field_name.push('generic_file_' + autocomplete_vocab.url_var[i]);
-        // autocompletes
-        $("input." + autocomplete_vocab.field_name[i])
-            // don't navigate away from the field on tab when selecting an item
-            .bind( "keydown", function( event ) {
-                if ( event.keyCode === $.ui.keyCode.TAB &&
-                    $( this ).data( "autocomplete" ).menu.active ) {
-                    event.preventDefault();
-                }
-            })
-            .autocomplete( get_autocomplete_opts(autocomplete_vocab.url_var[i]) );
-    }
 
 
     // attach an auto complete based on the field

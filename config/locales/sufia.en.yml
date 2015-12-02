@@ -211,6 +211,7 @@ en:
         based_near:       "Spatial Coverage"
         lcsh_subject:     "Subject Coverage–LC Subject Headings"
         other_subject:    "Subject Coverage–Other"
+        homosaurus_subject: "Subject Coverage–Homosaurus"
         flagged:          "Explicit Content"
         resource_type:    "Type"
         genre:            "Genre"

@@ -24,6 +24,7 @@ class GenericFilesController < ApplicationController
 
     @selectable_collection = []
     @selectable_collection = Collection.all #FIXME
+    @selectable_collection.sort_by { |collection| collection.title.first }
   end
 
   def create

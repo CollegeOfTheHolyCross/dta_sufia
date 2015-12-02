@@ -1,12 +1,77 @@
 
 
 Blacklight.onLoad(function() {
+    function get_autocomplete_opts(field) {
+        var autocomplete_opts = {
+            minLength: 2,
+            source: function( request, response ) {
+                $.getJSON( "/authorities/generic_files/" + field, {
+                    q: request.term
+                }, response );
+            },
+            focus: function() {
+                // prevent value inserted on focus
+                return false;
+            },
+            complete: function(event) {
+                $('.ui-autocomplete-loading').removeClass("ui-autocomplete-loading");
+            }
+        };
+        return autocomplete_opts;
+    }
+
+
+    var autocomplete_vocab = new Object();
+
+    autocomplete_vocab.url_var = ['other_subject', 'language'];   // the url variable to pass to determine the vocab to attach to
+    autocomplete_vocab.field_name = new Array(); // the form name to attach the event for autocomplete
+
+    // loop over the autocomplete fields and attach the
+    // events for autocomplete and create other array values for autocomplete
+    for (var i=0; i < autocomplete_vocab.url_var.length; i++) {
+        autocomplete_vocab.field_name.push('generic_file_' + autocomplete_vocab.url_var[i]);
+        // autocompletes
+        $("input." + autocomplete_vocab.field_name[i])
+            // don't navigate away from the field on tab when selecting an item
+            .bind( "keydown", function( event ) {
+                if ( event.keyCode === $.ui.keyCode.TAB &&
+                    $( this ).data( "autocomplete" ).menu.active ) {
+                    event.preventDefault();
+                }
+            })
+            .autocomplete( get_autocomplete_opts(autocomplete_vocab.url_var[i]) );
+    }
+
+
+
         $(".regular_dta_duplicate_field").click(function(event) {
             //cloned_element = $(event.target).parent().parent().parent().parent().clone(true, true)
             cloned_element = $(event.target).parent().parent().parent().clone(true, true)
             cloned_element.find("input").val("");
+            cloned_element.find("textarea").val("");
+            cloned_element.find("select").val("");
+            //alert(cloned_element.children().children().attr("id"));
+
+/*            id = cloned_element.children().children().attr("id");
+            if(id == 'generic_file_language') {
+                cloned_field = cloned_element.children().children();
+                index = $.inArray(id, autocomplete_vocab.field_name);
+                alert('index is: ' + index);
+                if(index != -1)
+                {
+                    $(cloned_field).autocomplete(get_autocomplete_opts(autocomplete_vocab.url_var[index]));
+                }
+
+            }*/
+
             //$(event.target).parent().parent().parent().parent().after(cloned_element);
             $(event.target).parent().parent().parent().after(cloned_element);
+
+/*            alert($(cloned_element).children()[0].attr("id"));
+            if(cloned_element.attr("id") == 'generic_file_language')
+            {
+                alert('hi');
+            }*/
         });
 
         $(".regular_dta_delete_field").click(function(event) {
