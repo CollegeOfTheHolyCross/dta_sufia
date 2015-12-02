@@ -1,3 +1,4 @@
+<% dropdown_opts ||= '' %>
 <div class="modal fade" id="meiLookupModal_<%=key%>" tabindex="-1" role="dialog" aria-labelledby="meiLookupModalLabel_<%=key%>" style="width:90%;">
   <div class="modal-dialog" role="document" style="width:90%;">
     <div class="modal-content">
@@ -9,16 +10,34 @@
 
           <div class="form-group">
             <div class="row">
-              <div class="col-xs-6">
+              <% if dropdown_opts.present? %>
+                  <div class="col-xs-2">
+                    <label for="recipient-name" class="control-label">Qualifier:</label>
+                    <select name="mei_lcsh_extra_<%=key%>" class="form-control" id="mei_lcsh_extra_<%=key%>">
+                      <% dropdown_opts.each do |opt| %>
+                          <option value="<%=opt.last%>"><%=opt.first%></option>
+                      <% end %>
+                    </select>
+                  </div>
 
-              <label for="recipient-name" class="control-label">Search Term:</label>
-              <input type="text" class="form-control" id="mei_lcsh_term_<%=key%>">
-                </div>
+                  <div class="col-xs-4">
+                    <label for="recipient-name" class="control-label">Search Term:</label>
+                    <input type="text" class="form-control" id="mei_lcsh_term_<%=key%>">
+                  </div>
+              <% else %>
+                  <div class="col-xs-6">
+                    <label for="recipient-name" class="control-label">Search Term:</label>
+                    <input type="text" class="form-control" id="mei_lcsh_term_<%=key%>">
+                  </div>
+              <% end %>
+
+
                 <div class="col-xs-4">
 
                   <div style="padding-top:23px;float:left;"><button type="button" class="btn btn-default" onClick="mei_lookup_<%=key%>();">Lookup</button></div>
                   <div style="padding-top:23px;margin-left:40px;float:left;"><button type="button" class="btn btn-default" onClick="mei_use_last_<%=key%>();">Use Last Search</button></div>
-                </div></div>
+                </div>
+            </div>
 
           </div>
           <div class="form-group">
@@ -72,7 +91,8 @@
       mei_last_value_<%=key%> = $('#mei_lcsh_term_<%=key%>').val();
 
       $.getJSON( "/authorities/generic_files/<%=key%>", {
-          q: $('#mei_lcsh_term_<%=key%>').val()
+          q: $('#mei_lcsh_term_<%=key%>').val(),
+          e: $('#mei_lcsh_extra_<%=key%>').val()
       }, function( data ) {
           //var json_obj = $.parseJSON(data);//parse JSON
           json_obj = data;

@@ -6,10 +6,11 @@ module Mei
     include Mei::WebServiceBase
 
     def request_options
-      {:params => {:featureClass => 'P', :style => 'full', :maxRows => 20, :name_startsWith => "#{@escaped_query}", :username=>"boston_library"}, accept: :json}
+      {:params => {:featureClass => "#{@type}", :style => 'full', :maxRows => 20, :name_startsWith => "#{@escaped_query}", :username=>"boston_library"}, accept: :json}
     end
 
-    def initialize
+    def initialize(e)
+      @type = e
     end
 
     def search q
@@ -60,7 +61,7 @@ module Mei
 
     def broader(row)
       broader_list = []
-      if row["fcl"] == "P" || row["fcl"] == "A"
+      if row["fcl"] == "P" || row["fcl"] == "S" || row["fcl"] == "A"
         broader_list << {:uri_link=>"http://www.geonames.org/#{row["adminId1"]}", :label=>row["adminName1"]} if row["adminId1"].present? && row["adminName1"].present?
         broader_list << {:uri_link=>"http://www.geonames.org/#{row["adminId2"]}", :label=>row["adminName2"]} if row["adminId2"].present? && row["adminName2"].present?
         broader_list << {:uri_link=>"http://www.geonames.org/#{row["countryId"]}", :label=>row["countryName"]} if row["countryId"].present? && row["countryName"].present?

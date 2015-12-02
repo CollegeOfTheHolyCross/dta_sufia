@@ -17,6 +17,13 @@ Sufia.config do |config|
 
   config.cc_licenses_reverse = Hash[*config.cc_licenses.to_a.flatten.reverse]
 
+  config.spatial_dropdown = [
+      ['Cities', 'P'],
+      ['State/Country/Region', 'A'],
+      ['Building', 'S'],
+      ['Continent/Area', 'L']
+  ]
+
 =begin
   config.resource_types = {
     "Article" => "Article",

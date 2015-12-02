@@ -4,9 +4,10 @@ require 'cgi'
 class AuthoritiesController < ApplicationController
   def query
     s = params.fetch("q", "")
+    e = params.fetch("e", "")
     hits =
         if params[:term] == "location" || params[:term] == "based_near"
-          GeoNamesResource.find_location(s)
+          GeoNamesResource.find_location(s, e)
         elsif params[:term] == "lcsh_subject"
           LcshSubjectResource.find_location(s)
         elsif params[:term] == "homosaurus_subject"
