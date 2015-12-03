@@ -23,8 +23,16 @@ class GenericFilesController < ApplicationController
     @form = edit_form
 
     #@selectable_collection = []
+=begin
     @selectable_collection = Collection.all #FIXME
     @selectable_collection = @selectable_collection.sort_by { |collection| collection.title.first }
+=end
+
+    term_query = Collection.find_with_conditions("*:*", rows: '10000', fl: 'id,title_tesim' )
+    term_query = term_query.sort_by { |term| term["title_tesim"].first }
+    @selectable_collection = []
+    term_query.each { |term| @selectable_collection << [term["title_tesim"].first, term["id"]] }
+
     #@selectable_collection = @selectable_collection
   end
 

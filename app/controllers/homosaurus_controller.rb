@@ -21,6 +21,7 @@ class HomosaurusController < ApplicationController
   def new
     @homosaurus = Homosaurus.new
     term_query = Homosaurus.find_with_conditions("*:*", rows: '10000', fl: 'id,identifier_ssi' )
+    term_query = term_query.sort_by { |term| term["identifier_ssi"] }
     @all_terms = []
     term_query.each { |term| @all_terms << [term["identifier_ssi"], term["id"]] }
 
@@ -225,6 +226,7 @@ class HomosaurusController < ApplicationController
     @homosaurus.related = []
 
     @homosaurus.delete
+    Homosaurus.eradicate(params[:id])
     #flash[:success] = "Homosaurus Term deleted"
     redirect_to homosaurus_path, notice: "Homosaurus term was deleted!"
   end

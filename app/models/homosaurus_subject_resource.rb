@@ -5,7 +5,7 @@ class HomosaurusSubjectResource
     #ActiveFedora::Base.find_each("subject_tesim:tes*") { |x| puts 'hi' }
     matches = []
     dup_checker = []
-    subject = subject.downcase #FIXME?
+    #subject = subject.downcase #FIXME?
 
     solr_response = Homosaurus.find_with_conditions("prefLabel_ssim:*#{solr_clean(subject)}*", rows: '25', fl: 'identifier_ssi, prefLabel_ssim, altLabel_ssim, narrower_ssim, broader_ssim, related_ssim' )
 

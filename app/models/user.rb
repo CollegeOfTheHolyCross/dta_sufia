@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
   end
 
   def contributor?
-    roles.where(name: 'contributor').exists?
+    roles.where(name: 'contributor').exists? || roles.where(name: 'admin').exists? || roles.where(name: 'superuser').exists?
   end
 
   #FIXME: Cache this...
