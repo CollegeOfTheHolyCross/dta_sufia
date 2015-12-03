@@ -8,7 +8,7 @@
         <% end %>
       </div>
   <% end %>
-  <% if can?(:create, GenericFile) %>
+  <% if can?(:create, GenericFile) and current_user.contributor? %>
     <div class="col-xs-6 col-sm-2 heading-tile">
       <%= link_to sufia.new_generic_file_path do %>
           <span class="glyphicon glyphicon-upload"></span>

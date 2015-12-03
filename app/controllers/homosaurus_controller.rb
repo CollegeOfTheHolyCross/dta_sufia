@@ -5,7 +5,7 @@ class HomosaurusController < ApplicationController
     #@terms = Homosaurus.all.sort_by { |term| term.preferred_label }
     #@terms = Homosaurus.all
     @terms = Homosaurus.find_with_conditions("*:*", rows: '10000', fl: 'id,prefLabel_tesim' )
-    @terms.sort_by { |term| term["prefLabel_tesim"].first }
+    @terms = @terms.sort_by { |term| term["prefLabel_tesim"].first }
   end
 
   def show

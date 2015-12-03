@@ -5,7 +5,7 @@ class InstitutionsController < ApplicationController
     #@terms = Homosaurus.all.sort_by { |term| term.preferred_label }
     #@terms = Homosaurus.all
     @institutions = Institution.find_with_conditions("*:*", rows: '1000', fl: 'id,name_ssim' )
-    @institutions.sort_by { |term| term["name_ssim"].first }
+    @institutions = @institutions.sort_by { |term| term["name_ssim"].first }
   end
 
   def show

@@ -1,7 +1,11 @@
 source 'https://rubygems.org'
 
+#Fix the 4kb session limit
+gem 'activerecord-session_store'
+
+
 gem "rdf-vocab"
-gem 'mysql2', '0.3.18'
+#gem 'mysql2', '0.3.18'
 #gem 'blacklight', '5.14'
 gem 'blacklight', '5.16'
 gem 'sufia', '6.4.0'

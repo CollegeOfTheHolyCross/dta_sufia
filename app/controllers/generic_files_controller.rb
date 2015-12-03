@@ -22,9 +22,10 @@ class GenericFilesController < ApplicationController
 
     @form = edit_form
 
-    @selectable_collection = []
+    #@selectable_collection = []
     @selectable_collection = Collection.all #FIXME
-    @selectable_collection.sort_by { |collection| collection.title.first }
+    @selectable_collection = @selectable_collection.sort_by { |collection| collection.title.first }
+    #@selectable_collection = @selectable_collection
   end
 
   def create

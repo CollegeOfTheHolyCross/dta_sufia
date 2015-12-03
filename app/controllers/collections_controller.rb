@@ -17,20 +17,32 @@ class CollectionsController < ApplicationController
   end
 
   def update
-
-    @collection.institutions.each do |institution|
-      institution.members.delete(@collection)
-      institution.save
-    end
-    @collection.reload
-    @collection.institutions = []
-
+    #Update is called from other areas like moving an item to a collection... need to fix that...
     if params[:collection][:institution_ids].present?
+      @collection.institutions.each do |institution|
+        institution.members.delete(@collection)
+        institution.save
+      end
+      @collection.reload
+      @collection.institutions = []
+
       params[:collection][:institution_ids].each do |institution_id|
         institution = Institution.find(institution_id)
         @collection.institutions = @collection.institutions + [institution]
         institution.members = institution.members + [@collection]
         institution.save
+      end
+    #FIXME: Detect updates outside of collection form elsewhere...
+    else
+      if params[:collection][:members] == "add"
+        params["batch_document_ids"].each do |pid|
+          collection_query = Collection.find_with_conditions("hasCollectionMember_ssim:#{pid}", rows: '100000', fl: 'id' )
+          collection_query.each do |collect_pid|
+            collect_obj = Collection.find(collect_pid["id"])
+            collect_obj.members.delete(ActiveFedora::Base.find(pid))
+            collect_obj.save
+          end
+        end
       end
     end
 
@@ -41,6 +53,7 @@ class CollectionsController < ApplicationController
   def create
     current_time = Time.now
     @collection[:date_created] =   [current_time.strftime("%Y-%m-%d")]
+    #Contributor not being saved.... , {type: 'group', name: 'contributor', access: 'read'}
     @collection.permissions_attributes = [{type: 'group', name: 'admin', access: 'edit'}, {type: 'group', name: 'superuser', access: 'edit'}]
     if params[:collection][:institution_ids].present?
       params[:collection][:institution_ids].each do |institution_id|
