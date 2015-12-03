@@ -16,7 +16,7 @@ Rails.application.routes.draw do
     mount Sufia::Engine => '/'
   root to: 'homepage#index'
 
-  get '/admin/update' => 'commands#update'
+  get 'admin/reload' => 'commands#update'
 
 
   # The priority is based upon order of creation: first created -> highest priority.
