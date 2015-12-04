@@ -14,7 +14,7 @@ class GenericFilesController < ApplicationController
 
     if session[:unsaved_generic_file].present?
       begin
-        @generic_file.update(session[:unsaved_generic_file])
+        @generic_file.update(ActiveSupport::HashWithIndifferentAccess.new(session[:unsaved_generic_file]))
       rescue => ex
       end
       session[:unsaved_generic_file] = nil
