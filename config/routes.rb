@@ -16,6 +16,8 @@ Rails.application.routes.draw do
     mount Sufia::Engine => '/'
   root to: 'homepage#index'
 
+  get 'files/regenerate/:id' => 'generic_files#regenerate', as: :generic_file_regenerate
+
   get 'admin/reload' => 'commands#update'
 
 

@@ -109,6 +109,12 @@ class GenericFilesController < ApplicationController
     return true
   end
 
+  def regenerate
+    Sufia.queue.push(CharacterizeJob.new(params[:id]))
+    flash[:notice] = "Thumbnail scheduled to be regenerated!"
+    redirect_to sufia.dashboard_files_path
+  end
+
   # this is provided so that implementing application can override this behavior and map params to different attributes
   def update_metadata
 =begin
