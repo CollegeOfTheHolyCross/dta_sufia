@@ -26,7 +26,9 @@
     <%= render_visibility_label(document) %>
   </td>
   <td class="text-center">
-    <%= render partial:'collection_action_menu', locals: { id: id } %>
+    <% if current_user.admin? %>
+      <%= render partial:'collection_action_menu', locals: { id: id } %>
+    <% end %>
   </td>
 </tr>
 <tr id="detail_<%= id %>"> <!--  collection detail"> -->
