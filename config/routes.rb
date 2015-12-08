@@ -11,14 +11,18 @@ Rails.application.routes.draw do
   mount Hydra::RoleManagement::Engine => '/'
 
   Hydra::BatchEdit.add_routes(self)
+
+  get 'files/regenerate/:id' => 'generic_files#regenerate', as: :generic_file_regenerate
+
+  get 'admin/reload' => 'commands#update'
+
+
   # This must be the very last route in the file because it has a catch-all route for 404 errors.
     # This behavior seems to show up only in production mode.
     mount Sufia::Engine => '/'
   root to: 'homepage#index'
 
-  get 'files/regenerate/:id' => 'generic_files#regenerate', as: :generic_file_regenerate
 
-  get 'admin/reload' => 'commands#update'
 
 
   # The priority is based upon order of creation: first created -> highest priority.
