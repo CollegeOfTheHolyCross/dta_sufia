@@ -39,6 +39,24 @@ class GenericFilesController < ApplicationController
   def create
     if params.key?(:upload_type) and params[:upload_type] == 'single'
       if !validate_metadata(params)
+
+        #FIXME: This should be done elsewhere...
+        if params[:generic_file][:lcsh_subject].present? and !params[:generic_file][:other_subject].nil?
+          params[:generic_file][:other_subject] += params[:generic_file][:lcsh_subject]
+          params[:generic_file].delete(:lcsh_subject)
+        end
+
+        if params[:generic_file][:homosaurus_subject].present? and !params[:generic_file][:other_subject].nil?
+          params[:generic_file][:other_subject] += params[:generic_file][:homosaurus_subject]
+          params[:generic_file].delete(:homosaurus_subject)
+        end
+
+        if params[:generic_file][:homosaurus_subject].present? and params[:generic_file][:lcsh_subject].present? and params[:generic_file][:other_subject].nil?
+          params[:generic_file][:lcsh_subject] += params[:generic_file][:homosaurus_subject]
+          params[:generic_file].delete(:homosaurus_subject)
+        end
+        #END FIXME
+
         params[:generic_file][:title] = [params[:generic_file][:title]]
         session[:unsaved_generic_file] = params[:generic_file]
         redirect_to sufia.new_generic_file_path
@@ -71,6 +89,7 @@ class GenericFilesController < ApplicationController
       create_from_upload(params)
     end
   end
+
 
   def validate_metadata(params)
     if !params.key?(:filedata)
