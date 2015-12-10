@@ -5,7 +5,7 @@ gem 'activerecord-session_store'
 
 
 gem "rdf-vocab"
-gem 'mysql2', '0.3.18'
+#gem 'mysql2', '0.3.18'
 #gem 'blacklight', '5.14'
 gem 'blacklight', '5.16'
 gem 'sufia', '6.4.0'
@@ -13,6 +13,8 @@ gem 'sufia', '6.4.0'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'  # required to handle pagination properly in dashboard. See https://github.com/amatsuda/kaminari/pull/322
 gem "hydra-role-management"
 
+gem "rest-client-components"
+gem "rack-cache"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.4'
