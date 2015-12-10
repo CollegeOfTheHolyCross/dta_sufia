@@ -90,7 +90,8 @@
       $('#mei_results_<%=key%>').text('LOADING...');
       mei_last_value_<%=key%> = $('#mei_lcsh_term_<%=key%>').val();
 
-      $.getJSON( "/authorities/generic_files/<%=key%>", {
+      //$.getJSON( "/authorities/generic_files/<%=key%>", {
+      $.getJSON( "http://digitaltransgenderarchive.xyz/authorities/generic_files/<%=key%>", {
           q: $('#mei_lcsh_term_<%=key%>').val(),
           e: $('#mei_lcsh_extra_<%=key%>').val()
       }, function( data ) {
