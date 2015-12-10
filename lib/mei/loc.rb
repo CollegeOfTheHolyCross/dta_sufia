@@ -7,6 +7,7 @@ module Mei
 
     def initialize(subauthority)
       @subauthority = subauthority
+      #RestClient.enable Rack::Cache
     end
 
     def search q

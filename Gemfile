@@ -13,6 +13,8 @@ gem 'sufia', '6.4.0'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'  # required to handle pagination properly in dashboard. See https://github.com/amatsuda/kaminari/pull/322
 gem "hydra-role-management"
 
+gem "rest-client-components"
+gem "rack-cache"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.4'
