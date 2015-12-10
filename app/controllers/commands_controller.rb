@@ -1,3 +1,6 @@
+require 'rest_client'
+
+
 class CommandsController < ApplicationController
   #before_action :verify_admin
 
@@ -18,5 +21,11 @@ class CommandsController < ApplicationController
     respond_to do |format|
       format.html { render :text => "Updated. Application should restart soon." }
     end
+  end
+
+  def proxy
+    url = params.fetch("q", "")
+    r = RestClient.get url
+    render json: r
   end
 end
