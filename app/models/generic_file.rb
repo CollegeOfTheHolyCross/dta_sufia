@@ -51,26 +51,26 @@ class GenericFile < ActiveFedora::Base
   def to_solr(doc = {} )
     doc = super(doc)
 
-    doc['dta_homosaurus_subject_tsim'] = []
-    doc['dta_lcsh_subject_tsim'] = []
-    doc['dta_other_subject_tsim'] = []
-    doc['dta_all_subject_tsim'] = []
-    doc['dta_altLabel_all_subject_tsim'] = []
+    doc['dta_homosaurus_subject_ssim'] = []
+    doc['dta_lcsh_subject_ssim'] = []
+    doc['dta_other_subject_ssim'] = []
+    doc['dta_all_subject_ssim'] = []
+    doc['dta_altLabel_all_subject_ssim'] = []
 
     self.subject.each do |subject|
       if subject.match(/http:\/\/homosaurus\.org\/terms\//)
         term = Homosaurus.find('homosaurus/terms/' + subject.split('/').last)
-        doc['dta_homosaurus_subject_tsim'] << term.prefLabel
-        doc['dta_all_subject_tsim'] << term.prefLabel
+        doc['dta_homosaurus_subject_ssim'] << term.prefLabel
+        doc['dta_all_subject_ssim'] << term.prefLabel
         term.altLabel.each do |alt|
-          doc['dta_altLabel_all_subject_tsim'] << alt
+          doc['dta_altLabel_all_subject_ssim'] << alt
         end
 
       elsif subject.match(/http:\/\/id.loc.gov\/authorities\/subjects\//)
         #FIXME: TODO
       else
-        doc['dta_other_subject_tsim'] << subject
-        doc['dta_all_subject_tsim'] << subject
+        doc['dta_other_subject_ssim'] << subject
+        doc['dta_all_subject_ssim'] << subject
 
       end
     end

@@ -60,6 +60,7 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name("tag", :facetable), label: "Keyword", limit: 5
     #config.add_facet_field solr_name("subject", :facetable), label: "Subject", limit: 5
     config.add_facet_field 'dta_all_subject_tsim', :label => 'Subject', :limit => 8, :sort => 'count', :collapse => false
+    config.add_facet_field 'dta_all_subject_ssim', :label => 'Subject', :limit => 8, :sort => 'count', :collapse => false
     config.add_facet_field solr_name("dta_all_subject_tsim", :facetable), label: "Subject", limit: 5
     config.add_facet_field solr_name("language", :facetable), label: "Language", limit: 5
     config.add_facet_field solr_name("based_near", :facetable), label: "Location", limit: 5
