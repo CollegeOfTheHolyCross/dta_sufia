@@ -1,0 +1,183 @@
+body {
+  margin:0px;
+  background-color:#818e9e;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#wrapper {
+  margin:0px;
+  background-color:#818e9e;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#content_wrapper {
+    margin:0px;
+    background-color:#818e9e;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#home_page {
+  background-image: asset_url("home/DTA_splash.png");
+  background-repeat: no-repeat;
+  background-position: center top;
+  width:960px;
+  height:1400px;
+  margin: 0 auto;
+}
+
+#logo {
+  margin-top:-35px;
+  min-width:250px;
+  margin-left: 3px;
+}
+
+#dtamasthead {
+  float:left;
+  position:relative;
+  top:0px;
+  background-color:rgba(23,64,111,0.4);
+  width:100%;
+  min-width:800px;
+  height:145px;
+  padding: 35px 0;
+}
+
+#dtamasthead .search_container {
+  display:block;
+  position:relative;
+  width:850px;
+  margin:0 auto;
+  margin-top: -10px;
+}
+
+#dtamasthead .search_box {
+  position:relative;
+  width:740px;
+  height:40px;
+  font-size:22px;
+  border:1px solid rgba(188,207,231,.8);
+  padding:0 6px;
+  color:#666666;
+  background:#FFFFFF asset_url("shared/mag_glass.png") 705px 5px no-repeat;
+}
+
+#dtamasthead .search_button {
+  position:relative;
+  top:-1px;
+  left:5px;
+  width:100px;
+  height:40px;
+  border:1px solid rgba(188,207,231,.8);
+  font-size:20px;
+  background-color:#cccccc;
+  /*background-color:#7289A9;
+  color:#00214d;*/
+}
+
+#dtamasthead .nav_buttons {
+  position:relative;
+  top:5px;
+  display:block;
+  height:40px;
+  width:848px;
+  margin:0 auto;
+  background-color:#173D6F;
+  border:1px solid rgba(188,207,231,.8);
+}
+
+#dtamasthead .nav_buttons ul {
+  margin:0;
+  padding:0;
+}
+
+#dtamasthead .nav_buttons ul li {
+  display:inline-block;
+  float:left;
+}
+
+#dtamasthead .nav_buttons ul li.divider {
+  width:1px;
+  height:40px;
+  background: linear-gradient(rgba(188,207,231,.0), rgba(188,207,231,.8), rgba(188,207,231,.0));
+}
+
+#dtamasthead .nav_button_wrapper {
+  display:inline-block;
+  margin:0;
+}
+
+#dtamasthead .adv_search_button_wrapper {
+  display:inline-block;
+  float:right;
+  margin:0;
+}
+
+#dtamasthead a.nav_button {
+  display:block;
+  text-decoration:none;
+  padding:0 30px;
+  height:40px;
+  line-height:40px;
+  font-size:16px;
+  color:#FFFFFF;
+}
+
+#dtamasthead a.nav_button:hover {
+  color:#00214d;
+  background-color:rgba(255,255,255,0.4);
+}
+
+
+//Logged in menu
+#dtaLoggedInMenu .nav_buttons {
+  position:relative;
+  top:5px;
+  display:block;
+  height:40px;
+  width:848px;
+  margin:0 auto;
+  background-color:#000000;
+  border:1px solid rgba(188,207,231,.8);
+}
+
+#dtaLoggedInMenu .nav_buttons ul {
+  margin:0;
+  padding:0;
+}
+
+#dtaLoggedInMenu .nav_buttons ul li {
+  display:inline-block;
+  float:left;
+}
+
+#dtaLoggedInMenu .nav_buttons ul li.divider {
+  width:1px;
+  height:40px;
+  background: linear-gradient(rgba(188,207,231,.0), rgba(188,207,231,.8), rgba(188,207,231,.0));
+}
+
+#dtaLoggedInMenu .nav_button_wrapper {
+  display:inline-block;
+  margin:0;
+}
+
+#dtamasthead .adv_search_button_wrapper {
+  display:inline-block;
+  float:right;
+  margin:0;
+}
+
+#dtaLoggedInMenu a.nav_button {
+  display:block;
+  text-decoration:none;
+  padding:0 30px;
+  height:40px;
+  line-height:40px;
+  font-size:16px;
+  color:#FFFFFF;
+}
+
+#dtaLoggedInMenu a.nav_button:hover {
+  color:#00214d;
+  background-color:rgba(255,255,255,0.4);
+}

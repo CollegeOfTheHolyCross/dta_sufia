@@ -14,9 +14,9 @@ Rails.application.routes.draw do
 
   get 'files/regenerate/:id' => 'generic_files#regenerate', as: :generic_file_regenerate
 
-  get 'admin/reload' => 'commands#update'
+  get 'admin/reload' => 'commands#update', as: :reload_app
   get 'proxy' => 'commands#proxy'
-
+  get 'admin/reindex' => 'commands#reindex', as: :reindex_all
 
   # This must be the very last route in the file because it has a catch-all route for 404 errors.
     # This behavior seems to show up only in production mode.

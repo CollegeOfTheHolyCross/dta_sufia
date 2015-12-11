@@ -1,0 +1,31 @@
+<% if current_user.present? and current_user.contributor? %>
+
+    <div id="dtaLoggedInMenu" class="container-fluid">
+      <div class="row">
+        <div class="col-xs-2 col-sm-3">
+
+        </div><!-- /.col-xs-5 -->
+        <div class="col-xs-10 col-sm-9">
+
+          <div class="search_frame">
+            <div class="nav_buttons">
+              <ul>
+                <li><%= link_to 'Admin', sufia.dashboard_index_path, :class=>"nav_button" %></li>
+                <li class="divider"></li>
+                <% if current_user.superuser? %>
+                    <li><%= link_to 'Roles', role_management.roles_path, :class=>"nav_button" %></li>
+                    <li class="divider"></li>
+                    <li><%= link_to 'Reindex System', reindex_all_path, :class=>"nav_button" %></li>
+                    <li class="divider"></li>
+                    <li><%= link_to 'Update System', reload_app_path, :class=>"nav_button" %></li>
+                    <li class="divider"></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- /masthead -->
+
+<% end %>
+<div style="clear:both;"></div>
