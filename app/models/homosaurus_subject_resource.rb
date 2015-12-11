@@ -5,9 +5,9 @@ class HomosaurusSubjectResource
     #ActiveFedora::Base.find_each("subject_tesim:tes*") { |x| puts 'hi' }
     matches = []
     dup_checker = []
-    #subject = subject.downcase #FIXME?
+    subject = subject.downcase #FIXME?
 
-    solr_response = Homosaurus.find_with_conditions("prefLabel_ssim:*#{solr_clean(subject)}*", rows: '25', fl: 'identifier_ssi, prefLabel_ssim, altLabel_ssim, narrower_ssim, broader_ssim, related_ssim' )
+    solr_response = Homosaurus.find_with_conditions("dta_homosaurus_lcase_prefLabel_ssi:*#{solr_clean(subject)}*", rows: '25', fl: 'identifier_ssi, prefLabel_ssim, altLabel_ssim, narrower_ssim, broader_ssim, related_ssim' )
 
     #FIXME - A result for "http" gives back the entire array of values...
     if solr_response.present?
@@ -23,7 +23,7 @@ class HomosaurusSubjectResource
 
 
       if dup_checker.length < 20
-        solr_response = Homosaurus.find_with_conditions("altLabel_ssim:*#{solr_clean(subject)}*", rows: '25', fl: 'identifier_ssi, prefLabel_ssim, altLabel_ssim, narrower_ssim, broader_ssim, related_ssim' )
+        solr_response = Homosaurus.find_with_conditions("dta_homosaurus_lcase_altLabel_ssim:*#{solr_clean(subject)}*", rows: '25', fl: 'identifier_ssi, prefLabel_ssim, altLabel_ssim, narrower_ssim, broader_ssim, related_ssim' )
 
         #FIXME - A result for "http" gives back the entire array of values...
         if solr_response.present?
@@ -39,7 +39,7 @@ class HomosaurusSubjectResource
       end
 
       if dup_checker.length < 20
-        solr_response = Homosaurus.find_with_conditions("comment_tesim:#{solr_clean(subject)}", rows: '25', fl: 'identifier_ssi, prefLabel_ssim, altLabel_ssim, comment_ssim, narrower_ssim, broader_ssim, related_ssim' )
+        solr_response = Homosaurus.find_with_conditions("dta_homosaurus_lcase_comment_tesi:#{solr_clean(subject)}", rows: '25', fl: 'identifier_ssi, prefLabel_ssim, altLabel_ssim, comment_ssim, narrower_ssim, broader_ssim, related_ssim' )
 
         #FIXME - A result for "http" gives back the entire array of values...
         if solr_response.present?

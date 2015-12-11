@@ -28,4 +28,9 @@ class CommandsController < ApplicationController
     r = RestClient.get url
     render json: r
   end
+
+  def reindex
+    ActiveFedora::Base.reindex_everything
+    render html: "<h1>Reindex sucessful</h1>"
+  end
 end

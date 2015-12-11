@@ -1,0 +1,123 @@
+.blacklight-homepage {
+    //margin:0px;
+    //background-color:#818e9e;
+  //background-color:#fdfdf0;
+    //font-family: Arial, Helvetica, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #333333;
+  background-color: #fff;
+}
+
+#home_page {
+  background-image: asset_url("home/DTA_splash.png");
+  background-repeat: no-repeat;
+  background-position: center top;
+  width:960px;
+  height:1400px;
+  margin: 0 auto;
+}
+
+#home_logo {
+  position:relative;
+  left:725px;
+  //top:-136px;
+  top:-50px;
+  width:286px;
+}
+
+#home_container .search_frame {
+  float:left;
+  position:relative;
+  top:400px;
+  background-color:rgba(23,64,111,0.4);
+  width:100%;
+  min-width:800px;
+  height:87px;
+  padding: 35px 0;
+}
+
+#home_container .search_container {
+  display:block;
+  position:relative;
+  width:850px;
+  margin:0 auto;
+}
+
+#home_container .search_box {
+  position:relative;
+  width:740px;
+  height:40px;
+  font-size:22px;
+  border:1px solid rgba(188,207,231,.8);
+  padding:0 6px;
+  color:#666666;
+  background:#FFFFFF asset_url("shared/mag_glass.png") 705px 5px no-repeat;
+}
+
+#home_container .search_button {
+  position:relative;
+  top:-1px;
+  left:5px;
+  width:100px;
+  height:40px;
+  border:1px solid rgba(188,207,231,.8);
+  font-size:20px;
+  background-color:#cccccc;
+  /*background-color:#7289A9;
+  color:#00214d;*/
+}
+
+#home_container .nav_buttons {
+  position:relative;
+  top:5px;
+  display:block;
+  height:40px;
+  width:848px;
+  margin:0 auto;
+  background-color:#173D6F;
+  border:1px solid rgba(188,207,231,.8);
+}
+
+#home_container .nav_buttons ul {
+  margin:0;
+  padding:0;
+}
+
+#home_container .nav_buttons ul li {
+  display:inline-block;
+  float:left;
+}
+
+#home_container .nav_buttons ul li.divider {
+  width:1px;
+  height:40px;
+  background: linear-gradient(rgba(188,207,231,.0), rgba(188,207,231,.8), rgba(188,207,231,.0));
+}
+
+#home_container .nav_button_wrapper {
+  display:inline-block;
+  margin:0;
+}
+
+#home_container .adv_search_button_wrapper {
+  display:inline-block;
+  float:right;
+  margin:0;
+}
+
+#home_container a.nav_button {
+  display:block;
+  text-decoration:none;
+  padding:0 30px;
+  height:40px;
+  line-height:40px;
+  font-size:16px;
+  color:#FFFFFF;
+}
+
+#home_container a.nav_button:hover {
+  color:#00214d;
+  background-color:rgba(255,255,255,0.4);
+}

@@ -23,7 +23,7 @@ class OtherSubjectResource
 
       return values.map! { |item|
         ##{URI.escape(item)}
-        count = ActiveFedora::Base.find_with_conditions("other_subject_ssim:#{solr_clean(item)}", rows: '100', fl: 'other_subject_ssim' ).length
+        count = ActiveFedora::Base.find_with_conditions("other_subject_ssim:#{item}", rows: '100', fl: 'other_subject_ssim' ).length
         if count >= 99
           count = "99+"
         else

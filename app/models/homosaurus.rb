@@ -50,4 +50,20 @@ class Homosaurus < ActiveFedora::Base
   end
 =end
 
+  def to_solr(doc = {} )
+    doc = super(doc)
+
+    doc['dta_homosaurus_lcase_prefLabel_ssi'] = self.prefLabel.downcase
+    doc['dta_homosaurus_lcase_altLabel_ssim'] = []
+    self.altLabel.each do |alt|
+      doc['dta_homosaurus_lcase_altLabel_ssim'] << alt
+    end
+
+    doc['dta_homosaurus_lcase_comment_tesi'] = self.description
+
+
+    doc
+
+  end
+
 end

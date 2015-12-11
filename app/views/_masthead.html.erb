@@ -1,0 +1,35 @@
+<div id="dtamasthead" class="container-fluid">
+  <div class="row">
+    <div class="col-xs-2 col-sm-3">
+      <div id="logo">
+        <%=image_tag("shared/logo_transparent.png") %>
+      </div>
+
+    </div><!-- /.col-xs-5 -->
+    <div class="col-xs-10 col-sm-9">
+
+  <div class="search_frame">
+  <div class="search_container">
+    <%= render_search_bar %>
+
+  </div>
+  <div class="nav_buttons">
+    <ul>
+      <li><%= link_to 'Home', sufia.homepage_index_path, :class=>"nav_button" %></li>
+      <li class="divider"></li>
+      <li><a href="#" class="nav_button">Browse</a></li>
+      <li class="divider"></li>
+      <li><a href="#" class="nav_button">Learn</a></li>
+      <li class="divider"></li>
+      <li><a href="#" class="nav_button">About</a></li>
+      <li class="divider"></li>
+    </ul>
+    <div class="adv_search_button_wrapper">
+      <%= render partial: '/user_util_links' %>
+    </div>
+  </div>
+    </div>
+      </div>
+    </div>
+</div> <!-- /masthead -->
+

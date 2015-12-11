@@ -2,6 +2,7 @@ class CollectionsController < ApplicationController
   include Sufia::CollectionsControllerBehavior
   before_action :verify_admin, except: :show
 
+
   def new
     institution_query = Institution.find_with_conditions("*:*", rows: '100000', fl: 'id,name_ssim' )
     @all_institutions = []
