@@ -1,4 +1,4 @@
-<%= render :partial => "mei/form3", :locals => {:f => f, :key=>key} %>
+<%= render :partial => "mei/form", :locals => {:f => f, :key=>key} %>
 
 <% if f.object.class.multiple? key %>
     <%= f.input key, as: :lcsh_lookup, input_html: { class: 'form-control', style: 'width:35em;' }, required: f.object.required?(key), readonly: true %>

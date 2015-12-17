@@ -7,7 +7,7 @@ class GenericFilesController < ApplicationController
   self.edit_form_class = MyFileEditForm
 
   #Needed because it attempts to load from Solr in: load_resource_from_solr of Sufia::FilesControllerBehavior
-  skip_load_and_authorize_resource :only=> :create
+  skip_load_and_authorize_resource :only=> [:create, :swap_visibility] #FIXME: Why needed for swap visibility exactly?
 
   def new
     super
@@ -132,6 +132,19 @@ class GenericFilesController < ApplicationController
     Sufia.queue.push(CharacterizeJob.new(params[:id]))
     flash[:notice] = "Thumbnail scheduled to be regenerated!"
     redirect_to sufia.dashboard_files_path
+  end
+
+  def swap_visibility
+    #update_visibility
+    obj = ActiveFedora::Base.find(params[:id])
+    if obj.visibility == 'restricted'
+      obj.visibility = 'open'
+    else
+      obj.visibility = 'restricted'
+    end
+    obj.save
+    flash[:notice] = "Visibility of object was changed!"
+    redirect_to request.referrer
   end
 
   # this is provided so that implementing application can override this behavior and map params to different attributes

@@ -6,7 +6,7 @@ class OtherSubjectResource
 
     exclude_lcsh = 'http://id.loc.gov/authorities/subjects/'
     exclude_homosaurus= 'http://homosaurus.org/terms/'
-    solr_response = ActiveFedora::Base.find_with_conditions("other_subject_ssim:#{solr_clean(subject)}*", rows: '50', fl: 'other_subject_ssim' )
+    solr_response = ActiveFedora::Base.find_with_conditions("other_subject_ssim:#{solr_wildcard_clean(subject)}*", rows: '50', fl: 'other_subject_ssim' )
 
     #FIXME - A result for "http" gives back the entire array of values...
     if solr_response.present?
@@ -23,7 +23,7 @@ class OtherSubjectResource
 
       return values.map! { |item|
         ##{URI.escape(item)}
-        count = ActiveFedora::Base.find_with_conditions("other_subject_ssim:#{item}", rows: '100', fl: 'other_subject_ssim' ).length
+        count = ActiveFedora::Base.find_with_conditions("other_subject_ssim:#{solr_exact_clean(item)}", rows: '100', fl: 'other_subject_ssim' ).length
         if count >= 99
           count = "99+"
         else
@@ -39,7 +39,11 @@ class OtherSubjectResource
     end
   end
 
-  def self.solr_clean(term)
+  def self.solr_wildcard_clean(term)
     return term.gsub('\\', '\\\\').gsub(':', '\\:').gsub(' ', '\ ')
+  end
+
+  def self.solr_exact_clean(term)
+    return "(#{term})"
   end
 end

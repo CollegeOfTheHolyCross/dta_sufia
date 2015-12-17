@@ -2,7 +2,13 @@
   <button class="btn btn-sm dropdown-toggle" data-toggle="dropdown">Select an action <span class="caret"></span>
   </button>
   <ul class="dropdown-menu dropdown-menu-right">
-    <li role="menuitem" tabindex="-1">
+    <% if current_user.present? and current_user.admin? %>
+        <li>
+          <%= link_to raw('<i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i> Swap Visibility'), generic_file_visibility_path(id),
+                      class: "copypaste itemicon itemcode", title: "Swap Visibility" %>
+        </li>
+    <% end %>
+    <li>
       <%= link_to raw('<i class="glyphicon glyphicon-tasks" aria-hidden="true"></i> Regenerate Thumbnail'), generic_file_regenerate_path(id),
                   class: "copypaste itemicon itemcode", title: "Regenerate Thumbnail" %>
     </li>
