@@ -72,6 +72,7 @@ class GenericFile < ActiveFedora::Base
 
       #FIXME: Not doing alts currently...
       elsif subject.match(/http:\/\/id.loc.gov\/authorities\/subjects\//)
+=begin
         label_holder = nil
         any_match = nil
         RestClient.enable Rack::Cache
@@ -87,6 +88,7 @@ class GenericFile < ActiveFedora::Base
         label_holder ||= any_match
         doc['dta_lcsh_subject_ssim'] << label_holder
         doc['dta_all_subject_ssim'] << label_holder
+=end
       else
         doc['dta_other_subject_ssim'] << subject
         doc['dta_all_subject_ssim'] << subject
