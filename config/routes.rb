@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   Hydra::BatchEdit.add_routes(self)
 
   get 'files/regenerate/:id' => 'generic_files#regenerate', as: :generic_file_regenerate
+  get 'files/swap_visibility/:id' => 'generic_files#swap_visibility', as: :generic_file_visibility
 
   get 'admin/reload' => 'commands#update', as: :reload_app
   get 'proxy' => 'commands#proxy'

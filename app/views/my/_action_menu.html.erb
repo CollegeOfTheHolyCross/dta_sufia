@@ -5,6 +5,12 @@
     <span class="caret" aria-hidden="true"></span>
   </button>
   <ul role="menu" class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu_<%= id %>">
+    <% if current_user.present? and current_user.admin? %>
+        <li role="menuitem" tabindex="-1">
+          <%= link_to raw('<i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i> Swap Visibility'), generic_file_visibility_path(id),
+                      class: "copypaste itemicon itemcode", title: "Swap Visibility" %>
+        </li>
+    <% end %>
     <li role="menuitem" tabindex="-1">
       <%= link_to raw('<i class="glyphicon glyphicon-tasks" aria-hidden="true"></i> Regenerate Thumbnail'), generic_file_regenerate_path(id),
                   class: "copypaste itemicon itemcode", title: "Regenerate Thumbnail" %>

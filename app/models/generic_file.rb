@@ -1,3 +1,7 @@
+require 'rest_client'
+require 'restclient/components'
+require 'rack/cache'
+
 class GenericFile < ActiveFedora::Base
   include Sufia::GenericFile
   
@@ -66,8 +70,23 @@ class GenericFile < ActiveFedora::Base
           doc['dta_altLabel_all_subject_ssim'] << alt
         end
 
+      #FIXME: Not doing alts currently...
       elsif subject.match(/http:\/\/id.loc.gov\/authorities\/subjects\//)
-        #FIXME: TODO
+        label_holder = nil
+        any_match = nil
+        RestClient.enable Rack::Cache
+        r = RestClient.get "#{subject}.json", { accept: :json }
+        RestClient.disable Rack::Cache
+        JSON.parse(r).first['http://www.w3.org/2004/02/skos/core#prefLabel'].each do |lcsh_label|
+          if !lcsh_label.has_key?('@language') || (lcsh_label.has_key?('@language') && lcsh_label['@language'] == 'en')
+            label_holder ||= lcsh_label['@value']
+          else
+            any_match ||= lcsh_label['@value']
+          end
+        end
+        label_holder ||= any_match
+        doc['dta_lcsh_subject_ssim'] << label_holder
+        doc['dta_all_subject_ssim'] << label_holder
       else
         doc['dta_other_subject_ssim'] << subject
         doc['dta_all_subject_ssim'] << subject
