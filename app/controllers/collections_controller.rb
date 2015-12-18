@@ -1,6 +1,6 @@
 class CollectionsController < ApplicationController
   include Sufia::CollectionsControllerBehavior
-  before_action :verify_admin, except: :show
+  before_action :verify_admin, except: :show #FIXME on change member
 
 
   def new
@@ -74,6 +74,19 @@ class CollectionsController < ApplicationController
 
   def form_class
     MyCollectionEditForm
+  end
+
+  def change_member_visibility
+    collection = ActiveFedora::Base.find(params[:id])
+    collection.members.each do |obj|
+      if obj.visibility == 'restricted'
+        obj.visibility = 'open'
+        obj.save
+      end
+    end
+
+    flash[:notice] = "Visibility of all objects was changed!"
+    redirect_to request.referrer
   end
 
   def collection_params
