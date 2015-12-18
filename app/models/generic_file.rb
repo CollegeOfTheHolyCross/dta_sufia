@@ -55,11 +55,17 @@ class GenericFile < ActiveFedora::Base
   def to_solr(doc = {} )
     doc = super(doc)
 
+    doc['collection_name_ssim'] = []
     doc['dta_homosaurus_subject_ssim'] = []
     doc['dta_lcsh_subject_ssim'] = []
     doc['dta_other_subject_ssim'] = []
     doc['dta_all_subject_ssim'] = []
     doc['dta_altLabel_all_subject_ssim'] = []
+
+    self.collections.each do |collection|
+      doc['collection_name_ssim'] << collection.title
+    end
+
 
     self.subject.each do |subject|
       if subject.match(/http:\/\/homosaurus\.org\/terms\//)

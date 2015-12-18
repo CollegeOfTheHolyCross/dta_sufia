@@ -61,6 +61,7 @@ class CatalogController < ApplicationController
     #config.add_facet_field solr_name("subject", :facetable), label: "Subject", limit: 5
     config.add_facet_field 'dta_all_subject_tsim', :label => 'Subject', :limit => 8, :sort => 'count', :collapse => false
     config.add_facet_field 'dta_all_subject_ssim', :label => 'Subject', :limit => 8, :sort => 'count', :collapse => false
+    config.add_facet_field 'collection_name_ssim', :label => 'Collection', :limit => 8, :sort => 'count', :collapse => false
     config.add_facet_field solr_name("dta_all_subject_tsim", :facetable), label: "Subject", limit: 5
     config.add_facet_field solr_name("language", :facetable), label: "Language", limit: 5
     config.add_facet_field solr_name("based_near", :facetable), label: "Location", limit: 5
@@ -131,8 +132,8 @@ class CatalogController < ApplicationController
       all_names = config.show_fields.values.map(&:field).join(" ")
       title_name = solr_name("title", :stored_searchable)
 
-      all_names += ' ' + ['dta_altLabel_all_subject_tsim'].join(" ")
-      puts 'All names is: ' + all_names
+      all_names += ' ' + ['dta_altLabel_all_subject_tsim', 'collection_name_ssim'].join(" ")
+      #puts 'All names is: ' + all_names
       field.solr_parameters = {
         qf: "#{all_names} file_format_tesim all_text_timv",
         pf: "#{title_name}"
