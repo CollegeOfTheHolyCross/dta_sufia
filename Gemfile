@@ -5,7 +5,7 @@ gem 'activerecord-session_store'
 
 
 gem "rdf-vocab"
-gem 'mysql2', '0.3.18'
+#gem 'mysql2', '0.3.18'
 #gem 'blacklight', '5.14'
 gem 'blacklight', '5.16'
 gem 'sufia', '6.4.0'
@@ -42,6 +42,8 @@ gem 'qa'
 
 #gem 'rdf-edtf', :git=>'https://github.com/dpla/rdf-edtf.git'
 gem 'edtf'
+
+gem "blacklight_range_limit"
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
