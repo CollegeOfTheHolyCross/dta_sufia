@@ -55,18 +55,20 @@ class CatalogController < ApplicationController
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
-    config.add_facet_field solr_name("resource_type", :facetable), label: "Resource Type", limit: 5
+    #config.add_facet_field solr_name("resource_type", :facetable), label: "Resource Type", limit: 5
     config.add_facet_field solr_name("creator", :facetable), label: "Creator", limit: 5
     config.add_facet_field solr_name("tag", :facetable), label: "Keyword", limit: 5
     #config.add_facet_field solr_name("subject", :facetable), label: "Subject", limit: 5
-    config.add_facet_field 'dta_all_subject_tsim', :label => 'Subject', :limit => 8, :sort => 'count', :collapse => false
-    config.add_facet_field 'dta_all_subject_ssim', :label => 'Subject', :limit => 8, :sort => 'count', :collapse => false
+    config.add_facet_field solr_name("genre", :facetable), label: "Genre", limit: 5
+    config.add_facet_field 'dta_all_subject_ssim', :label => 'Topic', :limit => 8, :sort => 'count', :collapse => false
+    config.add_facet_field 'dta_other_subject_ssim', :label => 'People/Organizations', :limit => 8, :sort => 'count', :collapse => false
     config.add_facet_field 'collection_name_ssim', :label => 'Collection', :limit => 8, :sort => 'count', :collapse => false
-    config.add_facet_field solr_name("dta_all_subject_tsim", :facetable), label: "Subject", limit: 5
-    config.add_facet_field solr_name("language", :facetable), label: "Language", limit: 5
+    config.add_facet_field 'institution_name_ssim', :label => 'Institution', :limit => 8, :sort => 'count', :collapse => false
+    config.add_facet_field 'dta_dates_ssim', :label => 'Date', :range => true
+    #config.add_facet_field solr_name("language", :facetable), label: "Language", limit: 5
     config.add_facet_field solr_name("based_near", :facetable), label: "Location", limit: 5
-    config.add_facet_field solr_name("publisher", :facetable), label: "Publisher", limit: 5
-    config.add_facet_field solr_name("file_format", :facetable), label: "File Format", limit: 5
+    #config.add_facet_field solr_name("publisher", :facetable), label: "Publisher", limit: 5
+    #config.add_facet_field solr_name("file_format", :facetable), label: "File Format", limit: 5
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
@@ -132,7 +134,7 @@ class CatalogController < ApplicationController
       all_names = config.show_fields.values.map(&:field).join(" ")
       title_name = solr_name("title", :stored_searchable)
 
-      all_names += ' ' + ['dta_altLabel_all_subject_tsim', 'collection_name_ssim'].join(" ")
+      all_names += ' ' + ['dta_altLabel_all_subject_tsim', 'institution_name_ssim', 'collection_name_ssim'].join(" ")
       #puts 'All names is: ' + all_names
       field.solr_parameters = {
         qf: "#{all_names} file_format_tesim all_text_timv",

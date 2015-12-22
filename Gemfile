@@ -43,6 +43,8 @@ gem 'qa'
 #gem 'rdf-edtf', :git=>'https://github.com/dpla/rdf-edtf.git'
 gem 'edtf'
 
+gem "blacklight_range_limit"
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

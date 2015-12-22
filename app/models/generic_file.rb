@@ -56,14 +56,20 @@ class GenericFile < ActiveFedora::Base
     doc = super(doc)
 
     doc['collection_name_ssim'] = []
+    doc['institution_name_ssim'] = []
     doc['dta_homosaurus_subject_ssim'] = []
     doc['dta_lcsh_subject_ssim'] = []
     doc['dta_other_subject_ssim'] = []
     doc['dta_all_subject_ssim'] = []
     doc['dta_altLabel_all_subject_ssim'] = []
 
+    doc['dta_dates_ssim'] = []
+
     self.collections.each do |collection|
       doc['collection_name_ssim'] << collection.title
+      collection.institutions.each do |instutution|
+        doc['institution_name_ssim'] << institution.name
+      end
     end
 
 
@@ -78,6 +84,26 @@ class GenericFile < ActiveFedora::Base
 
       #FIXME: Not doing alts currently...
       elsif subject.match(/http:\/\/id.loc.gov\/authorities\/subjects\//)
+        #/proxy?q=http://digitaltransgenderarchive.xyz/proxy?q=<subject>
+
+=begin
+        label_holder = nil
+        any_match = nil
+        RestClient.enable Rack::Cache
+        r = RestClient.get "/proxy?q=http://digitaltransgenderarchive.xyz/proxy?q=#{subject}.json", { accept: :json }
+        RestClient.disable Rack::Cache
+        JSON.parse(r).first['http://www.w3.org/2004/02/skos/core#prefLabel'].each do |lcsh_label|
+          if !lcsh_label.has_key?('@language') || (lcsh_label.has_key?('@language') && lcsh_label['@language'] == 'en')
+            label_holder ||= lcsh_label['@value']
+          else
+            any_match ||= lcsh_label['@value']
+          end
+        end
+        label_holder ||= any_match
+        doc['dta_lcsh_subject_ssim'] << label_holder
+        doc['dta_all_subject_ssim'] << label_holder
+=end
+
 =begin
         label_holder = nil
         any_match = nil
@@ -97,10 +123,33 @@ class GenericFile < ActiveFedora::Base
 =end
       else
         doc['dta_other_subject_ssim'] << subject
-        doc['dta_all_subject_ssim'] << subject
+        #doc['dta_all_subject_ssim'] << subject
 
       end
     end
+
+    self.date_issued.each do |raw_date|
+      date = Date.edtf(raw_date)
+      if date.class == Date
+        doc['dta_dates_ssim'] << date.year
+      else
+        (date.first.year..date.last.year).step(1) do |year_step|
+          doc['dta_dates_ssim'] << year_step
+        end
+      end
+    end
+
+    self.date_created.each do |raw_date|
+      date = Date.edtf(raw_date)
+      if date.class == Date
+        doc['dta_dates_ssim'] << date.year
+      else
+        (date.first.year..date.last.year).step(1) do |year_step|
+          doc['dta_dates_ssim'] << year_step
+        end
+      end
+    end
+
 
     doc
 
