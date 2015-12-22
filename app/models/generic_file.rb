@@ -67,7 +67,7 @@ class GenericFile < ActiveFedora::Base
 
     self.collections.each do |collection|
       doc['collection_name_ssim'] << collection.title
-      collection.institutions.each do |instutution|
+      collection.institutions.each do |institution|
         doc['institution_name_ssim'] << institution.name
       end
     end
