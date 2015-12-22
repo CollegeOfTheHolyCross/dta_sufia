@@ -85,6 +85,25 @@ class GenericFile < ActiveFedora::Base
       #FIXME: Not doing alts currently...
       elsif subject.match(/http:\/\/id.loc.gov\/authorities\/subjects\//)
         #/proxy?q=http://digitaltransgenderarchive.xyz/proxy?q=<subject>
+
+=begin
+        label_holder = nil
+        any_match = nil
+        RestClient.enable Rack::Cache
+        r = RestClient.get "/proxy?q=http://digitaltransgenderarchive.xyz/proxy?q=#{subject}.json", { accept: :json }
+        RestClient.disable Rack::Cache
+        JSON.parse(r).first['http://www.w3.org/2004/02/skos/core#prefLabel'].each do |lcsh_label|
+          if !lcsh_label.has_key?('@language') || (lcsh_label.has_key?('@language') && lcsh_label['@language'] == 'en')
+            label_holder ||= lcsh_label['@value']
+          else
+            any_match ||= lcsh_label['@value']
+          end
+        end
+        label_holder ||= any_match
+        doc['dta_lcsh_subject_ssim'] << label_holder
+        doc['dta_all_subject_ssim'] << label_holder
+=end
+
 =begin
         label_holder = nil
         any_match = nil
@@ -104,7 +123,7 @@ class GenericFile < ActiveFedora::Base
 =end
       else
         doc['dta_other_subject_ssim'] << subject
-        doc['dta_all_subject_ssim'] << subject
+        #doc['dta_all_subject_ssim'] << subject
 
       end
     end
