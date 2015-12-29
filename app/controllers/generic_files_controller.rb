@@ -1,13 +1,13 @@
 class GenericFilesController < ApplicationController
   include Sufia::Controller
   include Sufia::FilesControllerBehavior
-  before_action :verify_contributor
+  before_action :verify_contributor, except: [:show] #FIXME: Added show for now... but need to remove that...
 
   self.presenter_class = MyGenericFilePresenter
   self.edit_form_class = MyFileEditForm
 
   #Needed because it attempts to load from Solr in: load_resource_from_solr of Sufia::FilesControllerBehavior
-  skip_load_and_authorize_resource :only=> [:create, :swap_visibility] #FIXME: Why needed for swap visibility exactly?
+  skip_load_and_authorize_resource :only=> [:create, :swap_visibility, :show] #FIXME: Why needed for swap visibility exactly?
 
   def new
     super
