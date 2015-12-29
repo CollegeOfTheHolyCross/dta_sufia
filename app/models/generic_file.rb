@@ -112,7 +112,11 @@ class GenericFile < ActiveFedora::Base
         label_holder = nil
         any_match = nil
         RestClient.enable Rack::Cache
-        r = RestClient.get  "/proxy?q=http://digitaltransgenderarchive.xyz/proxy?q=#{subject}.json", { accept: :json }
+        begin
+        r = RestClient.get  "/proxy_raw?q=http://digitaltransgenderarchive.xyz/proxy_raw?q=#{subject}.json", { accept: :json }
+        rescue
+          raise 'subject was: ' + subject
+        end
         RestClient.disable Rack::Cache
         result = JSON.parse(r)
         #FIXME!!!
