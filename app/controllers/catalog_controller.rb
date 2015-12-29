@@ -38,6 +38,15 @@ class CatalogController < ApplicationController
     config.view.gallery.partials = [:index_header, :index]
     config.view.slideshow.partials = [:index]
 
+
+    # blacklight-maps stuff
+  config.view.maps.geojson_field = 'subject_geojson_facet_ssim'
+  config.view.maps.coordinates_field = 'subject_coordinates_geospatial'
+  config.view.maps.placename_field = 'subject_geographic_ssim'
+  config.view.maps.maxzoom = 13
+  config.view.maps.show_initial_zoom = 9
+  config.view.maps.facet_mode = 'geojson'
+
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = {
       qt: "search",
@@ -55,18 +64,29 @@ class CatalogController < ApplicationController
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
+    config.add_facet_field solr_name("creator", :facetable), label: "Creator", limit: 6, collapse:false
+    config.add_facet_field 'dta_all_subject_ssim', :label => 'Topic', :limit => 6, :sort => 'count', :collapse => false
+    config.add_facet_field 'dta_other_subject_ssim', :label => 'People/Organizations', :limit => 6, :sort => 'count', :collapse => false
+    config.add_facet_field 'dta_dates_ssim', :label => 'Date', :range => true, :collapse => false
+    config.add_facet_field solr_name("genre", :facetable), label: "Genre", limit: 6, :collapse => true
+    config.add_facet_field 'subject_geographic_ssim', :label => 'Location', :limit => 6, :sort => 'count', :collapse => true
+    config.add_facet_field 'collection_name_ssim', :label => 'Collection', :limit => 8, :sort => 'count', :collapse => true
+    config.add_facet_field 'institution_name_ssim', :label => 'Institution', :limit => 8, :sort => 'count', :collapse => true
+    config.add_facet_field 'subject_geojson_facet_ssim', :limit => -2, :label => 'Coordinates', :show => false
+
     #config.add_facet_field solr_name("resource_type", :facetable), label: "Resource Type", limit: 5
-    config.add_facet_field solr_name("creator", :facetable), label: "Creator", limit: 5
-    config.add_facet_field solr_name("tag", :facetable), label: "Keyword", limit: 5
+
+
+
+    #config.add_facet_field solr_name("tag", :facetable), label: "Keyword", limit: 5
     #config.add_facet_field solr_name("subject", :facetable), label: "Subject", limit: 5
-    config.add_facet_field solr_name("genre", :facetable), label: "Genre", limit: 5
-    config.add_facet_field 'dta_all_subject_ssim', :label => 'Topic', :limit => 8, :sort => 'count', :collapse => false
-    config.add_facet_field 'dta_other_subject_ssim', :label => 'People/Organizations', :limit => 8, :sort => 'count', :collapse => false
-    config.add_facet_field 'collection_name_ssim', :label => 'Collection', :limit => 8, :sort => 'count', :collapse => false
-    config.add_facet_field 'institution_name_ssim', :label => 'Institution', :limit => 8, :sort => 'count', :collapse => false
-    config.add_facet_field 'dta_dates_ssim', :label => 'Date', :range => true
+
+
+
+
+
     #config.add_facet_field solr_name("language", :facetable), label: "Language", limit: 5
-    config.add_facet_field solr_name("based_near", :facetable), label: "Location", limit: 5
+    #config.add_facet_field solr_name("based_near", :facetable), label: "Location", limit: 5
     #config.add_facet_field solr_name("publisher", :facetable), label: "Publisher", limit: 5
     #config.add_facet_field solr_name("file_format", :facetable), label: "File Format", limit: 5
 

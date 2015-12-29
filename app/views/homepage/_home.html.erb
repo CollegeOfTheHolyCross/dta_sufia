@@ -1,39 +1,26 @@
 <div id="home_container">
-<div class="search_frame">
-  <div class="search_container">
-    <%= render_search_bar %>
+  <div id="home_logo"><%= render partial: '/user_util_links' %></div>
 
-  </div>
-  <div class="nav_buttons">
-    <ul>
-      <li><%= link_to 'Home', sufia.homepage_index_path, :class=>"nav_button" %></li>
-      <li class="divider"></li>
-      <li><a href="#" class="nav_button">Browse</a></li>
-      <li class="divider"></li>
-      <li><a href="#" class="nav_button">Learn2</a></li>
-      <li class="divider"></li>
-      <li><a href="#" class="nav_button">About</a></li>
-      <li class="divider"></li>
-    </ul>
-    <div class="adv_search_button_wrapper">
-        <%= render partial: '/user_util_links' %>
+  <div class="search_frame">
+    <div class="search_container">
+      <%= render_search_bar %>
     </div>
+
   </div>
 
-</div>
+
+  <%= render partial: '/shared/dta_nav_bar' %>
 
 
-<div id="home_page">
-  <div id="home_logo"><%=image_tag("home/logo_transparent.png") %></div>
-</div>
+  <div id="home_people"></div>
 
 
 </div>
 
 <% if current_user.present? and current_user.contributor? %>
-<div style="margin-top:-850px;margin-left:-380px;">
-    <%= render partial: '/controls' %>
-</div>
+    <div style="margin-top:-850px;margin-left:-380px;">
+      <%= render partial: '/controls' %>
+    </div>
 <% end %>
 
 

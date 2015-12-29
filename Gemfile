@@ -5,9 +5,9 @@ gem 'activerecord-session_store'
 
 
 gem "rdf-vocab"
-gem 'mysql2', '0.3.18'
+#gem 'mysql2', '0.3.18'
 #gem 'blacklight', '5.14'
-gem 'blacklight', '5.16'
+gem 'blacklight', '5.16.4'
 gem 'sufia', '6.4.0'
 #gem 'sufia', :git=>'https://github.com/projecthydra/sufia.git'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'  # required to handle pagination properly in dashboard. See https://github.com/amatsuda/kaminari/pull/322
@@ -44,6 +44,7 @@ gem 'qa'
 gem 'edtf'
 
 gem "blacklight_range_limit"
+gem "blacklight-maps"
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

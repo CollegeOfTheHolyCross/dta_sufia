@@ -3,39 +3,50 @@
     //background-color:#818e9e;
   //background-color:#fdfdf0;
     //font-family: Arial, Helvetica, sans-serif;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  //font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Lato', Verdana, Arail, Helvetica, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: #333333;
   background-color: #fff;
 }
 
-#home_page {
-  background-image: asset_url("home/DTA_splash.png");
-  background-repeat: no-repeat;
-  background-position: center top;
-  width:960px;
-  height:1400px;
+#home_container {
+  width:1045px;
   margin: 0 auto;
 }
 
 #home_logo {
-  position:relative;
-  left:725px;
-  //top:-136px;
-  top:-50px;
-  width:286px;
+  width: 1042px;
+  height:245px;
+  background-image: asset_url("home/home_header_logo.png");
+  margin: 0 auto;
+}
+
+#home_people {
+  clear: both;
+  background-image: asset_url("home/home_people.png");
+  background-repeat: no-repeat;
+  background-position: center top;
+  width:960px;
+  height:519px;
+  margin: 0 auto;
 }
 
 #home_container .search_frame {
-  float:left;
-  position:relative;
-  top:400px;
-  background-color:rgba(23,64,111,0.4);
+  //float:left;
+  //position:relative;
+  //top:400px;
+  margin-top:50px;
+  margin-bottom:15px;
+  clear:both;
+  //background-color:rgba(23,64,111,0.4);
+  background-color: #bccfe7;
   width:100%;
   min-width:800px;
-  height:87px;
+  height:64px;
   padding: 35px 0;
+  padding-bottom:0px;
 }
 
 #home_container .search_container {
@@ -43,12 +54,21 @@
   position:relative;
   width:850px;
   margin:0 auto;
+  height:20px;
+}
+
+#home_container #search-form-header {
+  margin-top:-20px;
+  margin-bottom:-5px;
+  padding-top:0px;
+  height:30px;
+
 }
 
 #home_container .search_box {
   position:relative;
   width:740px;
-  height:40px;
+  height:30px;
   font-size:22px;
   border:1px solid rgba(188,207,231,.8);
   padding:0 6px;
@@ -75,8 +95,8 @@
   display:block;
   height:40px;
   width:848px;
-  margin:0 auto;
-  background-color:#173D6F;
+  margin:15px auto;
+  background-color:#c73b03;
   border:1px solid rgba(188,207,231,.8);
 }
 
@@ -90,16 +110,6 @@
   float:left;
 }
 
-#home_container .nav_buttons ul li.divider {
-  width:1px;
-  height:40px;
-  background: linear-gradient(rgba(188,207,231,.0), rgba(188,207,231,.8), rgba(188,207,231,.0));
-}
-
-#home_container .nav_button_wrapper {
-  display:inline-block;
-  margin:0;
-}
 
 #home_container .adv_search_button_wrapper {
   display:inline-block;
@@ -107,17 +117,4 @@
   margin:0;
 }
 
-#home_container a.nav_button {
-  display:block;
-  text-decoration:none;
-  padding:0 30px;
-  height:40px;
-  line-height:40px;
-  font-size:16px;
-  color:#FFFFFF;
-}
 
-#home_container a.nav_button:hover {
-  color:#00214d;
-  background-color:rgba(255,255,255,0.4);
-}

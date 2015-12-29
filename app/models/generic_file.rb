@@ -84,6 +84,11 @@ class GenericFile < ActiveFedora::Base
 
       #FIXME: Not doing alts currently...
       elsif subject.match(/http:\/\/id.loc.gov\/authorities\/subjects\//)
+#http://www.geonames.org/5391959
+        #r = RestClient.get 'http://api.geonames.org/getJSON', {:params => {:geonameId=>"5391959", :username=>"boston_library"}, accept: :json}
+        #result = JSON.parse(r)
+
+
         #/proxy?q=http://digitaltransgenderarchive.xyz/proxy?q=<subject>
 
 =begin
@@ -104,23 +109,31 @@ class GenericFile < ActiveFedora::Base
         doc['dta_all_subject_ssim'] << label_holder
 =end
 
-=begin
+
         label_holder = nil
         any_match = nil
         RestClient.enable Rack::Cache
         r = RestClient.get "#{subject}.json", { accept: :json }
         RestClient.disable Rack::Cache
-        JSON.parse(r).first['http://www.w3.org/2004/02/skos/core#prefLabel'].each do |lcsh_label|
-          if !lcsh_label.has_key?('@language') || (lcsh_label.has_key?('@language') && lcsh_label['@language'] == 'en')
-            label_holder ||= lcsh_label['@value']
-          else
-            any_match ||= lcsh_label['@value']
+        result = JSON.parse(r)
+        #FIXME!!!
+        if result['http://www.w3.org/2004/02/skos/core#prefLabel'].present?
+          result.first['http://www.w3.org/2004/02/skos/core#prefLabel'].each do |lcsh_label|
+            if !lcsh_label.has_key?('@language') || (lcsh_label.has_key?('@language') && lcsh_label['@language'] == 'en')
+              label_holder ||= lcsh_label['@value']
+            else
+              any_match ||= lcsh_label['@value']
+            end
           end
+          label_holder ||= any_match
+          doc['dta_lcsh_subject_ssim'] << label_holder
+          doc['dta_all_subject_ssim'] << label_holder
+        else
+          doc['dta_lcsh_subject_ssim'] << subject
+          doc['dta_all_subject_ssim'] << subject
         end
-        label_holder ||= any_match
-        doc['dta_lcsh_subject_ssim'] << label_holder
-        doc['dta_all_subject_ssim'] << label_holder
-=end
+
+
       else
         doc['dta_other_subject_ssim'] << subject
         #doc['dta_all_subject_ssim'] << subject
@@ -149,6 +162,46 @@ class GenericFile < ActiveFedora::Base
         end
       end
     end
+
+    doc['subject_geojson_facet_ssim'] = []
+    doc['subject_geographic_ssim'] = []
+    doc['subject_coordinates_geospatial'] = []
+
+
+    #NEED TO ADD THE FOLLOWING AFTER coordinate in schema.xml:
+
+=begin
+    <!-- Solr4 geospatial field for coordinates, shapes, etc. -->
+        <dynamicField name="*_geospatial" type="location_rpt"  indexed="true" stored="true"  multiValued="true" />
+=end
+
+
+    self.based_near.each do |spatial|
+      geojson_hash_base = {type: 'Feature', geometry: {type: 'Point'}}
+
+      r = RestClient.get 'http://api.geonames.org/getJSON', {:params => {:geonameId=>"#{spatial.split('/').last}", :username=>"boston_library"}, accept: :json}
+      result = JSON.parse(r)
+
+      geojson_hash_base[:geometry][:coordinates] = [result['lng'],result['lat']]
+      doc['subject_coordinates_geospatial'] << "#{result['lat']},#{result['lng']}"
+
+
+      if result['fcl'] == 'P' and result['adminCode1'].present?
+        geojson_hash_base[:properties] = {placename: result['name'] + ', ' + result['adminCode1']}
+      else
+        geojson_hash_base[:properties] = {placename: result['name']}
+      end
+
+      doc['subject_geographic_ssim'] << result['name']
+      doc['subject_geographic_ssim'] << result['adminName1'] if result['adminName1'].present?
+      doc['subject_geographic_ssim'] << result['adminName2'] if result['adminName2'].present?
+      doc['subject_geographic_ssim'] << result['adminName3'] if result['adminName3'].present?
+      doc['subject_geographic_ssim'] << result['countryName'] if result['countryName'].present?
+
+      doc['subject_geojson_facet_ssim'].append(geojson_hash_base.to_json)
+    end
+
+    doc['subject_geographic_ssim'].uniq!
 
 
     doc

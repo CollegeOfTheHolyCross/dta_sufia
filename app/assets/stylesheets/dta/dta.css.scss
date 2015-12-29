@@ -1,8 +1,23 @@
 body {
   margin:0px;
   background-color:#818e9e;
-  font-family: Arial, Helvetica, sans-serif;
+  //font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Lato', Verdana, Arail, Helvetica, sans-serif;
 }
+
+
+// Static Pages
+#static_holder_content {
+  max-width:850px;
+  margin-left:10px;
+  margin-right:10px;
+}
+
+#static_holder_content p {
+  font-size: 14px;
+  line-height: 1.42857143;
+}
+//End Static pages
 
 #wrapper {
   margin:0px;
@@ -26,19 +41,30 @@ body {
 }
 
 #logo {
-  margin-top:-35px;
-  min-width:250px;
-  margin-left: 3px;
+  margin-top:-30px;
+  min-width:278px;
+  margin-left: 5px;
+}
+
+#footer {
+  float:left;
+  position:relative;
+  top:0px;
+  background-color:#bccfe7;
+  width:100%;
+  min-width:800px;
+  height:100px;
+  padding: 35px 0;
 }
 
 #dtamasthead {
   float:left;
   position:relative;
   top:0px;
-  background-color:rgba(23,64,111,0.4);
+  background-color:#bccfe7;
   width:100%;
   min-width:800px;
-  height:145px;
+  height:140px;
   padding: 35px 0;
 }
 
@@ -47,7 +73,7 @@ body {
   position:relative;
   width:850px;
   margin:0 auto;
-  margin-top: -10px;
+  margin-top: -15px;
 }
 
 #dtamasthead .search_box {
@@ -178,6 +204,90 @@ body {
 }
 
 #dtaLoggedInMenu a.nav_button:hover {
+  color:#00214d;
+  background-color:rgba(255,255,255,0.4);
+}
+
+
+// Nav bar styles
+
+
+#main_nav_buttons {
+  height:40px;
+  width:850px;
+  margin:0 auto;
+
+  background-color:#c73b03;
+  border:1px solid rgba(188,207,231,.8);
+
+  line-height:40px;
+  font-size:16px;
+  color:#FFFFFF;
+}
+
+
+#main_nav_buttons .main_nav_ul {
+  margin:0;
+  padding:0;
+  list-style: none;
+}
+
+#main_nav_buttons li.outer_divider {
+  width:1px;
+  height:40px;
+  background: linear-gradient(rgba(188,207,231,.0), rgba(188,207,231,.8), rgba(188,207,231,.0));
+  float:left;
+}
+
+#main_nav_buttons .main_nav_ul .outer_nav_li_style {
+  display:inline-block;
+  float:left;
+  width:282px;
+  text-align:center;
+}
+
+#main_nav_buttons .dropdown-menu {
+  background-color:#c73b03;
+  border:1px solid rgba(188,207,231,.8);
+  width:282px;
+}
+
+#main_nav_buttons .dropdown-menu li {
+  margin-top:0px;
+  margin-bottom:6px;
+  padding-top: 0px;
+  padding-bottom:0px;
+  padding-left:10px;
+}
+
+#main_nav_buttons .dropdown-menu a {
+  display:block;
+  text-decoration:none;
+  //padding:0 30px;
+  margin-bottom:10px;
+  height:23px;
+  line-height:23px;
+  font-size:15px;
+  color:#FFFFFF;
+}
+
+#main_nav_buttons .dropdown-menu a:hover {
+  color:#00214d;
+  background-color:rgba(255,255,255,0.4);
+}
+
+
+#main_nav_buttons a.nav_button {
+  display:block;
+  text-decoration:none;
+  padding:0 30px;
+  height:40px;
+  line-height:40px;
+  font-size:16px;
+  color:#FFFFFF;
+}
+
+#main_nav_buttons a.nav_button:hover {
   color:#00214d;
   background-color:rgba(255,255,255,0.4);
 }
