@@ -110,6 +110,7 @@ class GenericFile < ActiveFedora::Base
 =end
 
 
+=begin
         label_holder = nil
         any_match = nil
         RestClient.enable Rack::Cache
@@ -132,6 +133,7 @@ class GenericFile < ActiveFedora::Base
           doc['dta_lcsh_subject_ssim'] << subject
           doc['dta_all_subject_ssim'] << subject
         end
+=end
 
 
       else

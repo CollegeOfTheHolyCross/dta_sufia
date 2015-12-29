@@ -24,6 +24,8 @@ Rails.application.routes.draw do
   get 'about' => 'about#index', as: :about
   get 'about/project' => 'about#project', as: :about_project
 
+  get 'places', :to => 'catalog#map', :as => 'places'
+
   # This must be the very last route in the file because it has a catch-all route for 404 errors.
     # This behavior seems to show up only in production mode.
     mount Sufia::Engine => '/'
