@@ -89,7 +89,7 @@ class GenericFile < ActiveFedora::Base
         #result = JSON.parse(r)
 
 
-        #/proxy?q=http://digitaltransgenderarchive.xyz/proxy?q=<subject>
+        #/proxy?q=http://digitaltransgenderarchive.xyz/raw_proxy?q=<subject>.json
 
 =begin
         label_holder = nil
@@ -189,7 +189,8 @@ class GenericFile < ActiveFedora::Base
 
 
       if result['fcl'] == 'P' and result['adminCode1'].present?
-        geojson_hash_base[:properties] = {placename: result['name'] + ', ' + result['adminCode1']}
+        #geojson_hash_base[:properties] = {placename: result['name'] + ', ' + result['adminCode1']}
+        geojson_hash_base[:properties] = {placename: result['name']}
       else
         geojson_hash_base[:properties] = {placename: result['name']}
       end
