@@ -89,7 +89,7 @@ class GenericFile < ActiveFedora::Base
         #result = JSON.parse(r)
 
 
-        #/proxy?q=http://digitaltransgenderarchive.xyz/proxy?q=<subject>
+        #/proxy?q=http://digitaltransgenderarchive.xyz/raw_proxy?q=<subject>.json
 
 =begin
         label_holder = nil
@@ -108,6 +108,29 @@ class GenericFile < ActiveFedora::Base
         doc['dta_lcsh_subject_ssim'] << label_holder
         doc['dta_all_subject_ssim'] << label_holder
 =end
+
+        label_holder = nil
+        any_match = nil
+        RestClient.enable Rack::Cache
+        r = RestClient.get  "/proxy?q=http://digitaltransgenderarchive.xyz/proxy?q=#{subject}.json", { accept: :json }
+        RestClient.disable Rack::Cache
+        result = JSON.parse(r)
+        #FIXME!!!
+        if result['http://www.w3.org/2004/02/skos/core#prefLabel'].present?
+          result.first['http://www.w3.org/2004/02/skos/core#prefLabel'].each do |lcsh_label|
+            if !lcsh_label.has_key?('@language') || (lcsh_label.has_key?('@language') && lcsh_label['@language'] == 'en')
+              label_holder ||= lcsh_label['@value']
+            else
+              any_match ||= lcsh_label['@value']
+            end
+          end
+          label_holder ||= any_match
+          doc['dta_lcsh_subject_ssim'] << label_holder
+          doc['dta_all_subject_ssim'] << label_holder
+        else
+          doc['dta_lcsh_subject_ssim'] << subject
+          doc['dta_all_subject_ssim'] << subject
+        end
 
 
 =begin
@@ -189,7 +212,8 @@ class GenericFile < ActiveFedora::Base
 
 
       if result['fcl'] == 'P' and result['adminCode1'].present?
-        geojson_hash_base[:properties] = {placename: result['name'] + ', ' + result['adminCode1']}
+        #geojson_hash_base[:properties] = {placename: result['name'] + ', ' + result['adminCode1']}
+        geojson_hash_base[:properties] = {placename: result['name']}
       else
         geojson_hash_base[:properties] = {placename: result['name']}
       end

@@ -1,4 +1,6 @@
 require 'rest_client'
+require 'restclient/components'
+require 'rack/cache'
 
 
 class CommandsController < ApplicationController
@@ -26,6 +28,13 @@ class CommandsController < ApplicationController
   def proxy
     url = params.fetch("q", "")
     r = RestClient.get url
+    render json: r
+  end
+
+  def proxy_raw
+    url = params.fetch("q", "")
+    r = RestClient.get url, { accept: :json }
+    r =  JSON.parse(r)
     render json: r
   end
 

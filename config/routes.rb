@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
   get 'admin/reload' => 'commands#update', as: :reload_app
   get 'proxy' => 'commands#proxy'
+  get 'proxy_raw' => 'commands#proxy_raw'
   get 'admin/reindex' => 'commands#reindex', as: :reindex_all
   get 'collections/member_visibility/:id' => 'collections#change_member_visibility', as: :collection_member_visibility
 
