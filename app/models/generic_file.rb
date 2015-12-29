@@ -109,6 +109,7 @@ class GenericFile < ActiveFedora::Base
         doc['dta_all_subject_ssim'] << label_holder
 =end
 
+=begin
         label_holder = nil
         any_match = nil
         RestClient.enable Rack::Cache
@@ -116,6 +117,7 @@ class GenericFile < ActiveFedora::Base
         r = RestClient.get  "/proxy_raw?q=http://digitaltransgenderarchive.xyz/proxy_raw?q=#{subject}.json", { accept: :json }
         rescue
           raise 'subject was: ' + subject
+          #subject was: http://id.loc.gov/authorities/subjects/sh2008004230
         end
         RestClient.disable Rack::Cache
         result = JSON.parse(r)
@@ -135,6 +137,7 @@ class GenericFile < ActiveFedora::Base
           doc['dta_lcsh_subject_ssim'] << subject
           doc['dta_all_subject_ssim'] << subject
         end
+=end
 
 
 =begin
