@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   #Static Paths
   get 'about' => 'about#index', as: :about
   get 'about/project' => 'about#project', as: :about_project
+  get 'about/contact' => 'about#contact', as: :about_contact
 
   get 'places', :to => 'catalog#map', :as => 'places'
 
