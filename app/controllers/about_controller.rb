@@ -8,5 +8,9 @@ class AboutController < ApplicationController
 
   end
 
+  def contact
+
+  end
+
 
 end

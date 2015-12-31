@@ -68,12 +68,14 @@ class CatalogController < ApplicationController
     config.add_facet_field 'dta_all_subject_ssim', :label => 'Topic', :limit => 6, :sort => 'count', :collapse => false
     config.add_facet_field 'dta_other_subject_ssim', :label => 'People/Organizations', :limit => 6, :sort => 'count', :collapse => false
     config.add_facet_field 'dta_dates_ssim', :label => 'Date', :range => true, :collapse => false
-    config.add_facet_field solr_name("genre", :facetable), label: "Genre", limit: 6, :collapse => true
+    config.add_facet_field 'genre_ssim', :label => 'Genre', :limit => 6, :sort => 'count', :collapse => true
     config.add_facet_field 'subject_geographic_ssim', :label => 'Location', :limit => 6, :sort => 'count', :collapse => true
     config.add_facet_field 'collection_name_ssim', :label => 'Collection', :limit => 8, :sort => 'count', :collapse => true
     config.add_facet_field 'institution_name_ssim', :label => 'Institution', :limit => 8, :sort => 'count', :collapse => true
     config.add_facet_field 'subject_geojson_facet_ssim', :limit => -2, :label => 'Coordinates', :show => false
 
+
+    #config.add_facet_field solr_name("genre", :facetable), label: "Genre", limit: 6, :collapse => true
     #config.add_facet_field solr_name("resource_type", :facetable), label: "Resource Type", limit: 5
 
 

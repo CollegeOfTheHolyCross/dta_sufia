@@ -1,0 +1,7 @@
+en:
+  blacklight:
+    maps:
+      interactions:
+        placename_search: 'View items about this location'
+        point_search: 'View items about this location'
+      leader: 'Click on a marker to search for items about that location.'

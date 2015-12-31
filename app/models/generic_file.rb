@@ -22,7 +22,7 @@ class GenericFile < ActiveFedora::Base
   end
   #::RDF::SCHEMA.
   property :genre, predicate: ::RDF::Vocab::EDM.hasType do |index|
-    index.as :stored_searchable
+    index.as :stored_searchable, :symbol
   end
   
   property :alternative, predicate: ::RDF::DC.alternative do |index|
