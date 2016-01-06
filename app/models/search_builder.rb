@@ -3,6 +3,19 @@ class SearchBuilder < Blacklight::SearchBuilder
   include Hydra::AccessControlsEnforcement
   include Sufia::SearchBuilder
 
+=begin
+  def current_ability
+    if current_user.present?
+      ddfdfd
+      Ability.new(current_user)
+    else
+      Ability.new(nil)
+    end
+
+    #Ability.new(nil)
+  end
+=end
+
   def show_only_collections(solr_parameters)
     if !current_user.superuser?
       solr_parameters[:fq] ||= []
