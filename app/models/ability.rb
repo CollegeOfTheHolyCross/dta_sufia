@@ -23,12 +23,13 @@ class Ability
 		end
 		
 		if current_user.admin? || current_user.superuser? || current_user.contributor?
-			can [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy, :change_member_visibility], Collection
+			can [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy, :change_member_visibility, :public_index], Collection
 			can [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy, :regenerate], GenericFile
 			can [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], Institution
 	#		cannot [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], GenericFile
 	  else
-	    cannot [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy, :change_member_visibility], Collection
+	    cannot [:create, :add_user, :remove_user, :edit, :update, :destroy, :change_member_visibility, :index], Collection
+			can [:show, :public_index], Collection
 			cannot [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy, :regenerate], GenericFile
 			cannot [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], Institution
 		end

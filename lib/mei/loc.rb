@@ -29,11 +29,12 @@ module Mei
       end_response = []
       position_counter = 0
       @raw_response.select {|response| response[0] == "atom:entry"}.map do |response|
-        threaded_responses << Thread.new(position_counter) { |local_pos|
-          end_response[local_pos] = loc_response_to_qa(response_to_struct(response))
-        }
-        position_counter+=1
-        sleep(0.15)
+          threaded_responses << Thread.new(position_counter) { |local_pos|
+            end_response[local_pos] = loc_response_to_qa(response_to_struct(response), position_counter)
+          }
+          position_counter+=1
+          sleep(0.15)
+
         #loc_response_to_qa(response_to_struct(response))
       end
       threaded_responses.each { |thr|  thr.join }
@@ -41,9 +42,9 @@ module Mei
     end
 
     # Simple conversion from LoC-based struct to QA hash
-    def loc_response_to_qa data
+    def loc_response_to_qa(data, counter)
       json_link = data.links.select { |link| link.first == 'application/json' }
-      if json_link.present?
+      if json_link.present? && counter < 7
         json_link = json_link[0][1]
         #puts 'Json Link is: ' + json_link
         #item_response = get_json(json_link.gsub('.json','.rdf'))

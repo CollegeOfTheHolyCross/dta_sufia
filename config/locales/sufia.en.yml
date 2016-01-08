@@ -237,6 +237,8 @@ en:
         prefLabel:         "Preferred Term (USE)"
         altLabel:      "Use For (UF)"
         description:      "Scope Note (SN)"
+        exactMatch:      "LCSH Exact Match"
+        closeMatch:      "LCSH Close Match"
 
 
       collection:
@@ -280,6 +282,8 @@ en:
         altLabel:      "These are other labels some people may refer to this term as."
         description:      "This is a description of the content of the term."
         identifier:      "The identifier for this term on the web. <strong>DO NOT USE SPACES!</strong> Instead, use camelcase such as peopleWithDisabilities for 'people with disabilities'."
+        exactMatch: "This is used for an exact concept match in LCSH. You should use this most of the time."
+        closeMatch: "This is for a concept match that is essentially the same but may have very minor differences. This should be used sparingly."
 
     aria_label:
       generic_file:

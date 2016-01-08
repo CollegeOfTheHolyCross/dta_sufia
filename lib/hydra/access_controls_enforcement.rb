@@ -17,7 +17,7 @@ module Hydra::AccessControlsEnforcement
 
   #STEVEN: MODIFIED for Date range limit. Is this fine? Seems to also break the ranges yet...
   def current_ability
-    @current_ability || Ability.new(nil)
+    @current_ability || ::Ability.new(nil)
         #raise("current_ability has not been set on #{self}")
   end
 
@@ -27,9 +27,14 @@ module Hydra::AccessControlsEnforcement
     user_access_filters = []
 
     # Grant access based on user id & group
-    solr_access_filters_logic.each do |method_name|
-      user_access_filters += send(method_name, permission_types, ability)
+
+    #FIXME: STEVEN - temporary hack?
+    if permission_types.present?
+      solr_access_filters_logic.each do |method_name|
+        user_access_filters += send(method_name, permission_types, ability)
+      end
     end
+
     user_access_filters
   end
 

@@ -1,7 +1,43 @@
 class CollectionsController < ApplicationController
   include Sufia::CollectionsControllerBehavior
+  include DtaSearchBuilder
+
   before_action :verify_admin, except: :show #FIXME on change member
 
+  def index
+    super
+  end
+
+=begin
+  def public_index
+    query = collections_search_builder.with(params).query
+    @response = repository.search(query)
+    @document_list = @response.documents
+    params[:view] = 'list'
+    params[:sort] = 'title_info_primary_ssort asc'
+  end
+=end
+
+  def test_response(params)
+    @nav_li_active = 'explore'
+    self.search_params_logic += [:collections_filter]
+    (@response, @document_list) = search_results(params, search_params_logic)
+    params[:view] = 'list'
+    params[:sort] = 'title_info_primary_ssort asc'
+    @document_list
+  end
+
+  def public_index
+    @nav_li_active = 'explore'
+    self.search_params_logic += [:collections_filter]
+    (@response, @document_list) = search_results(params, search_params_logic)
+    params[:view] = 'list'
+    params[:sort] = 'title_info_primary_ssort asc'
+
+    respond_to do |format|
+      format.html
+    end
+  end
 
   def new
     institution_query = Institution.find_with_conditions("*:*", rows: '100000', fl: 'id,name_ssim' )
