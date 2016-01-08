@@ -20,12 +20,24 @@ class Homosaurus < ActiveFedora::Base
     index.as :stored_searchable, :symbol
   end
 
+  property :description, predicate: ::RDF::RDFS.comment, multiple: false do |index|
+    index.as :stored_searchable, :symbol
+  end
+
   property :issued, predicate: ::RDF::DC.issued, multiple: false do |index|
     index.as :stored_sortable
   end
 
   property :modified, predicate: ::RDF::DC.modified, multiple: false do |index|
     index.as :stored_sortable
+  end
+
+  property :exactMatch, predicate: ::RDF::Vocab::SKOS.exactMatch, multiple: true do |index|
+    index.as :stored_searchable, :symbol
+  end
+
+  property :closeMatch, predicate: ::RDF::Vocab::SKOS.closeMatch, multiple: true do |index|
+    index.as :stored_searchable, :symbol
   end
 
   def show_fields

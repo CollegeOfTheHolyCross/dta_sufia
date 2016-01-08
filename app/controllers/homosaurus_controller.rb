@@ -233,6 +233,6 @@ class HomosaurusController < ApplicationController
 
 
   def homosaurus_params
-       params.require(:homosaurus).permit(:identifier, :prefLabel, :description, altLabel: [])
+       params.require(:homosaurus).permit(:identifier, :prefLabel, :description, :exactMatch, :closeMatch, altLabel: [])
   end
 end
