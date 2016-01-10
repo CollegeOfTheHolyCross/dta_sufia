@@ -2,18 +2,15 @@ module Sufia
   module CollectionsControllerBehavior
     extend ActiveSupport::Concern
     include Hydra::CollectionsControllerBehavior
+    include Sufia::Breadcrumbs
 
-    included do
-      include Sufia::Breadcrumbs
+    before_action :filter_docs_with_read_access!, except: :show
+    before_action :has_access?, except: [:show, :public_index, :public_show]
+    before_action :build_breadcrumbs, only: [:edit, :show, :public_show]
 
-      before_action :filter_docs_with_read_access!, except: :show
-      before_action :has_access?, except: [:show, :public_index, :public_show]
-      before_action :build_breadcrumbs, only: [:edit, :show, :public_show]
+    self.search_params_logic += [:add_access_controls_to_solr_params, :add_advanced_parse_q_to_solr]
 
-      self.search_params_logic += [:add_access_controls_to_solr_params, :add_advanced_parse_q_to_solr]
-
-      layout "sufia-one-column"
-    end
+    layout "sufia-one-column"
 
     def new
       super
