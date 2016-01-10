@@ -20,4 +20,10 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  blacklight:
+    search:
+      form:
+        collection: 'Search this collection...'
+    collections:
+      browse:
+        all: 'View All Items'

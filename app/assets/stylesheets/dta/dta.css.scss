@@ -7,6 +7,34 @@ body {
 }
 
 
+
+//Override styles
+
+.add, .btn-primary {
+  background-color: #173d6f;
+  border-color: #173d6f;
+  color: #FFF;
+}
+
+div.search_bar_div {
+  width:100%;
+}
+
+div.search_select_wrapper {
+  display: inline;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  margin-top:1px;
+  margin-right:5px;
+  float:left;
+}
+
+#search-field-header {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  float:left;
+}
+
 // Static Pages
 #static_holder_content {
   max-width:850px;

@@ -3,7 +3,12 @@
 <%= simple_form_for(@homosaurus, :url => homosaurus_path, :as => :homosaurus) do |f| %>
       <%= render :partial => "form_id", :locals => {:f => f, :key=>:identifier} %>
     <% @homosaurus.terms.each do |key| %>
-        <%= render :partial => "/records/edit_fields/default", :locals => {:key => key, :f => f} %>
+          <% if key == 'closeMatch' || key == 'exactMatch' %>
+              <%= render :partial => "mei/form", :locals => {:f => f, :key=>key} %>
+              <%= f.input key, as: :lcsh_lookup, input_html: { class: 'form-control', style: 'width:35em;' }, required: f.object.required?(key), readonly: true %>
+          <% else %>
+            <%= render :partial => "/records/edit_fields/default", :locals => {:key => key, :f => f} %>
+          <% end %>
     <% end %>
 
     <%= render :partial => "form_relations", :locals => {:f => f, :key=>:broader_ids} %>

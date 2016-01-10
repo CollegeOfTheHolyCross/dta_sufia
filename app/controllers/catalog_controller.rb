@@ -28,7 +28,15 @@ class CatalogController < ApplicationController
     solr_name('date_modified', :stored_sortable, type: :date)
   end
 
-  configure_blacklight do |config|          config.view.gallery.partials = [:index_header, :index]
+  configure_blacklight do |config|
+
+    # collection name field
+    config.collection_field = 'collection_name_ssim'
+    # institution name field
+    config.institution_field = 'institution_name_ssim'
+
+
+    config.view.gallery.partials = [:index_header, :index]
           config.view.masonry.partials = [:index]
           config.view.slideshow.partials = [:index]
 
@@ -170,170 +178,66 @@ class CatalogController < ApplicationController
     # of Solr search fields.
     # creator, title, description, publisher, date_created,
     # subject, language, resource_type, format, identifier, based_near,
-    config.add_search_field('contributor') do |field|
-      # solr_parameters hash are sent to Solr as ordinary url query params.
-      field.solr_parameters = { :"spellcheck.dictionary" => "contributor" }
 
-      # :solr_local_parameters will be sent using Solr LocalParams
-      # syntax, as eg {! qf=$title_qf }. This is neccesary to use
-      # Solr parameter de-referencing like $title_qf.
-      # See: http://wiki.apache.org/solr/LocalParams
-      solr_name = solr_name("contributor", :stored_searchable)
-      field.solr_local_parameters = {
-        qf: solr_name,
-        pf: solr_name
-      }
-    end
-
-    config.add_search_field('creator') do |field|
-      field.solr_parameters = { :"spellcheck.dictionary" => "creator" }
-      solr_name = solr_name("creator", :stored_searchable)
-      field.solr_local_parameters = {
-        qf: solr_name,
-        pf: solr_name
-      }
-    end
-
-    config.add_search_field('title') do |field|
-      field.solr_parameters = {
+  config.add_search_field('title') do |field|
+    field.solr_parameters = {
         :"spellcheck.dictionary" => "title"
-      }
-      solr_name = solr_name("title", :stored_searchable)
-      field.solr_local_parameters = {
+    }
+    solr_name = solr_name("title", :stored_searchable)
+    field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
-      }
-    end
+    }
+  end
 
-    config.add_search_field('description') do |field|
-      field.label = "Abstract or Summary"
-      field.solr_parameters = {
+  config.add_search_field('description') do |field|
+    field.label = "Description"
+    field.solr_parameters = {
         :"spellcheck.dictionary" => "description"
-      }
-      solr_name = solr_name("description", :stored_searchable)
-      field.solr_local_parameters = {
+    }
+    solr_name = solr_name("description", :stored_searchable)
+    field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
-      }
-    end
+    }
+  end
 
-    config.add_search_field('publisher') do |field|
-      field.solr_parameters = {
+  config.add_search_field('creator') do |field|
+    field.solr_parameters = { :"spellcheck.dictionary" => "creator" }
+    solr_name = solr_name("creator", :stored_searchable)
+    field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+    }
+  end
+
+  config.add_search_field('publisher') do |field|
+    field.solr_parameters = {
         :"spellcheck.dictionary" => "publisher"
-      }
-      solr_name = solr_name("publisher", :stored_searchable)
-      field.solr_local_parameters = {
+    }
+    solr_name = solr_name("publisher", :stored_searchable)
+    field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
-      }
-    end
+    }
+  end
 
-    config.add_search_field('date_created') do |field|
-      field.solr_parameters = {
-        :"spellcheck.dictionary" => "date_created"
-      }
-      solr_name = solr_name("created", :stored_searchable)
-      field.solr_local_parameters = {
-        qf: solr_name,
-        pf: solr_name
-      }
-    end
-
-    config.add_search_field('subject') do |field|
-      field.solr_parameters = {
-        :"spellcheck.dictionary" => "subject"
-      }
-      solr_name = solr_name("subject", :stored_searchable)
-      field.solr_local_parameters = {
-        qf: solr_name,
-        pf: solr_name
-      }
-    end
-
-    config.add_search_field('language') do |field|
-      field.solr_parameters = {
-        :"spellcheck.dictionary" => "language"
-      }
-      solr_name = solr_name("language", :stored_searchable)
-      field.solr_local_parameters = {
-        qf: solr_name,
-        pf: solr_name
-      }
-    end
-
-    config.add_search_field('resource_type') do |field|
-      field.solr_parameters = {
-        :"spellcheck.dictionary" => "resource_type"
-      }
-      solr_name = solr_name("resource_type", :stored_searchable)
-      field.solr_local_parameters = {
-        qf: solr_name,
-        pf: solr_name
-      }
-    end
-
-    config.add_search_field('format') do |field|
-      field.include_in_advanced_search = false
-      field.solr_parameters = {
-        :"spellcheck.dictionary" => "format"
-      }
-      solr_name = solr_name("format", :stored_searchable)
-      field.solr_local_parameters = {
-        qf: solr_name,
-        pf: solr_name
-      }
-    end
-
-    config.add_search_field('identifier') do |field|
-      field.include_in_advanced_search = false
-      field.solr_parameters = {
+  config.add_search_field('identifier') do |field|
+    field.include_in_advanced_search = false
+    field.solr_parameters = {
         :"spellcheck.dictionary" => "identifier"
-      }
-      solr_name = solr_name("id", :stored_searchable)
-      field.solr_local_parameters = {
+    }
+    solr_name = solr_name("id", :stored_searchable)
+    field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
-      }
-    end
+    }
+  end
 
-    config.add_search_field('based_near') do |field|
-      field.label = "Location"
-      field.solr_parameters = {
-        :"spellcheck.dictionary" => "based_near"
-      }
-      solr_name = solr_name("based_near", :stored_searchable)
-      field.solr_local_parameters = {
-        qf: solr_name,
-        pf: solr_name
-      }
-    end
 
-    config.add_search_field('tag') do |field|
-      field.solr_parameters = {
-        :"spellcheck.dictionary" => "tag"
-      }
-      solr_name = solr_name("tag", :stored_searchable)
-      field.solr_local_parameters = {
-        qf: solr_name,
-        pf: solr_name
-      }
-    end
 
-    config.add_search_field('depositor') do |field|
-      solr_name = solr_name("depositor", :stored_searchable)
-      field.solr_local_parameters = {
-        qf: solr_name,
-        pf: solr_name
-      }
-    end
 
-    config.add_search_field('rights') do |field|
-      solr_name = solr_name("rights", :stored_searchable)
-      field.solr_local_parameters = {
-        qf: solr_name,
-        pf: solr_name
-      }
-    end
+
 
     # "sort results by" select (pulldown)
     # label in pulldown is followed by the name of the SOLR field to sort by and
@@ -350,4 +254,6 @@ class CatalogController < ApplicationController
     # mean") suggestion is offered.
     config.spell_max = 5
   end
+
+
 end

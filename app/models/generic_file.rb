@@ -148,7 +148,7 @@ class GenericFile < ActiveFedora::Base
         RestClient.disable Rack::Cache
         result = JSON.parse(r)
         #FIXME!!!
-        if result['http://www.w3.org/2004/02/skos/core#prefLabel'].present?
+        if result.present? && result.first['http://www.w3.org/2004/02/skos/core#prefLabel'].present?
           result.first['http://www.w3.org/2004/02/skos/core#prefLabel'].each do |lcsh_label|
             if !lcsh_label.has_key?('@language') || (lcsh_label.has_key?('@language') && lcsh_label['@language'] == 'en')
               label_holder ||= lcsh_label['@value']

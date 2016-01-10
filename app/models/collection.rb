@@ -21,4 +21,17 @@ class Collection < Sufia::Collection
     index.as :stored_searchable
   end
 
+  def to_solr(doc = {} )
+    doc = super(doc)
+    doc['institution_name_ssim'] = []
+    self.institutions.each do |institution|
+      doc['institution_name_ssim'] << institution.name
+    end
+
+    doc['collection_name_ssim'] = self.title
+
+
+    doc
+  end
+
 end
