@@ -2,6 +2,13 @@ class CollectionsController < ApplicationController
   include Sufia::CollectionsControllerBehavior
   include DtaSearchBuilder
 
+
+  before_action :filter_docs_with_read_access!, except: :show
+  before_action :has_access?, except: [:show, :public_index, :public_show]
+  before_action :build_breadcrumbs, only: [:edit, :show, :public_show]
+  before_filter :authenticate_user!, :except => [:show, :public_index, :public_show]
+
+
   before_filter :relation_base_blacklight_config, :only => [:show, :public_show]
 
   before_action :verify_admin, except: [:show, :public_index, :public_show] #FIXME on change member
