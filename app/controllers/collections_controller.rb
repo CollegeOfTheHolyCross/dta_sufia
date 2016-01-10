@@ -2,11 +2,64 @@ class CollectionsController < ApplicationController
   include Sufia::CollectionsControllerBehavior
   include DtaSearchBuilder
 
-  before_action :verify_admin, except: :show #FIXME on change member
+  before_filter :relation_base_blacklight_config, :only => [:show, :public_show]
+
+  before_action :verify_admin, except: [:show, :public_index, :public_show] #FIXME on change member
+
+  def relation_base_blacklight_config
+    # don't show collection facet
+    blacklight_config.facet_fields['collection_name_ssim'].show = false
+    blacklight_config.facet_fields['collection_name_ssim'].if = false
+
+    blacklight_config.facet_fields['institution_name_ssim'].show = false
+    blacklight_config.facet_fields['institution_name_ssim'].if = false
+
+    # collapse remaining facets
+    #blacklight_config.facet_fields['subject_facet_ssim'].collapse = true
+    #blacklight_config.facet_fields['subject_geographic_ssim'].collapse = true
+    #blacklight_config.facet_fields['date_facet_ssim'].collapse = true
+    #blacklight_config.facet_fields['genre_basic_ssim'].collapse = true
+  end
 
   def index
     super
   end
+
+  def show
+    super
+  end
+
+  def public_show
+    @nav_li_active = 'explore'
+    @show_response, @document = fetch(params[:id])
+    @collection_title = @document["title_tesim"].first
+
+    # add params[:f] for proper facet links
+    params[:f] = set_collection_facet_params(@collection_title, @document)
+
+    # get the response for the facets representing items in collection
+    (@response, @document_list) = search_results({:f => params[:f]}, search_params_logic)
+
+    flash[:notice] = nil if flash[:notice] == "Select something first"
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  # set the correct facet params for facets from the collection
+  def set_collection_facet_params(collection_title, document)
+    facet_params = {blacklight_config.collection_field => [collection_title]}
+    #facet_params[blacklight_config.institution_field] = document[blacklight_config.institution_field.to_sym] if t('blacklight.home.browse.institutions.enabled')
+    facet_params
+  end
+
+  # Blacklight uses #search_action_url to figure out the right URL for
+  # the global search box
+  def search_action_url options = {}
+    catalog_index_url(options.except(:controller, :action))
+  end
+  helper_method :search_action_url
 
 =begin
   def public_index
@@ -29,10 +82,14 @@ class CollectionsController < ApplicationController
 
   def public_index
     @nav_li_active = 'explore'
-    self.search_params_logic += [:collections_filter]
-    (@response, @document_list) = search_results(params, search_params_logic)
+
+    query = collections_search_builder.with(params).query
+    @response = repository.search(query)
+    @document_list = @response.documents
     params[:view] = 'list'
     params[:sort] = 'title_info_primary_ssort asc'
+
+    flash[:notice] = nil if flash[:notice] == "Select something first"
 
     respond_to do |format|
       format.html
@@ -43,6 +100,7 @@ class CollectionsController < ApplicationController
     institution_query = Institution.find_with_conditions("*:*", rows: '100000', fl: 'id,name_ssim' )
     @all_institutions = []
     institution_query.each { |term| @all_institutions << [term["name_ssim"].first, term["id"]] }
+    flash[:notice] = nil if flash[:notice] == "Select something first"
     super
   end
 

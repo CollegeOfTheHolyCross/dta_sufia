@@ -39,7 +39,32 @@ class CommandsController < ApplicationController
   end
 
   def reindex
+    #ActiveFedora::Base.reindex_everything
     ActiveFedora::Base.reindex_everything
+    descendants = descendant_uris(ActiveFedora::Base.id_to_uri(''))
+    descendants.shift # Discard the root uri
+    descendants.each do |uri|
+      #logger.debug "Re-index everything ... #{uri}"
+      begin
+      ActiveFedora::Base.find(ActiveFedora::Base.uri_to_id(uri)).update_index
+      rescue
+        #logger.error "Re-index everything error on ... #{uri}"
+      end
+    end
+
     render html: "<h1>Reindex sucessful</h1>"
+  end
+
+  def descendant_uris(uri)
+    resource = Ldp::Resource::RdfSource.new(ActiveFedora.fedora.connection, uri)
+    # GET could be slow if it's a big resource, we're using HEAD to avoid this problem,
+    # but this causes more requests to Fedora.
+    return [] unless Ldp::Response.rdf_source?(resource.head)
+    immediate_descendant_uris = resource.graph.query(predicate: ::RDF::Vocab::LDP.contains).map { |descendant| descendant.object.to_s }
+    all_descendants_uris = [uri]
+    immediate_descendant_uris.each do |descendant_uri|
+      all_descendants_uris += descendant_uris(descendant_uri)
+    end
+    all_descendants_uris
   end
 end

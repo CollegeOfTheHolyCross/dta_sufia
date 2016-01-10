@@ -29,6 +29,8 @@ Rails.application.routes.draw do
   get 'places', :to => 'catalog#map', :as => 'places'
 
   get 'collections', :to => 'collections#public_index', :as => 'collections_public'
+  get 'collections/show/:id', :to => 'collections#public_show', :as => 'collections_public_show'
+  get 'collections/facet/:id', :to => 'collections#facet', :as => 'collections_facet'
 
   # This must be the very last route in the file because it has a catch-all route for 404 errors.
     # This behavior seems to show up only in production mode.

@@ -5,7 +5,7 @@ gem 'activerecord-session_store'
 
 
 gem "rdf-vocab"
-gem 'mysql2', '0.3.18'
+#gem 'mysql2', '0.3.18'
 #gem 'blacklight', '5.14'
 gem 'blacklight', '5.16.4'
 gem 'sufia', '6.4.0'
@@ -67,6 +67,8 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
+
+gem 'sprockets-rails', '2.3.3'
 
 
 gem 'rsolr', '~> 1.0.6'
