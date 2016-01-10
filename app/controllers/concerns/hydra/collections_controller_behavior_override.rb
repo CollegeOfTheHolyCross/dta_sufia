@@ -1,5 +1,5 @@
 module Hydra
-  module CollectionsControllerBehavior
+  module CollectionsControllerBehaviorOverride
     extend ActiveSupport::Concern
 
     include Blacklight::Base
