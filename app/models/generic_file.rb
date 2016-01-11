@@ -64,6 +64,9 @@ class GenericFile < ActiveFedora::Base
     doc['dta_altLabel_all_subject_ssim'] = []
 
     doc['dta_dates_ssim'] = []
+    doc['dta_sortable_date_dtsi'] = []
+
+    doc['title_info_primary_ssort'] = self.title.first
 
     self.collections.each do |collection|
       doc['collection_name_ssim'] << collection.title
@@ -176,7 +179,9 @@ class GenericFile < ActiveFedora::Base
       date = Date.edtf(raw_date)
       if date.class == Date
         doc['dta_dates_ssim'] << date.year
+        doc['dta_sortable_date_dtsi'].append(date.year.to_s + '-01-01T00:00:00.000Z')
       else
+        doc['dta_sortable_date_dtsi'].append(((date.last.year - date.first.year) / 2).to_i.to_s + '-01-01T00:00:00.000Z')
         (date.first.year..date.last.year).step(1) do |year_step|
           doc['dta_dates_ssim'] << year_step
         end
@@ -187,7 +192,9 @@ class GenericFile < ActiveFedora::Base
       date = Date.edtf(raw_date)
       if date.class == Date
         doc['dta_dates_ssim'] << date.year
+        doc['dta_sortable_date_dtsi'].append(date.year.to_s + '-01-01T00:00:00.000Z')
       else
+        doc['dta_sortable_date_dtsi'].append(((date.last.year - date.first.year) / 2).to_i.to_s + '-01-01T00:00:00.000Z')
         (date.first.year..date.last.year).step(1) do |year_step|
           doc['dta_dates_ssim'] << year_step
         end

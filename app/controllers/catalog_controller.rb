@@ -34,8 +34,10 @@ class CatalogController < ApplicationController
     config.collection_field = 'collection_name_ssim'
     # institution name field
     config.institution_field = 'institution_name_ssim'
+    # solr field for flagged/inappropriate content
+    config.flagged_field = 'flagged_ssi'
 
-
+    config.view.gallery.default = true
     config.view.gallery.partials = [:index_header, :index]
           config.view.masonry.partials = [:index]
           config.view.slideshow.partials = [:index]
@@ -56,10 +58,13 @@ class CatalogController < ApplicationController
   config.view.maps.show_initial_zoom = 9
   config.view.maps.facet_mode = 'geojson'
 
+    #set default per-page
+    config.default_per_page = 20
+
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = {
       qt: "search",
-      rows: 10
+      rows: 20
     }
 
     # Specify which field to use in the tag cloud on the homepage.
@@ -108,6 +113,20 @@ class CatalogController < ApplicationController
 
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
+    config.add_index_field 'collection_name_ssim', :label => 'Collection'
+    config.add_index_field 'institution_name_ssim', :label => 'Institution'
+    config.add_index_field solr_name("creator", :stored_searchable), label: "Creator", itemprop: 'creator'
+    #config.add_index_field 'date_start_tsim', :label => 'Date', :helper_method => :index_date_value
+    config.add_index_field 'date_created_tesim', :label => 'Date'
+    config.add_index_field 'date_issued_tesim', :label => 'Date'
+
+
+    config.add_show_field 'collection_name_ssim', :label => 'Collection'
+    config.add_show_field 'institution_name_ssim', :label => 'Institution'
+    config.add_show_field solr_name("creator", :stored_searchable), label: "Creator", itemprop: 'creator'
+    config.add_show_field 'date_start_tsim', :label => 'Date', :helper_method => :index_date_value
+
+=begin
     config.add_index_field solr_name("title", :stored_searchable), label: "Title", itemprop: 'name'
     config.add_index_field solr_name("description", :stored_searchable), label: "Description", itemprop: 'description'
     config.add_index_field solr_name("tag", :stored_searchable), label: "Keyword", itemprop: 'keywords'
@@ -124,9 +143,11 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name("resource_type", :stored_searchable), label: "Resource Type"
     config.add_index_field solr_name("format", :stored_searchable), label: "File Format"
     config.add_index_field solr_name("identifier", :stored_searchable), label: "Identifier"
+=end
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
+=begin
     config.add_show_field solr_name("title", :stored_searchable), label: "Title"
     config.add_show_field solr_name("description", :stored_searchable), label: "Description"
     config.add_show_field solr_name("tag", :stored_searchable), label: "Keyword"
@@ -143,6 +164,7 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name("resource_type", :stored_searchable), label: "Resource Type"
     config.add_show_field solr_name("format", :stored_searchable), label: "File Format"
     config.add_show_field solr_name("identifier", :stored_searchable), label: "Identifier"
+=end
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
@@ -222,6 +244,17 @@ class CatalogController < ApplicationController
     }
   end
 
+    config.add_search_field('people / organizations') do |field|
+      field.solr_parameters = {
+          :"spellcheck.dictionary" => "people / organizations"
+      }
+      solr_name = "dta_other_subject_ssim"
+      field.solr_local_parameters = {
+          qf: solr_name,
+          pf: solr_name
+      }
+    end
+
   config.add_search_field('identifier') do |field|
     field.include_in_advanced_search = false
     field.solr_parameters = {
@@ -244,11 +277,28 @@ class CatalogController < ApplicationController
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
     # label is key, solr field is value
+
+=begin
+    config.add_sort_field 'score desc, title_tesim asc', :label => 'relevance'
+    config.add_sort_field 'title_tesim asc, dta_sortable_date_dtsi asc', :label => 'title'
+    config.add_sort_field 'dta_sortable_date_dtsi asc, title_tesim asc', :label => 'date (asc)'
+    config.add_sort_field 'dta_sortable_date_dtsi desc, title_tesim asc', :label => 'date (desc)'
+=end
+
+    config.add_sort_field 'score desc, title_primary_ssort asc', :label => 'relevance'
+    config.add_sort_field 'title_primary_ssort asc, dta_sortable_date_dtsi asc', :label => "title \u25B2"
+    config.add_sort_field 'title_primary_ssort desc, dta_sortable_date_dtsi asc', :label => "title \u25BC"
+    config.add_sort_field 'dta_sortable_date_dtsi asc, title_primary_ssort asc', :label => "date \u25B2"
+    config.add_sort_field 'dta_sortable_date_dtsi desc, title_primary_ssort asc', :label => "date \u25BC"
+
+=begin
     config.add_sort_field "score desc, #{uploaded_field} desc", label: "relevance"
     config.add_sort_field "#{uploaded_field} desc", label: "date uploaded \u25BC"
     config.add_sort_field "#{uploaded_field} asc", label: "date uploaded \u25B2"
     config.add_sort_field "#{modified_field} desc", label: "date modified \u25BC"
     config.add_sort_field "#{modified_field} asc", label: "date modified \u25B2"
+=end
+
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.

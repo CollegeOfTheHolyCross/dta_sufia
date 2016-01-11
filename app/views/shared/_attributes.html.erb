@@ -1,0 +1,64 @@
+<table class="table">
+  <tr>
+    <th><span class="attribute-label h4">Topics:</span></div>
+    <td>
+      <% if work[:dta_all_subject_ssim] %>
+        <%= work[:dta_all_subject_ssim].sort_by{|word| word.downcase}.join(', ') %>
+      <% else %>
+        &nbsp;
+      <% end %>
+    </td>
+  </tr>
+
+  <tr>
+    <th><span class="attribute-label h4">People:</span></div>
+    <td>
+      <% if work[:dta_other_subject_ssim] %>
+          <%= work[:dta_other_subject_ssim].sort_by{|word| word.downcase}.join(', ') %>
+      <% else %>
+          &nbsp;
+      <% end %>
+
+    </td>
+  </tr>
+
+  <tr>
+    <th><span class="attribute-label h4">Creator:</span></th>
+    <td><%= work.creator %></td>
+  </tr>
+
+  <% if work[:date_created] %>
+      <tr>
+        <th><span class="attribute-label h4">Date:</span></th>
+        <td><%= work[:date_created].first %></th>
+      </tr>
+  <% elsif work[:date_issued] %>
+      <tr>
+        <th><span class="attribute-label h4">Date:</span></th>
+        <td><%= work[:date_issued].first %></th>
+      </tr>
+  <% else %>
+      <tr>
+        <th><span class="attribute-label h4">Date:</span></th>
+        <td>Unknown</th>
+      </tr>
+  <% end %>
+
+  <tr>
+    <th><span class="attribute-label h4">Collection:</span></div>
+    <td><%= work[:collection_name_ssim].first %></td>
+  </tr>
+  <tr>
+    <th><span class="attribute-label h4">Institution:</span></th>
+    <td><%= work[:institution_name_ssim].first %></td>
+  </tr>
+
+<!--  <tr>
+    <th><span class="attribute-label h4">Keywords:</span></th>
+    <td><%= work.tags.join(', ') %></td>
+  </tr>
+  <tr>
+    <th><span class="attribute-label h4">Date Uploaded:</span></th>
+    <td><%= work.date_uploaded %></td>
+  </tr>-->
+</table>
