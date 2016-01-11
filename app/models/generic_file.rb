@@ -201,6 +201,8 @@ class GenericFile < ActiveFedora::Base
       end
     end
 
+    doc['dta_sortable_date_dtsi'] = [doc['dta_sortable_date_dtsi'].first] if doc['dta_sortable_date_dtsi'].present?
+
     doc['subject_geojson_facet_ssim'] = []
     doc['subject_geographic_ssim'] = []
     doc['subject_coordinates_geospatial'] = []
