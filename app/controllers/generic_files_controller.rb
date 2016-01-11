@@ -9,6 +9,20 @@ class GenericFilesController < ApplicationController
   #Needed because it attempts to load from Solr in: load_resource_from_solr of Sufia::FilesControllerBehavior
   skip_load_and_authorize_resource :only=> [:create, :swap_visibility, :show] #FIXME: Why needed for swap visibility exactly?
 
+  # routed to /files/:id
+  def show
+    #super
+    respond_to do |format|
+      format.html do
+        @events = @generic_file.events(100)
+        @presenter = presenter
+        @audit_status = audit_service.human_readable_audit_status
+        @show_response, @document = fetch(params[:id])
+      end
+      format.endnote { render text: @generic_file.export_as_endnote }
+    end
+  end
+
   def new
     super
 
