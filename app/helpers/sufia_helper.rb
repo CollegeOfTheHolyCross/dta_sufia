@@ -22,6 +22,10 @@ module SufiaHelper
       #content_tag(:span, "", class: "glyphicon glyphicon-th collection-icon-search")
 
       # file
+    #FIXME: DO THIS BETTER
+    elsif document["active_fedora_model_ssi"] == "Institution"
+      options[:alt] = ""
+      image_tag "shared/institution_icon.png", options
     else
       path =
           if document.image? || document.pdf? || document.video? || document.office_document?

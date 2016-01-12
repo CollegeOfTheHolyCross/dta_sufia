@@ -1,6 +1,8 @@
-class CollectionsController < ApplicationController
+class CollectionsController < CatalogController
   include Sufia::CollectionsControllerBehavior
   include DtaSearchBuilder
+
+  copy_blacklight_config_from(CatalogController)
 
 
   before_action :filter_docs_with_read_access!, except: :show
@@ -13,20 +15,7 @@ class CollectionsController < ApplicationController
 
   before_action :verify_admin, except: [:show, :public_index, :public_show] #FIXME on change member
 
-  def relation_base_blacklight_config
-    # don't show collection facet
-    blacklight_config.facet_fields['collection_name_ssim'].show = false
-    blacklight_config.facet_fields['collection_name_ssim'].if = false
 
-    blacklight_config.facet_fields['institution_name_ssim'].show = false
-    blacklight_config.facet_fields['institution_name_ssim'].if = false
-
-    # collapse remaining facets
-    #blacklight_config.facet_fields['subject_facet_ssim'].collapse = true
-    #blacklight_config.facet_fields['subject_geographic_ssim'].collapse = true
-    #blacklight_config.facet_fields['date_facet_ssim'].collapse = true
-    #blacklight_config.facet_fields['genre_basic_ssim'].collapse = true
-  end
 
   def index
     super
@@ -57,7 +46,7 @@ class CollectionsController < ApplicationController
   # set the correct facet params for facets from the collection
   def set_collection_facet_params(collection_title, document)
     facet_params = {blacklight_config.collection_field => [collection_title]}
-    #facet_params[blacklight_config.institution_field] = document[blacklight_config.institution_field.to_sym] if t('blacklight.home.browse.institutions.enabled')
+    facet_params[blacklight_config.institution_field] = document[blacklight_config.institution_field.to_sym]
     facet_params
   end
 
@@ -68,33 +57,23 @@ class CollectionsController < ApplicationController
   end
   helper_method :search_action_url
 
-=begin
   def public_index
+=begin
+    @nav_li_active = 'explore'
+
     query = collections_search_builder.with(params).query
     @response = repository.search(query)
     @document_list = @response.documents
     params[:view] = 'list'
-    params[:sort] = 'title_info_primary_ssort asc'
-  end
+    params[:sort] = 'title_primary_ssort asc'
 =end
 
-  def test_response(params)
     @nav_li_active = 'explore'
     self.search_params_logic += [:collections_filter]
     (@response, @document_list) = search_results(params, search_params_logic)
     params[:view] = 'list'
     params[:sort] = 'title_info_primary_ssort asc'
-    @document_list
-  end
-
-  def public_index
-    @nav_li_active = 'explore'
-
-    query = collections_search_builder.with(params).query
-    @response = repository.search(query)
-    @document_list = @response.documents
-    params[:view] = 'list'
-    params[:sort] = 'title_info_primary_ssort asc'
+    params[:per_page] = params[:per_page].presence || '50'
 
     flash[:notice] = nil if flash[:notice] == "Select something first"
 

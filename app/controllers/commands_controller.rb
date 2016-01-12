@@ -40,7 +40,7 @@ class CommandsController < ApplicationController
 
   def reindex
     #ActiveFedora::Base.reindex_everything
-    ActiveFedora::Base.reindex_everything
+    #ActiveFedora::Base.reindex_everything
     descendants = descendant_uris(ActiveFedora::Base.id_to_uri(''))
     descendants.shift # Discard the root uri
     descendants.each do |uri|

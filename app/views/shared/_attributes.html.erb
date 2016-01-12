@@ -1,25 +1,11 @@
 <table class="table">
   <tr>
-    <th><span class="attribute-label h4">Topics:</span></div>
-    <td>
-      <% if work[:dta_all_subject_ssim] %>
-        <%= work[:dta_all_subject_ssim].sort_by{|word| word.downcase}.join(', ') %>
-      <% else %>
-        &nbsp;
-      <% end %>
-    </td>
+    <th><span class="attribute-label h4">Collection:</span></th>
+    <td><%= work[:collection_name_ssim].first %></td>
   </tr>
-
   <tr>
-    <th><span class="attribute-label h4">People:</span></div>
-    <td>
-      <% if work[:dta_other_subject_ssim] %>
-          <%= work[:dta_other_subject_ssim].sort_by{|word| word.downcase}.join(', ') %>
-      <% else %>
-          &nbsp;
-      <% end %>
-
-    </td>
+    <th><span class="attribute-label h4">Institution:</span></th>
+    <td><%= work[:institution_name_ssim].first %></td>
   </tr>
 
   <tr>
@@ -45,13 +31,36 @@
   <% end %>
 
   <tr>
-    <th><span class="attribute-label h4">Collection:</span></div>
-    <td><%= work[:collection_name_ssim].first %></td>
+    <th><span class="attribute-label h4">Topics:</span></th>
+    <td>
+      <% if work[:dta_all_subject_ssim] %>
+        <%= work[:dta_all_subject_ssim].sort_by{|word| word.downcase}.join(', ') %>
+      <% else %>
+        &nbsp;
+      <% end %>
+    </td>
   </tr>
+
+  <% if work[:dta_other_subject_ssim] %>
   <tr>
-    <th><span class="attribute-label h4">Institution:</span></th>
-    <td><%= work[:institution_name_ssim].first %></td>
+    <th><span class="attribute-label h4">People:</span></th>
+    <td>
+          <%= work[:dta_other_subject_ssim].sort_by{|word| word.downcase}.join(', ') %>
+    </td>
   </tr>
+  <% end %>
+
+  <% if work[:description_tesim] %>
+  <tr>
+    <th><span class="attribute-label h4">Description:</span></th>
+    <td>
+          <%= truncate(work[:description_tesim].first, {:length=>200}) %>
+    </td>
+  </tr>
+  <% end %>
+
+
+
 
 <!--  <tr>
     <th><span class="attribute-label h4">Keywords:</span></th>

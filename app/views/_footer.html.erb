@@ -1,11 +1,12 @@
 <div id="footer" class="container-fluid">
   <div class="row">
-  <div class="col-xs-12 col-sm-5">
-      <p class="pull-left" style="padding-top:-50px;"><%= render partial: '/user_util_links' %></p>
-      <p></p>
-  </div>
-    <div class="col-xs-12 col-sm-7">
-      <p><%= t('sufia.footer.copyright_html') %></p>
+    <div id="footer_logo" class="col-sm-3 hidden-xs">
+      <%= link_to application_name, root_path, :id => 'footer_logo_link' %>
+    </div>
+    <div id="footer_address" class="col-sm-9">
+      <strong>Copyright &copy; <%= t('blacklight.application_name') %></strong><br />
+      <%= t('blacklight.footer.address') %><br />
+      <%= link_to 'Contact Us', about_contact_path %>
     </div>
   </div><!-- /footer -->
   </div><!-- /.row -->

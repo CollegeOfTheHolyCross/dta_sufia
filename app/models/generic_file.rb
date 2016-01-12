@@ -66,12 +66,20 @@ class GenericFile < ActiveFedora::Base
     doc['dta_dates_ssim'] = []
     doc['dta_sortable_date_dtsi'] = []
 
-    doc['title_info_primary_ssort'] = self.title.first
+    doc['language_label_ssim'] = []
+
+    doc['title_primary_ssort'] = self.title.first
 
     self.collections.each do |collection|
       doc['collection_name_ssim'] << collection.title
       collection.institutions.each do |institution|
         doc['institution_name_ssim'] << institution.name
+      end
+    end
+
+    self.language.each do |lang|
+      if lang.match(/eng$/)
+        doc['language_label_ssim'] << 'English'
       end
     end
 
@@ -144,29 +152,34 @@ class GenericFile < ActiveFedora::Base
 
 
 
-        label_holder = nil
+        english_label = nil
+        default_label = nil
         any_match = nil
         RestClient.enable Rack::Cache
         r = RestClient.get "#{subject}.json", { accept: :json }
         RestClient.disable Rack::Cache
         result = JSON.parse(r)
         #FIXME!!!
-        if result.present? && result.first['http://www.w3.org/2004/02/skos/core#prefLabel'].present?
-          result.first['http://www.w3.org/2004/02/skos/core#prefLabel'].each do |lcsh_label|
-            if !lcsh_label.has_key?('@language') || (lcsh_label.has_key?('@language') && lcsh_label['@language'] == 'en')
-              label_holder ||= lcsh_label['@value']
+        subject_values = result.select { |res| res['@id'].present? and res['@id'] == subject }
+        if subject_values.present? and subject_values.first['http://www.w3.org/2004/02/skos/core#prefLabel'].present?
+          subject_values.first['http://www.w3.org/2004/02/skos/core#prefLabel'].each do |lcsh_label|
+            if lcsh_label.has_key?('@language') && lcsh_label['@language'] == 'en'
+              english_label ||= lcsh_label['@value']
+            elsif !lcsh_label.has_key?('@language')
+              default_label ||= lcsh_label['@value']
             else
               any_match ||= lcsh_label['@value']
             end
           end
-          label_holder ||= any_match
-          doc['dta_lcsh_subject_ssim'] << label_holder
-          doc['dta_all_subject_ssim'] << label_holder
+
+          default_label ||= any_match
+          english_label ||= default_label
+          doc['dta_lcsh_subject_ssim'] << english_label
+          doc['dta_all_subject_ssim'] << english_label
         else
           doc['dta_lcsh_subject_ssim'] << subject
           doc['dta_all_subject_ssim'] << subject
         end
-
 
       else
         doc['dta_other_subject_ssim'] << subject
@@ -174,6 +187,12 @@ class GenericFile < ActiveFedora::Base
 
       end
     end
+
+    doc['dta_homosaurus_subject_ssim'].sort_by!{|word| word.downcase}
+    doc['dta_all_subject_ssim'].sort_by!{|word| word.downcase}
+    doc['dta_lcsh_subject_ssim'].sort_by!{|word| word.downcase}
+    doc['dta_other_subject_ssim'].sort_by!{|word| word.downcase}
+
 
     self.date_issued.each do |raw_date|
       date = Date.edtf(raw_date)
@@ -206,6 +225,7 @@ class GenericFile < ActiveFedora::Base
     doc['subject_geojson_facet_ssim'] = []
     doc['subject_geographic_ssim'] = []
     doc['subject_coordinates_geospatial'] = []
+    doc['subject_geographic_hier_ssim'] = []
 
 
     #NEED TO ADD THE FOLLOWING AFTER coordinate in schema.xml:
@@ -240,6 +260,15 @@ class GenericFile < ActiveFedora::Base
       doc['subject_geographic_ssim'] << result['countryName'] if result['countryName'].present?
 
       doc['subject_geojson_facet_ssim'].append(geojson_hash_base.to_json)
+
+      hier_result = []
+      hier_result << result['adminName1'] if result['adminName1'].present?
+      hier_result << result['adminName2'] if result['adminName2'].present?
+      hier_result << result['adminName3'] if result['adminName3'].present?
+      hier_result << result['name']
+
+      hier_result.uniq!
+      doc['subject_geographic_hier_ssim'] << hier_result.join('||')
     end
 
     doc['subject_geographic_ssim'].uniq!
