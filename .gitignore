@@ -52,6 +52,7 @@ Gemfile.lock
 # Directories to ignore #
 #########################
 /public/data/*
+/public/assets/*
 /public/batch_uploads/*
 /jetty/*
 /solr_conf/*

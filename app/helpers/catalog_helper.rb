@@ -11,4 +11,22 @@ module CatalogHelper
       nil
     end
   end
+
+  def institution_icon_path
+    'shared/institution_icon.png'
+  end
+
+# determine the 'truncate' length based on catalog#index view type
+  def index_title_length
+    case params[:view]
+      when 'list'
+        170
+      when 'masonry'
+        89
+      else
+        130
+    end
+  end
+
+
 end

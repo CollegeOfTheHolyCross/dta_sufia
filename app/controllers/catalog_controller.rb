@@ -16,7 +16,7 @@ class CatalogController < ApplicationController
   # These before_filters apply the hydra access controls
   before_filter :enforce_show_permissions, only: :show
   # This applies appropriate access controls to all solr queries
-  CatalogController.search_params_logic += [:add_access_controls_to_solr_params, :add_advanced_parse_q_to_solr]
+  CatalogController.search_params_logic += [:add_access_controls_to_solr_params, :add_advanced_parse_q_to_solr, :exclude_unwanted_models]
 
   skip_before_filter :default_html_head
 
@@ -303,6 +303,21 @@ class CatalogController < ApplicationController
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
     config.spell_max = 5
+  end
+
+  def relation_base_blacklight_config
+    # don't show collection facet
+    blacklight_config.facet_fields['collection_name_ssim'].show = false
+    blacklight_config.facet_fields['collection_name_ssim'].if = false
+
+    blacklight_config.facet_fields['institution_name_ssim'].show = false
+    blacklight_config.facet_fields['institution_name_ssim'].if = false
+
+    # collapse remaining facets
+    #blacklight_config.facet_fields['subject_facet_ssim'].collapse = true
+    #blacklight_config.facet_fields['subject_geographic_ssim'].collapse = true
+    #blacklight_config.facet_fields['date_facet_ssim'].collapse = true
+    #blacklight_config.facet_fields['genre_basic_ssim'].collapse = true
   end
 
 

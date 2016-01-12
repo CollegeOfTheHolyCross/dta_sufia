@@ -23,12 +23,19 @@ class Collection < Sufia::Collection
 
   def to_solr(doc = {} )
     doc = super(doc)
+
+    doc['title_primary_ssort'] = self.title
+    doc['title_primary_ssi'] = self.title
+
     doc['institution_name_ssim'] = []
     self.institutions.each do |institution|
       doc['institution_name_ssim'] << institution.name
+      doc['institution_pid_ssi'] = institution.id
     end
 
     doc['collection_name_ssim'] = self.title
+
+
 
 
     doc

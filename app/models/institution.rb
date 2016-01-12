@@ -56,4 +56,15 @@ class Institution < ActiveFedora::Base
     return false
   end
 
+  def to_solr(doc = {} )
+    doc = super(doc)
+    doc['institution_name_ssim'] = []
+
+    doc['title_primary_ssort'] = self.name
+    doc['institution_name_ssim'] << self.name
+
+
+    doc
+  end
+
 end

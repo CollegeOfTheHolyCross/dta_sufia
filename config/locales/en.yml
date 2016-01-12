@@ -21,9 +21,17 @@
 
 en:
   blacklight:
+    application_name: 'Digital Transgender Archive'
+    application_desc: 'Digital Transgender Archive'
+    footer:
+      address: '1 College St, Worcester, MA 01610'
     search:
       form:
         collection: 'Search this collection...'
+        institution: 'Search this institution...'
     collections:
+      browse:
+        all: 'View All Items'
+    institutions:
       browse:
         all: 'View All Items'
