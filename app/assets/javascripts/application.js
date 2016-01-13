@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs//
 //
+//= require ckeditor/init
 // Required by Blacklight-Maps
 //= require blacklight-maps
 

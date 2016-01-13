@@ -1,6 +1,7 @@
 <h1>Edit Institution</h1>
 <div style="width:50em;">
-  <%= simple_form_for(@institution, :url => institution_path(:id => @institution.id), :as => :institution) do |f| %>
+  <%= simple_form_for(@institution, :url => institution_path(:id => @institution.id), :as => :institution, html: { multipart: true, id: 'fileupload' }) do |f| %>
+      <p>Select an image to upload: <%= file_field_tag "filedata" %></p>
       <% @institution.terms.each do |key| %>
           <% if key.to_s == 'description' %>
 

@@ -1,7 +1,12 @@
-<div id="item_metadata" class="well" style="max-width:1000px;">
+<div id="item_metadata" class="well">
 <h2 style="margin-top:-15px;">Item Information</h2>
   <dl class="dl-horizontal file-show-term">
-    <div class="col-xs-12 col-sm-6 col-md-6" style="float:left; margin:0px; padding: 0px;">
+
+        <dt>Identifier</dt>
+        <dd>
+              <%= @document[:id] %>
+        </dd>
+
       <% if @document[:collection_name_ssim] %>
           <dt>Collection</dt>
           <dd>
@@ -108,13 +113,6 @@
       <% end %>
 
 
-
-
-
-    </div>
-    <div class="col-xs-12 col-sm-6 col-md-6" style="float:left;">
-
-
       <% if @document[:dta_all_subject_ssim] %>
           <dt>Topic(s)</dt>
           <dd>
@@ -182,12 +180,6 @@
 
 
 
-    </div>
-
-
-
-
-<div style="clear:both;"></div>
 
 
 
@@ -199,6 +191,5 @@
 
 </dl>
 
-  <%= render 'show_actions_public' %>
 
 </div>

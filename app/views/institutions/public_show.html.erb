@@ -17,7 +17,7 @@
 
         <div class="col-sm-9">
 
-          <div id="institution_search_tools" class="well well-sm">
+          <div id="institution_search_tools" class="well well-sm" >
             <%= render :partial => 'search_form_institution',
                        :locals => {:document => @document} %>
             <span class="institution_search_separator">or</span>
@@ -26,14 +26,14 @@
             </div>
           </div>
 
-          <% if @institution_image_pid %>
-              <%= iiif_image_tag(@institution_image_pid,
-                                 {:size => 'pct:20',
-                                  :alt => @institution_title,
-                                  :class => 'institution_img_show'}) %>
+          <% if @document['has_image_ssi'] == 'true' %>
+              <%= image_tag(sufia.download_path(@document, file: 'content'),
+                             class: 'institution_img_show',
+                            alt: @document['name_tesim']
+                            )%>
           <% else %>
               <%= image_tag(institution_icon_path,
-                            :alt => @institution_title,
+                            :alt =>  @document['name_tesim'],
                             :class => 'institution_img_show') %>
           <% end %>
 

@@ -70,6 +70,8 @@ end
 
 gem 'sprockets-rails', '2.3.3'
 
+gem 'ckeditor', '4.1.6'
+
 
 gem 'rsolr', '~> 1.0.6'
 gem 'devise'

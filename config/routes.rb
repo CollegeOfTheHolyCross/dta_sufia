@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
+  mount Ckeditor::Engine => '/ckeditor'
   resources :institutions
 
   resources :homosaurus
+
+  resources :posts, path: :news
 
   mount Qa::Engine => '/qa'
 
@@ -24,6 +27,10 @@ Rails.application.routes.draw do
   #Static Paths
   get 'about' => 'about#index', as: :about
   get 'about/project' => 'about#project', as: :about_project
+  #get 'about/news' => 'about#news', as: :about_news
+  get 'about/team' => 'about#team', as: :about_team
+  get 'about/board' => 'about#board', as: :about_board
+  get 'about/policies' => 'about#policies', as: :about_policies
   get 'about/contact' => 'about#contact', as: :about_contact
 
   get 'places', :to => 'catalog#map', :as => 'places'

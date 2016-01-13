@@ -1,28 +1,30 @@
 <section id="secondary" class="widget-area span4" role="complementary">
-  <aside id="recent-posts-2" class="widget well widget_recent_entries">		<h2 class="widget-title">Recent News</h2>		<ul>
-  <li>
-    <a href="http://blog.digitalcommonwealth.org/?p=1023">Special Christmas Dinners</a>
-  </li>
-  <li>
-    <a href="http://blog.digitalcommonwealth.org/?p=991">Internet Archive Images on Flickr</a>
-  </li>
-  <li>
-    <a href="http://blog.digitalcommonwealth.org/?p=984">New Collections added to Digital Commonwealth in September and October</a>
-  </li>
-  <li>
-    <a href="http://blog.digitalcommonwealth.org/?p=960">October, 1942: National Scrap Metal Drive</a>
-  </li>
-  <li>
-    <a href="http://blog.digitalcommonwealth.org/?p=942">Special Event with Maureen Taylor, the Photo Detective</a>
-  </li>
+  <aside id="current_section_nav" class="widget well widget_side_nav">		<h2 class="widget-title" style="margin-top:-10px;"><%=@nav_section%></h2>		<ul>
+    <% @nav_items.each do |nav|%>
+    <li>
+      <%=nav%>
+    </li>
+    <% end %>
+  </ul>
+  </aside>
+
+
+<aside id="categories-2" class="widget well widget_categories"><h2 class="widget-title" style="margin-top:-10px;">Latest Items</h2>		<ul style="list-style:none; margin:0; padding: 0">
+
+  <%
+     count = 0
+     @latest_documents.each do |latest_document|
+     count = count + 1
+  %>
+      <li class="cat-item cat-item-<%=count%>>" style="max-width:150px; float:left; margin-left:20px; margin-bottom:10px;">
+        <%= link_to (image_tag sufia.download_path(latest_document["id"], file: 'thumbnail'), class: "img-responsive", alt: "#{latest_document['title_tesim'].first}"), sufia.generic_files_path(latest_document["id"]).gsub('.', '/'), title: latest_document['title_tesim'].first %>
+        <br />
+        <%= link_to truncate(latest_document['title_tesim'].first,{:length=>50}), sufia.generic_files_path(latest_document["id"]).gsub('.', '/'), title: latest_document['title_tesim'].first, class: "object_title" %>
+
+      </li>
+  <% end %>
+  <div style="clear:both;"></div>
+
 </ul>
-</aside><aside id="categories-2" class="widget well widget_categories"><h2 class="widget-title">Latest Items</h2>		<ul style="list-style:none;">
-  <li class="cat-item cat-item-2"><a href="/files/tt44pm87g"><img src="/downloads/tt44pm87g?file=thumbnail" width="200px"/><br />Verasphere Archive, 1995-2009</a>
-  </li>
-  <li class="cat-item cat-item-3"><a href="/files/f7623c581"><img src="/downloads/f7623c581?file=thumbnail" width="200px" /><br />Guide to the TransPositions: A Conference Toward Transgender Studies, Records, 1997-1998</a>
-  </li>
-  <li class="cat-item cat-item-4"><a href="/files/xk81jk370"><img src="/downloads/xk81jk370?file=thumbnail" width="200px" /><br />Guide to the Tommie L. Watkins Jr. Papers, 2000-2005</a>
-  </li>
-</ul>
-</aside><aside id="text-2" class="widget well widget_text"><h2 class="widget-title">Follow us on Facebook</h2>			<div class="textwidget"><!-- Facebook Badge START --><a href="https://www.facebook.com/pages/Digital-Commonwealth/251547586721" title="Digital Commonwealth" target="_TOP"><img class="img" src="https://badge.facebook.com/badge/251547586721.6484.100226906.png" style="border: 0px;" alt=""></a><!-- Facebook Badge END --></div>
+</aside><aside id="text-2" class="widget well widget_text" style="margin-top:-10px;"><h2 class="widget-title">Follow us on Facebook</h2>			<div class="textwidget"><!-- Facebook Badge START --><a href="https://www.facebook.com/pages/Digital-Commonwealth/251547586721" title="Digital Commonwealth" target="_TOP"><img class="img" src="https://badge.facebook.com/badge/251547586721.6484.100226906.png" style="border: 0px;" alt=""></a><!-- Facebook Badge END --></div>
 </aside></section>

@@ -21,6 +21,8 @@
 
 en:
   blacklight:
+    citation:
+      chicago: 'Chicago Style:'
     application_name: 'Digital Transgender Archive'
     application_desc: 'Digital Transgender Archive'
     footer:
@@ -30,8 +32,12 @@ en:
         collection: 'Search this collection...'
         institution: 'Search this institution...'
     collections:
+      index:
+        page_title: 'Collections'
       browse:
         all: 'View All Items'
     institutions:
+      index:
+        page_title: 'Institutions'
       browse:
         all: 'View All Items'

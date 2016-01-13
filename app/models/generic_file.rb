@@ -55,18 +55,27 @@ class GenericFile < ActiveFedora::Base
   def to_solr(doc = {} )
     doc = super(doc)
 
+    doc['ident_tesi'] = self.id
+
     doc['collection_name_ssim'] = []
     doc['institution_name_ssim'] = []
+
     doc['dta_homosaurus_subject_ssim'] = []
     doc['dta_lcsh_subject_ssim'] = []
     doc['dta_other_subject_ssim'] = []
     doc['dta_all_subject_ssim'] = []
+
+    doc['dta_subject_primary_searchable_tesim'] = []
+    doc['dta_subject_alt_searchable_tesim'] = []
+
     doc['dta_altLabel_all_subject_ssim'] = []
 
     doc['dta_dates_ssim'] = []
     doc['dta_sortable_date_dtsi'] = []
 
     doc['language_label_ssim'] = []
+
+    doc['is_public_ssi'] = self.public?.to_s
 
     doc['title_primary_ssort'] = self.title.first
 
@@ -155,6 +164,7 @@ class GenericFile < ActiveFedora::Base
         english_label = nil
         default_label = nil
         any_match = nil
+        full_alt_term_list = []
         RestClient.enable Rack::Cache
         r = RestClient.get "#{subject}.json", { accept: :json }
         RestClient.disable Rack::Cache
@@ -169,6 +179,8 @@ class GenericFile < ActiveFedora::Base
               default_label ||= lcsh_label['@value']
             else
               any_match ||= lcsh_label['@value']
+              #FIXME
+              full_alt_term_list << lcsh_label['@value']
             end
           end
 
@@ -180,6 +192,14 @@ class GenericFile < ActiveFedora::Base
           doc['dta_lcsh_subject_ssim'] << subject
           doc['dta_all_subject_ssim'] << subject
         end
+
+        if subject_values.present? and subject_values.first['http://www.w3.org/2004/02/skos/core#altLabel'].present?
+          subject_values.first['http://www.w3.org/2004/02/skos/core#altLabel'].each do |lcsh_label|
+              full_alt_term_list << lcsh_label['@value']
+          end
+        end
+
+        doc['dta_altLabel_all_subject_ssim'] += full_alt_term_list
 
       else
         doc['dta_other_subject_ssim'] << subject
@@ -193,13 +213,21 @@ class GenericFile < ActiveFedora::Base
     doc['dta_lcsh_subject_ssim'].sort_by!{|word| word.downcase}
     doc['dta_other_subject_ssim'].sort_by!{|word| word.downcase}
 
+    doc['dta_other_subject_tesim'] = doc['dta_other_subject_ssim']
+    doc['dta_subject_primary_searchable_tesim'] = doc['dta_all_subject_ssim'] + doc['dta_other_subject_ssim']
+    doc['dta_subject_alt_searchable_tesim'] = doc['dta_altLabel_all_subject_ssim']
+
 
     self.date_issued.each do |raw_date|
       date = Date.edtf(raw_date)
       if date.class == Date
+        doc['date_start_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
+        doc['date_end_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
         doc['dta_dates_ssim'] << date.year
         doc['dta_sortable_date_dtsi'].append(date.year.to_s + '-01-01T00:00:00.000Z')
       else
+        doc['date_start_dtsi'] = date.first.year.to_s + '-01-01T00:00:00.000Z'
+        doc['date_end_dtsi'] = date.last.year.to_s + '-01-01T00:00:00.000Z'
         doc['dta_sortable_date_dtsi'].append(((date.last.year - date.first.year) / 2).to_i.to_s + '-01-01T00:00:00.000Z')
         (date.first.year..date.last.year).step(1) do |year_step|
           doc['dta_dates_ssim'] << year_step
@@ -210,9 +238,13 @@ class GenericFile < ActiveFedora::Base
     self.date_created.each do |raw_date|
       date = Date.edtf(raw_date)
       if date.class == Date
+        doc['date_start_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
+        doc['date_end_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
         doc['dta_dates_ssim'] << date.year
         doc['dta_sortable_date_dtsi'].append(date.year.to_s + '-01-01T00:00:00.000Z')
       else
+        doc['date_start_dtsi'] = date.first.year.to_s + '-01-01T00:00:00.000Z'
+        doc['date_end_dtsi'] = date.last.year.to_s + '-01-01T00:00:00.000Z'
         doc['dta_sortable_date_dtsi'].append(((date.last.year - date.first.year) / 2).to_i.to_s + '-01-01T00:00:00.000Z')
         (date.first.year..date.last.year).step(1) do |year_step|
           doc['dta_dates_ssim'] << year_step
@@ -224,6 +256,7 @@ class GenericFile < ActiveFedora::Base
 
     doc['subject_geojson_facet_ssim'] = []
     doc['subject_geographic_ssim'] = []
+    doc['subject_geographic_tesim'] = []
     doc['subject_coordinates_geospatial'] = []
     doc['subject_geographic_hier_ssim'] = []
 
@@ -272,6 +305,7 @@ class GenericFile < ActiveFedora::Base
     end
 
     doc['subject_geographic_ssim'].uniq!
+    doc['subject_geographic_tesim'] = doc['subject_geographic_ssim']
 
 
     doc

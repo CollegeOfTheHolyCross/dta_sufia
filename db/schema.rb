@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151203091806) do
+ActiveRecord::Schema.define(version: 20160113111036) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id",       null: false
@@ -37,6 +37,22 @@ ActiveRecord::Schema.define(version: 20151203091806) do
   end
 
   add_index "checksum_audit_logs", ["generic_file_id", "dsid"], name: "by_pid_and_dsid"
+
+  create_table "ckeditor_assets", force: :cascade do |t|
+    t.string   "data_file_name",               null: false
+    t.string   "data_content_type"
+    t.integer  "data_file_size"
+    t.integer  "assetable_id"
+    t.string   "assetable_type",    limit: 30
+    t.string   "type",              limit: 30
+    t.integer  "width"
+    t.integer  "height"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "ckeditor_assets", ["assetable_type", "assetable_id"], name: "idx_ckeditor_assetable"
+  add_index "ckeditor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_ckeditor_assetable_type"
 
   create_table "content_blocks", force: :cascade do |t|
     t.string   "name"
@@ -173,6 +189,22 @@ ActiveRecord::Schema.define(version: 20151203091806) do
 
   add_index "mailboxer_receipts", ["notification_id"], name: "index_mailboxer_receipts_on_notification_id"
   add_index "mailboxer_receipts", ["receiver_id", "receiver_type"], name: "index_mailboxer_receipts_on_receiver_id_and_receiver_type"
+
+  create_table "posts", force: :cascade do |t|
+    t.string   "title"
+    t.string   "identifier"
+    t.text     "content"
+    t.boolean  "published"
+    t.datetime "created"
+    t.datetime "updated"
+    t.string   "user"
+    t.string   "pname"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "posts", ["created"], name: "index_posts_on_created"
+  add_index "posts", ["identifier"], name: "index_posts_on_identifier"
 
   create_table "proxy_deposit_requests", force: :cascade do |t|
     t.string   "generic_file_id",                       null: false

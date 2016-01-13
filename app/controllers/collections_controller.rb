@@ -1,9 +1,9 @@
 class CollectionsController < CatalogController
   include Sufia::CollectionsControllerBehavior
   include DtaSearchBuilder
+  include DtaStaticBuilder
 
   copy_blacklight_config_from(CatalogController)
-
 
   before_action :filter_docs_with_read_access!, except: :show
   before_action :has_access?, except: [:show, :public_index, :public_show]
@@ -14,8 +14,6 @@ class CollectionsController < CatalogController
   before_filter :relation_base_blacklight_config, :only => [:show, :public_show]
 
   before_action :verify_admin, except: [:show, :public_index, :public_show] #FIXME on change member
-
-
 
   def index
     super
@@ -70,10 +68,10 @@ class CollectionsController < CatalogController
 
     @nav_li_active = 'explore'
     self.search_params_logic += [:collections_filter]
-    (@response, @document_list) = search_results(params, search_params_logic)
+    (@response, @document_list) = search_results({:f => {'active_fedora_model_ssi' => 'Collection'},:rows => 100, :sort => 'title_primary_ssort asc'}, search_params_logic)
     params[:view] = 'list'
     params[:sort] = 'title_info_primary_ssort asc'
-    params[:per_page] = params[:per_page].presence || '50'
+    #params[:per_page] = params[:per_page].presence || '50'
 
     flash[:notice] = nil if flash[:notice] == "Select something first"
 
