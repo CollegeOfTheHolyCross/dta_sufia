@@ -1,6 +1,10 @@
 class GenericFilesController < ApplicationController
   include Sufia::Controller
   include Sufia::FilesControllerBehavior
+  include DtaStaticBuilder
+
+  before_action :get_latest_content
+
   before_action :verify_contributor, except: [:show] #FIXME: Added show for now... but need to remove that...
 
   self.presenter_class = MyGenericFilePresenter

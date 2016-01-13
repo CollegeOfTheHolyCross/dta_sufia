@@ -1,6 +1,10 @@
 class Institution < ActiveFedora::Base
   include Hydra::WithDepositor # for access to apply_depositor_metadata
   include Hydra::AccessControls::Permissions
+  include Sufia::Permissions::Readable
+
+  contains "content", class_name: 'FileContentDatastream'
+  contains "thumbnail"
 
   has_many :members, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.hasCollectionMember, class_name: "Collection"
 
@@ -42,6 +46,10 @@ class Institution < ActiveFedora::Base
     index.as :stored_searchable
   end
 
+  def label
+    return self.name
+  end
+
   def show_fields
     attributes.keys - ["id", "members_ids"]
   end
@@ -58,11 +66,17 @@ class Institution < ActiveFedora::Base
 
   def to_solr(doc = {} )
     doc = super(doc)
+
+    #FIXME: THESE ACTUALLY AREN't public...
+    #doc['is_public_ssi'] = self.public?.to_s
+    doc['is_public_ssi'] = true.to_s
+
     doc['institution_name_ssim'] = []
 
     doc['title_primary_ssort'] = self.name
     doc['institution_name_ssim'] << self.name
 
+    doc['has_image_ssi'] = self.content.present?.to_s
 
     doc
   end

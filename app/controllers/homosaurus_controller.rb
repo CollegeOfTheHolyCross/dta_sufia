@@ -1,5 +1,8 @@
 class HomosaurusController < ApplicationController
   before_action :verify_admin
+  include DtaStaticBuilder
+
+  before_action :get_latest_content
 
   def index
     #@terms = Homosaurus.all.sort_by { |term| term.preferred_label }

@@ -12,6 +12,9 @@ class CatalogController < ApplicationController
   include Hydra::Controller::ControllerBehavior
   include Sufia::Catalog
   include DtaSearchBuilder
+  include DtaStaticBuilder
+
+  before_action :get_latest_content
 
   # These before_filters apply the hydra access controls
   before_filter :enforce_show_permissions, only: :show
@@ -121,10 +124,28 @@ class CatalogController < ApplicationController
     config.add_index_field 'date_issued_tesim', :label => 'Date'
 
 
+=begin
     config.add_show_field 'collection_name_ssim', :label => 'Collection'
     config.add_show_field 'institution_name_ssim', :label => 'Institution'
     config.add_show_field solr_name("creator", :stored_searchable), label: "Creator", itemprop: 'creator'
     config.add_show_field 'date_start_tsim', :label => 'Date', :helper_method => :index_date_value
+=end
+
+    config.global_search_fields = []
+    config.global_search_fields << 'ident_tesi'
+    config.global_search_fields << 'alternative_tesim'
+    config.global_search_fields << 'dta_altLabel_all_subject_tsim'
+    config.global_search_fields << 'institution_name_ssim'
+    config.global_search_fields << 'collection_name_ssim'
+    config.global_search_fields << 'description_tesim'
+    config.global_search_fields << 'creator_tesim'
+    config.global_search_fields << 'contributor_tesim'
+    config.global_search_fields << 'genre_tesim'
+    config.global_search_fields << 'publisher_tesim'
+    config.global_search_fields << 'subject_geographic_tesim'
+    config.global_search_fields << 'dta_subject_primary_searchable_tesim'
+    config.global_search_fields << 'dta_subject_alt_searchable_tesim'
+
 
 =begin
     config.add_index_field solr_name("title", :stored_searchable), label: "Title", itemprop: 'name'
@@ -184,13 +205,15 @@ class CatalogController < ApplicationController
     # solr request handler? The one set in config[:default_solr_parameters][:qt],
     # since we aren't specifying it otherwise.
     config.add_search_field('all_fields', label: 'All Fields', include_in_advanced_search: false) do |field|
-      all_names = config.show_fields.values.map(&:field).join(" ")
+      #all_names = config.show_fields.values.map(&:field).join(" ")
       title_name = solr_name("title", :stored_searchable)
 
-      all_names += ' ' + ['dta_altLabel_all_subject_tsim', 'institution_name_ssim', 'collection_name_ssim'].join(" ")
+      #all_names += ' ' + ['dta_altLabel_all_subject_tsim', 'institution_name_ssim', 'collection_name_ssim'].join(" ")
+      #all_names += ' ' + config.global_search_fields.join(" ")
+      all_names = config.global_search_fields.join(" ")
       #puts 'All names is: ' + all_names
       field.solr_parameters = {
-        qf: "#{all_names} file_format_tesim all_text_timv",
+        qf: "#{all_names} file_format_tesim",
         pf: "#{title_name}"
       }
     end
@@ -202,9 +225,11 @@ class CatalogController < ApplicationController
     # subject, language, resource_type, format, identifier, based_near,
 
   config.add_search_field('title') do |field|
+=begin
     field.solr_parameters = {
         :"spellcheck.dictionary" => "title"
     }
+=end
     solr_name = solr_name("title", :stored_searchable)
     field.solr_local_parameters = {
         qf: solr_name,
@@ -214,9 +239,11 @@ class CatalogController < ApplicationController
 
   config.add_search_field('description') do |field|
     field.label = "Description"
+=begin
     field.solr_parameters = {
         :"spellcheck.dictionary" => "description"
     }
+=end
     solr_name = solr_name("description", :stored_searchable)
     field.solr_local_parameters = {
         qf: solr_name,
@@ -225,7 +252,9 @@ class CatalogController < ApplicationController
   end
 
   config.add_search_field('creator') do |field|
+=begin
     field.solr_parameters = { :"spellcheck.dictionary" => "creator" }
+=end
     solr_name = solr_name("creator", :stored_searchable)
     field.solr_local_parameters = {
         qf: solr_name,
@@ -234,9 +263,11 @@ class CatalogController < ApplicationController
   end
 
   config.add_search_field('publisher') do |field|
+=begin
     field.solr_parameters = {
         :"spellcheck.dictionary" => "publisher"
     }
+=end
     solr_name = solr_name("publisher", :stored_searchable)
     field.solr_local_parameters = {
         qf: solr_name,
@@ -245,10 +276,12 @@ class CatalogController < ApplicationController
   end
 
     config.add_search_field('people / organizations') do |field|
+=begin
       field.solr_parameters = {
           :"spellcheck.dictionary" => "people / organizations"
       }
-      solr_name = "dta_other_subject_ssim"
+=end
+      solr_name = "dta_other_subject_tesim"
       field.solr_local_parameters = {
           qf: solr_name,
           pf: solr_name
@@ -257,10 +290,13 @@ class CatalogController < ApplicationController
 
   config.add_search_field('identifier') do |field|
     field.include_in_advanced_search = false
+=begin
     field.solr_parameters = {
         :"spellcheck.dictionary" => "identifier"
     }
-    solr_name = solr_name("id", :stored_searchable)
+=end
+    #solr_name = solr_name("id", :stored_searchable)
+    solr_name = 'ident_tesi'
     field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name

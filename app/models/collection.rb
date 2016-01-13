@@ -24,6 +24,8 @@ class Collection < Sufia::Collection
   def to_solr(doc = {} )
     doc = super(doc)
 
+    doc['is_public_ssi'] = self.public?.to_s
+
     doc['title_primary_ssort'] = self.title
     doc['title_primary_ssi'] = self.title
 

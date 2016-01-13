@@ -6,6 +6,50 @@ body {
   font-family: 'Lato', Verdana, Arail, Helvetica, sans-serif;
 }
 
+/* was #222 */
+a {
+  color: #337ab7;
+  //428BCA
+}
+
+a:hover {
+  color: #005580;
+  text-decoration: underline;
+}
+
+a.object_title {
+  color: #222;
+}
+
+a.object_title :hover {
+  color: #005580;
+}
+
+//Result views
+#search-results a {
+  color: #222;
+}
+
+#search-results a:hover {
+  color: #005580;
+}
+
+//Static Side Nav
+.widget_side_nav {
+  font-size:15px;
+  font-weight: bold;
+}
+.widget_side_nav a {
+  color: #337ab7;
+  font-weight: bold;
+}
+
+.widget_side_nav a:hover {
+  color: #005580;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
 
 
 //Override styles
@@ -86,7 +130,7 @@ div.search_select_wrapper {
   padding: 35px 0;
 }*/
 
-#footer {
+/*#footer {
   float:left;
   position:relative;
   min-width: 320px;
@@ -107,7 +151,7 @@ div.search_select_wrapper {
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   padding: 35px 0;
   width:100%;
-}
+}*/
 
 #dtamasthead {
   float:left;

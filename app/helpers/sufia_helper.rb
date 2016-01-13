@@ -9,21 +9,34 @@ module SufiaHelper
   def sufia_thumbnail_tag(document, options)
     # collection
     if document.collection?
+      #FIXME: This can be done more efficiently...
       if document["hasCollectionMember_ssim"].present?
-        path = sufia.download_path document["hasCollectionMember_ssim"].first, file: 'thumbnail'
-        options[:alt] = ""
-        image_tag path, options
-      else
-        #content_tag(:span, "", class: "glyphicon glyphicon-th collection-icon-search")
-        options[:alt] = ""
-        image_tag "site_images/collection-icon.svg", options
+        document["hasCollectionMember_ssim"].each do |member|
+          visibility_check = GenericFile.find_with_conditions("id:#{member}", rows: '1', fl: 'id,is_public_ssi' ).first
+          if visibility_check.present? and visibility_check['is_public_ssi'] == 'true'
+            path = sufia.download_path member, file: 'thumbnail'
+            options[:alt] = ""
+            return image_tag path, options
+          end
+        end
+
       end
+
+      #No image found
+      #content_tag(:span, "", class: "glyphicon glyphicon-th collection-icon-search")
+      options[:alt] = ""
+      return image_tag "site_images/collection-icon.svg", options
 
       #content_tag(:span, "", class: "glyphicon glyphicon-th collection-icon-search")
 
       # file
     #FIXME: DO THIS BETTER
     elsif document["active_fedora_model_ssi"] == "Institution"
+      if document['has_image_ssi'] == 'true'
+        path = sufia.download_path document, file: 'content'
+        options[:alt] = ""
+        return image_tag path, options
+      end
       options[:alt] = ""
       image_tag "shared/institution_icon.png", options
     else

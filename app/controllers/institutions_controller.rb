@@ -1,4 +1,6 @@
 class InstitutionsController < CatalogController
+  include DtaStaticBuilder
+
   before_action :verify_admin, except: [:public_index, :public_show]
   include Blacklight::Configurable
   include Blacklight::SearchHelper
@@ -10,6 +12,10 @@ class InstitutionsController < CatalogController
   # remove collection facet and collapse others
   before_filter :relation_base_blacklight_config, :only => [:public_show]
 
+
+  def enforce_show_permissions
+    #DO NOTHING
+  end
   # remove grid view from blacklight_config for index view
   def remove_unwanted_views
     blacklight_config.view.delete(:gallery)
@@ -64,9 +70,10 @@ class InstitutionsController < CatalogController
   def public_index
     @nav_li_active = 'explore'
     self.search_params_logic += [:institutions_filter]
-    params[:per_page] = params[:per_page].presence || '50'
-
-    (@response, @document_list) = search_results(params, search_params_logic)
+    #solr_parameters[:fq] << "-active_fedora_model_ssi:\"Collection\""
+    (@response, @document_list) = search_results({:f => {'active_fedora_model_ssi' => 'Institution'},:rows => 100, :sort => 'title_primary_ssort asc'}, search_params_logic)
+    #params[:per_page] = params[:per_page].presence || '50'
+    #(@response, @document_list) = search_results(params, search_params_logic)
 
     params[:view] = 'list'
     params[:sort] = 'title_primary_ssort asc'
@@ -89,7 +96,13 @@ class InstitutionsController < CatalogController
 
     current_time = Time.now
     @institution.date_created =   current_time.strftime("%Y-%m-%d")
-    @institution.permissions_attributes = [{type: 'group', name: 'admin', access: 'edit'}, {type: 'group', name: 'superuser', access: 'edit'}]
+    @institution.permissions_attributes = [{ type: 'group', name: 'public', access: 'read' }, {type: 'group', name: 'admin', access: 'edit'}, {type: 'group', name: 'superuser', access: 'edit'}]
+    @institution.visibility = 'open'
+
+    if params.key?(:filedata)
+      file = params[:filedata]
+      @institution.add_file(file, path: 'content', original_name: file.original_filename, mime_type: file.content_type)
+    end
 
 =begin
     if params[:homosaurus][:broader_ids].present?
@@ -122,6 +135,12 @@ class InstitutionsController < CatalogController
   def update
     @institution = Institution.find(params[:id])
     @institution.update(institution_params)
+
+    if params.key?(:filedata)
+      file = params[:filedata]
+      @institution.add_file(file, path: 'content', original_name: file.original_filename, mime_type: file.content_type)
+    end
+
 
 =begin
     if params[:homosaurus][:broader_ids].present?
