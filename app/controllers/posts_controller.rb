@@ -5,8 +5,15 @@ class PostsController < ApplicationController
 
   before_action :set_nav_heading
 
+  before_action :verify_admin, only: [:new, :create, :edit, :update]
+
   def index
-    @posts = Posts.all
+    if current_user.present? and current_user.admin?
+      @posts = Posts.all.order("created DESC")
+    else
+      @posts = Posts.where(:published=>true).order("created DESC")
+    end
+
 
   end
 
@@ -15,10 +22,28 @@ class PostsController < ApplicationController
 
   end
 
+  def edit
+    @post = Posts.friendly.find(params[:id])
+  end
+
+  def update
+    @post = Posts.friendly.find(params[:id])
+    @post.update(post_params)
+
+    if @post.save
+      redirect_to post_path(:id => @post.slug), notice: "Post was updated!"
+    else
+      redirect_to posts_path, notice: "Could not update post"
+    end
+  end
+
   def create
-    @post = Posts.new(news_params)
-    @post.created = Time.now
-    @post.updated = Time.now
+    @post = Posts.new(post_params)
+    current_time = Time.now
+
+    @post.created_ym = [current_time.strftime("%Y-%m")]
+    @post.created = current_time
+    @post.updated = current_time
     @post.user = current_user.email
 
 =begin
@@ -36,14 +61,15 @@ class PostsController < ApplicationController
 
 
     if @post.save
-      redirect_to new_path(:id => @post.id)
+      redirect_to post_path(:id => @post.slug)
     else
-      redirect_to new_new_path
+      #redirect_to post_path(:id => @post.id)
+      redirect_to new_post_path, notice: "Could not create post"
     end
   end
 
   def show
-    @post = Posts.find(params[:id])
+    @post = Posts.friendly.find(params[:id])
 
     respond_to do |format|
       format.html
@@ -53,8 +79,8 @@ class PostsController < ApplicationController
   end
 
 
-  def news_params
-    params.require(:posts).permit(:content, :title, :identifier, :published, :pname)
+  def post_params
+    params.require(:posts).permit(:content, :title, :published, :abstract)
   end
 
   def set_nav_heading
@@ -62,7 +88,7 @@ class PostsController < ApplicationController
       @nav_items = []
       @nav_items << (ActionController::Base.helpers.link_to 'What is this?', about_path)
       @nav_items << (ActionController::Base.helpers.link_to 'Project Information', about_project_path)
-      @nav_items << (ActionController::Base.helpers.link_to 'News', posts_path)
+      @nav_items << 'News'
       @nav_items << (ActionController::Base.helpers.link_to 'Our Team', about_team_path)
       @nav_items << (ActionController::Base.helpers.link_to 'Advisory Board', about_board_path)
       @nav_items << (ActionController::Base.helpers.link_to 'Policies', about_policies_path)

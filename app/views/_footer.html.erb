@@ -10,8 +10,8 @@
 
             <% if @recent_posts %>
                 <%   @recent_posts.each do |post| %>
-                    <li>
-                      <%= link_to post.title, posts_path(post).gsub('.', '/') %>
+                    <li style="margin-top:5px;">
+                      <%= link_to truncate(post.title, {:length=>50}), posts_path(post).gsub('.', '/') %>
                     </li>
                 <% end %>
             <% end %>

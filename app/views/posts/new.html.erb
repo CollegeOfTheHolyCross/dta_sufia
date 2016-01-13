@@ -1,6 +1,6 @@
 <div id="static_holder" class="container-fluid">
   <div class="row">
-    <div class="col-xs-4 col-sm-4">
+    <div class="col-xs-4 col-sm-4 static_side_nav_container">
       <%= render partial: '/shared/static_extra_nav' %>
 
     </div>
@@ -8,16 +8,34 @@
       <div id="static_holder_content">
         <h2>Add News</h2>
 
-        <%= simple_form_for(@post, :url => posts_path, :as => :posts, multipart: true, remote: true, authenticity_token: true) do |f| %>
-
-
-          <%= f.input :content, :as => :ckeditor, :input_html => { :ckeditor => {:toolbar => 'Full'}}, :required=>true  %>
-
-            <%= f.input :identifier, :required=>true  %>
+        <%= simple_form_for(@post, :url => posts_path, :as => :posts, multipart: true) do |f| %>
 
             <%= f.input :title, :required=>true  %>
 
-            <%= f.input :pname, :label=>'Publish as:', :required=>true  %>
+            <% my_toolbar = [
+                   { name: 'document', items: [ 'Maximize', 'ShowBlocks','-', 'Source','-','About'] },
+                   { name: 'clipboard', items: [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo', '-', 'Find', 'Replace', '-',  'SpellChecker', 'Scayt'] },
+                   '/',
+                   { name: 'styles', items: [ 'Styles', 'Format', 'FontSize' ] },
+                   { name: 'links', items: [ 'Link','Unlink','Anchor' ] },
+                   { name: 'insert', items: [ 'Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe' ] },
+                '/',
+                   { name: 'basicstyles', items: [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
+                   { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+                   { name: 'paragraph', items: [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv',
+                                                 '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ] },
+
+
+               ]; %>
+
+          <%= f.input :content, :as => :ckeditor, :input_html => { :ckeditor => {:toolbar => my_toolbar, :height=>'500'}}, :required=>true  %>
+            <script>
+              $( document ).ready(function() {
+              //CKEDITOR.replace('content', {height: 1000});
+              });
+            </script>
+
+            <%= f.input :abstract, :as=>:text,:input_html => { :style=>"height:100px;" }  %>
 
             <%= f.input :published, as: :boolean, :label=>'Visible?'  %>
 
