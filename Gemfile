@@ -76,6 +76,9 @@ gem 'ckeditor', '4.1.6'
 gem 'rsolr', '~> 1.0.6'
 gem 'devise'
 gem 'devise-guests', '~> 0.3'
+
+gem 'friendly_id', '5.1.0'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'jettywrapper'

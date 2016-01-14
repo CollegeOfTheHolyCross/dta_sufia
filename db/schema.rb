@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160113111036) do
+ActiveRecord::Schema.define(version: 20160113201402) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id",       null: false
@@ -124,6 +124,19 @@ ActiveRecord::Schema.define(version: 20160113111036) do
   add_index "follows", ["followable_id", "followable_type"], name: "fk_followables"
   add_index "follows", ["follower_id", "follower_type"], name: "fk_follows"
 
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.string   "slug",                      null: false
+    t.integer  "sluggable_id",              null: false
+    t.string   "sluggable_type", limit: 50
+    t.string   "scope"
+    t.datetime "created_at"
+  end
+
+  add_index "friendly_id_slugs", ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+  add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+  add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
+  add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+
   create_table "local_authorities", force: :cascade do |t|
     t.string "name"
   end
@@ -191,20 +204,21 @@ ActiveRecord::Schema.define(version: 20160113111036) do
   add_index "mailboxer_receipts", ["receiver_id", "receiver_type"], name: "index_mailboxer_receipts_on_receiver_id_and_receiver_type"
 
   create_table "posts", force: :cascade do |t|
-    t.string   "title"
-    t.string   "identifier"
+    t.string   "title",      null: false
+    t.string   "slug",       null: false
     t.text     "content"
+    t.text     "abstract"
     t.boolean  "published"
+    t.string   "created_ym"
     t.datetime "created"
     t.datetime "updated"
     t.string   "user"
-    t.string   "pname"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   add_index "posts", ["created"], name: "index_posts_on_created"
-  add_index "posts", ["identifier"], name: "index_posts_on_identifier"
+  add_index "posts", ["slug"], name: "index_posts_on_slug", unique: true
 
   create_table "proxy_deposit_requests", force: :cascade do |t|
     t.string   "generic_file_id",                       null: false

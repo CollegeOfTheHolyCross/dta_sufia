@@ -18,7 +18,7 @@ a:hover {
 }
 
 a.object_title {
-  color: #222;
+  //color: #222;
 }
 
 a.object_title :hover {
@@ -27,10 +27,18 @@ a.object_title :hover {
 
 //Result views
 #search-results a {
-  color: #222;
+  //color: #222;
 }
 
 #search-results a:hover {
+  color: #005580;
+}
+
+.document-title-heading a {
+  //color: #222;
+}
+
+.document-title-heading a:hover {
   color: #005580;
 }
 

@@ -5,8 +5,16 @@ module Sufia
 
     #This is cached in sufia... means that users can't see files changed
     def file
-      load_file
+      #load_file
+      @file ||= load_file
     end
+    def send_file_contents
+      self.status = 200
+      prepare_file_headers
+      #if file.mime_type == "application/pdf"  file.content
+      stream_body file.stream
+    end
+
 
     def file_name
       if !params[:file] || params[:file] == self.class.default_file_path

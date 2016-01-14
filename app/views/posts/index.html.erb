@@ -1,12 +1,48 @@
 <div id="static_holder" class="container-fluid">
   <div class="row">
-    <div class="col-xs-4 col-sm-4">
+    <div class="col-xs-4 col-sm-4 static_side_nav_container">
       <%= render partial: '/shared/static_extra_nav' %>
 
     </div>
     <div class="col-xs-8 col-sm-8">
       <div id="static_holder_content" class="about_section">
-        <%= link_to 'Create Post', new_post_path  %>
+        <h2>News</h2>
+
+        <div class="about_subtitle">
+          <% if current_user.present? and current_user.admin? %>
+              <%= link_to 'Create Post', new_post_path  %>
+          <% end %>
+        </div>
+
+        <table class="table table-zebra-striped inst_collection_table">
+          <tbody>
+          <% @posts.each do |post| %>
+          <% id = post.id %>
+          <tr id="document_<%= id %>" class="<%= cycle("", "zebra") %>">
+            <td>&nbsp;
+
+            </td>
+            <td>
+              <div class="media">
+                <div class="media-body">
+                  <h4 class="media-heading">
+                    <%= link_to post.title, post_path(post), class: "#{'document-title'}" %>
+                    <a href="<%=post_path(post)%>" class="small" title="Click for more details"><i id="expand_<%= id %>" class="glyphicon glyphicon-chevron-right"></i></a>
+                    <% if !post.published %><em style="color:red;">(Unpublished)</em><%end%>
+                  </h4>
+                  <p><%= post.abstract %></p>
+                </div>
+              </div>
+            </td>
+
+          </tr>
+              <%end%>
+          </tbody>
+        </table>
+
+
+
+
       </div>
 
     </div>
