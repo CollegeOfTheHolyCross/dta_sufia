@@ -11,7 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160113201402) do
+ActiveRecord::Schema.define(version: 20160115013624) do
+
+  create_table "abouts", force: :cascade do |t|
+    t.string   "url_label"
+    t.string   "title"
+    t.integer  "link_order"
+    t.text     "content"
+    t.string   "styletype"
+    t.boolean  "published"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "abouts", ["link_order"], name: "index_abouts_on_link_order"
+  add_index "abouts", ["published"], name: "index_abouts_on_published"
+  add_index "abouts", ["url_label"], name: "index_abouts_on_url_label", unique: true
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id",       null: false
@@ -137,6 +152,21 @@ ActiveRecord::Schema.define(version: 20160113201402) do
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
 
+  create_table "learns", force: :cascade do |t|
+    t.string   "url_label"
+    t.string   "title"
+    t.integer  "link_order"
+    t.text     "content"
+    t.string   "styletype"
+    t.boolean  "published"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "learns", ["link_order"], name: "index_learns_on_link_order"
+  add_index "learns", ["published"], name: "index_learns_on_published"
+  add_index "learns", ["url_label"], name: "index_learns_on_url_label", unique: true
+
   create_table "local_authorities", force: :cascade do |t|
     t.string "name"
   end
@@ -204,17 +234,19 @@ ActiveRecord::Schema.define(version: 20160113201402) do
   add_index "mailboxer_receipts", ["receiver_id", "receiver_type"], name: "index_mailboxer_receipts_on_receiver_id_and_receiver_type"
 
   create_table "posts", force: :cascade do |t|
-    t.string   "title",      null: false
-    t.string   "slug",       null: false
+    t.string   "title",       null: false
+    t.string   "slug",        null: false
     t.text     "content"
     t.text     "abstract"
     t.boolean  "published"
     t.string   "created_ym"
+    t.string   "created_ymd"
+    t.string   "thumbnail"
     t.datetime "created"
     t.datetime "updated"
     t.string   "user"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   add_index "posts", ["created"], name: "index_posts_on_created"

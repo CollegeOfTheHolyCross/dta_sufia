@@ -34,19 +34,20 @@
     <li id="fat-menu" class="dropdown outer_nav_li_style">
       <a href="#" id="drop3" role="button" class="dropdown-toggle nav_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About <b class="caret"></b></a>
       <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
-        <li><%= link_to 'What is this?', about_path %></li>
-        <li class="divider"></li>
-        <li><%= link_to 'Project Information', about_project_path %></li>
-        <li class="divider"></li>
-        <li><%= link_to 'News', posts_path %></li>
-        <li class="divider"></li>
-        <li><%= link_to 'Our Team', about_team_path %></li>
-        <li class="divider"></li>
-        <li><%= link_to 'Advisory Board', about_board_path %></li>
-        <li class="divider"></li>
-        <li><%= link_to 'Policies', about_policies_path %></li>
-        <li class="divider"></li>
-        <li><%= link_to 'Contact Us', about_contact_path %></li>
+        <% @about_section_links ||= []
+           counter = @about_section_links.length
+           @about_section_links.each do |about_section|
+             counter -= 1
+        %>
+        <li><%= link_to about_section.title, about_path(about_section) %></li>
+            <% if counter > 0 %>
+                <li class="divider"></li>
+            <% end %>
+        <% end %>
+        <% if current_user.present? and current_user.superuser? %>
+            <li class="divider"></li>
+            <li><%= link_to 'Add About Section', new_about_path %></li>
+        <% end %>
       </ul>
     </li>
 

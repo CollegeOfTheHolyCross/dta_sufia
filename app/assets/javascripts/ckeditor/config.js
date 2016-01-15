@@ -3,8 +3,47 @@
  For licensing, see LICENSE.html or http://ckeditor.com/license
  */
 
+CKEDITOR.stylesSet.add( 'my_styles', [
+    // Block-level styles.
+    { name: 'Paragraph',		element: 'p' },
+    { name: 'Bold Big Title',		element: 'h3' },
+    { name: 'Bold SubTitle',		element: 'h4' },
+    { name: 'Italic SubTitle',		element: 'h4', attributes: { 'class': 'pages_italic' } },
+
+    { name: 'Preformatted Text',element: 'pre' },
+    { name: 'Address',			element: 'address' },
+
+    { name: 'Indented No Icon List',	element: 'ul',	attributes: { 'class': 'indent' } },
+
+    { name: 'Marker',			element: 'span', attributes: { 'class': 'marker' } },
+
+    { name: 'Big',				element: 'big' },
+    { name: 'Small',			element: 'small' },
+    { name: 'Typewriter',		element: 'tt' },
+
+    { name: 'Computer Code',	element: 'code' },
+    { name: 'Keyboard Phrase',	element: 'kbd' },
+    { name: 'Sample Text',		element: 'samp' },
+    { name: 'Variable',			element: 'var' },
+
+    { name: 'Deleted Text',		element: 'del' },
+    { name: 'Inserted Text',	element: 'ins' },
+
+    { name: 'Cited Work',		element: 'cite' },
+    { name: 'Inline Quotation',	element: 'q' },
+
+    { name: 'Language: RTL',	element: 'span', attributes: { 'dir': 'rtl' } },
+    { name: 'Language: LTR',	element: 'span', attributes: { 'dir': 'ltr' } },
+
+]);
+
 CKEDITOR.editorConfig = function( config )
 {
+    config.stylesSet = 'my_styles';
+    config.bodyClass = 'static_holder_content';
+    config.contentsCss = ['/assets/sufia.css', '/assets/dta/dta.css', '/assets/sufia_styles.css', '/assets/dta/about.css'] ;
+    //config.contentsCss = '<%= link_to "application", :media => "all" %>'
+
     // Define changes to default configuration here. For example:
     // config.language = 'fr';
     // config.uiColor = '#AADC6E';
@@ -56,3 +95,4 @@ CKEDITOR.editorConfig = function( config )
         { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar' ] }
     ];
 };
+

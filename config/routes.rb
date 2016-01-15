@@ -25,13 +25,16 @@ Rails.application.routes.draw do
   get 'collections/member_visibility/:id' => 'collections#change_member_visibility', as: :collection_member_visibility
 
   #Static Paths
-  get 'about' => 'about#index', as: :about
-  get 'about/project' => 'about#project', as: :about_project
-  #get 'about/news' => 'about#news', as: :about_news
-  get 'about/team' => 'about#team', as: :about_team
-  get 'about/board' => 'about#board', as: :about_board
-  get 'about/policies' => 'about#policies', as: :about_policies
-  get 'about/contact' => 'about#contact', as: :about_contact
+  resources :abouts, only: [:new, :edit, :create, :update, :show], :path => :about
+  resources :learns, only: [:new, :edit, :create, :update, :show]
+
+  #get 'about' => 'about#index', as: :about
+  get 'about/project' => 'abouts#project', as: :about_project
+  #get 'about/news' => 'abouts#news', as: :about_news
+  get 'about/team' => 'abouts#team', as: :about_team
+  get 'about/board' => 'abouts#board', as: :about_board
+  get 'about/policies' => 'abouts#policies', as: :about_policies
+  get 'about/contact' => 'abouts#contact', as: :about_contact
 
   get 'places', :to => 'catalog#map', :as => 'places'
 

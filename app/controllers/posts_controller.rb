@@ -30,6 +30,16 @@ class PostsController < ApplicationController
     @post = Posts.friendly.find(params[:id])
     @post.update(post_params)
 
+    potential_image = @post.content.match(/<img[\w \.\/\'\"\=&#\-_\:]+>/)
+    if potential_image.present?
+
+      result = potential_image.to_s.match(/src\=[\'\"][\w\.\/\-_\:]+[\'\"]/)
+      if result.present?
+        @post.thumbnail = result.to_s.gsub("src=", "").gsub('"', '').gsub('"', '')
+      end
+    end
+
+
     if @post.save
       redirect_to post_path(:id => @post.slug), notice: "Post was updated!"
     else
@@ -41,9 +51,18 @@ class PostsController < ApplicationController
     @post = Posts.new(post_params)
     current_time = Time.now
 
-    @post.created_ym = [current_time.strftime("%Y-%m")]
+    @post.created_ym = current_time.strftime("%Y-%m")
+    @post.created_ymd = current_time.strftime("%Y-%m-%d")
     @post.created = current_time
     @post.updated = current_time
+    potential_image = @post.content.match(/<img[\w \.\/\'\"\=&#\-_\:]+>/)
+    if potential_image.present?
+
+      result = potential_image.to_s.match(/src\=[\'\"][\w\.\/\-_\:]+[\'\"]/)
+      if result.present?
+        @post.thumbnail = result.to_s.gsub("src=", "").gsub('"', '').gsub('"', '')
+      end
+    end
     @post.user = current_user.email
 
 =begin
@@ -84,14 +103,17 @@ class PostsController < ApplicationController
   end
 
   def set_nav_heading
-      @nav_section = 'About'
-      @nav_items = []
-      @nav_items << (ActionController::Base.helpers.link_to 'What is this?', about_path)
-      @nav_items << (ActionController::Base.helpers.link_to 'Project Information', about_project_path)
-      @nav_items << 'News'
-      @nav_items << (ActionController::Base.helpers.link_to 'Our Team', about_team_path)
-      @nav_items << (ActionController::Base.helpers.link_to 'Advisory Board', about_board_path)
-      @nav_items << (ActionController::Base.helpers.link_to 'Policies', about_policies_path)
-      @nav_items << (ActionController::Base.helpers.link_to 'Contact Us', about_contact_path)
+    @nav_section = 'About'
+    @nav_items = []
+
+    if current_user.present? and current_user.superuser?
+      nav_items_raw = Abouts.all.order("link_order")
+    else
+      nav_items_raw = Abouts.where(:published=>true).order("link_order")
+    end
+
+    nav_items_raw.each do |nav_item|
+      @nav_items << (ActionController::Base.helpers.link_to nav_item.title, about_path(:id=>nav_item))
+    end
   end
 end
