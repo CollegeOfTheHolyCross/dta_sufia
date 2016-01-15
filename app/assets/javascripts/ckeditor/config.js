@@ -3,45 +3,54 @@
  For licensing, see LICENSE.html or http://ckeditor.com/license
  */
 
-CKEDITOR.stylesSet.add( 'my_styles', [
-    // Block-level styles.
-    { name: 'Paragraph',		element: 'p' },
-    { name: 'Bold Big Title',		element: 'h3' },
-    { name: 'Bold SubTitle',		element: 'h4' },
-    { name: 'Italic SubTitle',		element: 'h4', attributes: { 'class': 'pages_italic' } },
 
-    { name: 'Preformatted Text',element: 'pre' },
-    { name: 'Address',			element: 'address' },
-
-    { name: 'Indented No Icon List',	element: 'ul',	attributes: { 'class': 'indent' } },
-
-    { name: 'Marker',			element: 'span', attributes: { 'class': 'marker' } },
-
-    { name: 'Big',				element: 'big' },
-    { name: 'Small',			element: 'small' },
-    { name: 'Typewriter',		element: 'tt' },
-
-    { name: 'Computer Code',	element: 'code' },
-    { name: 'Keyboard Phrase',	element: 'kbd' },
-    { name: 'Sample Text',		element: 'samp' },
-    { name: 'Variable',			element: 'var' },
-
-    { name: 'Deleted Text',		element: 'del' },
-    { name: 'Inserted Text',	element: 'ins' },
-
-    { name: 'Cited Work',		element: 'cite' },
-    { name: 'Inline Quotation',	element: 'q' },
-
-    { name: 'Language: RTL',	element: 'span', attributes: { 'dir': 'rtl' } },
-    { name: 'Language: LTR',	element: 'span', attributes: { 'dir': 'ltr' } },
-
-]);
 
 CKEDITOR.editorConfig = function( config )
 {
+    CKEDITOR.stylesSet.add( 'my_styles', [
+        // Block-level styles.
+        { name: 'Paragraph',		element: 'p' },
+        { name: 'Bold Big Title',		element: 'h3' },
+        { name: 'Bold SubTitle',		element: 'h4' },
+        { name: 'Italic SubTitle',		element: 'h4', attributes: { 'class': 'pages_italic' } },
+
+        { name: 'Preformatted Text',element: 'pre' },
+        { name: 'Address',			element: 'address' },
+
+        { name: 'Indented No Icon List',	element: 'ul',	attributes: { 'class': 'indent' } },
+
+        { name: 'Marker',			element: 'span', attributes: { 'class': 'marker' } },
+
+        { name: 'Big',				element: 'big' },
+        { name: 'Small',			element: 'small' },
+        { name: 'Typewriter',		element: 'tt' },
+
+        { name: 'Computer Code',	element: 'code' },
+        { name: 'Keyboard Phrase',	element: 'kbd' },
+        { name: 'Sample Text',		element: 'samp' },
+        { name: 'Variable',			element: 'var' },
+
+        { name: 'Deleted Text',		element: 'del' },
+        { name: 'Inserted Text',	element: 'ins' },
+
+        { name: 'Cited Work',		element: 'cite' },
+        { name: 'Inline Quotation',	element: 'q' },
+
+        { name: 'Language: RTL',	element: 'span', attributes: { 'dir': 'rtl' } },
+        { name: 'Language: LTR',	element: 'span', attributes: { 'dir': 'ltr' } },
+
+    ]);
+
     config.stylesSet = 'my_styles';
     config.bodyClass = 'static_holder_content';
-    config.contentsCss = ['/assets/sufia.css', '/assets/dta/dta.css', '/assets/sufia_styles.css', '/assets/dta/about.css'] ;
+    //config.contentsCss = ['/assets/sufia.css', '/assets/dta/dta.css', '/assets/sufia_styles.css', '/assets/dta/about.css'] ;
+
+    config.contentsCss = gon.compiled_application_css
+
+    config.image_previewText = 'NOTE: This will not show in your page. This text is being used to ' +
+        'demonstrate how text will look around your particular image. Essentially this just shows what content will look like ' +
+        'near your image depending on your settings in this small preview window. It is only meant as a guide and, once again, ' +
+        'will not appear once you have clicked on the "OK" button to have selected your image. So just ignore this beyond placement settings.';
     //config.contentsCss = '<%= link_to "application", :media => "all" %>'
 
     // Define changes to default configuration here. For example:

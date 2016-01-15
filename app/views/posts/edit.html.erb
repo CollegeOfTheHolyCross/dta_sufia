@@ -34,7 +34,9 @@
 
             <%= f.input :abstract, :as=>:text, :input_html => {:value=>@post.abstract}  %>
 
-            <%= f.input :published, as: :boolean, :label=>'Visible?', :input_html => {:value=>@post.published}  %>
+            <% if current_user.present? and current_user.superuser? %>
+              <%= f.input :published, as: :boolean, :label=>'Visible?', :input_html => {:value=>@post.published}  %>
+            <% end %>
 
             <%= f.button :submit %>
 
