@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 #Fix the 4kb session limit
 gem 'activerecord-session_store'
 
+gem 'google-api-client', '0.8.6'
 
 gem "rdf-vocab"
 #gem 'mysql2', '0.3.18'

@@ -13,7 +13,7 @@
               <%= link_to 'Create Post', new_post_path  %>
           <% end %>
           <% if current_user.present? and current_user.superuser? %>
-              &nbsp;&nbsp;&nbsp;<%= link_to 'Change Order', about_path(:id=>'news')  %>
+              &nbsp;&nbsp;&nbsp;<%= link_to 'Change Order', edit_about_path(:id=>'news')  %>
           <% end %>
         </div>
 
