@@ -12,8 +12,9 @@
 }
 
 #home_container {
-  width:1045px;
+  width:100%;
   margin: 0 auto;
+  max-width:1045px;
 }
 
 #home_logo {
@@ -28,7 +29,7 @@
   background-image: asset_url("home/home_people.png");
   background-repeat: no-repeat;
   background-position: center top;
-  width:960px;
+  width:769px;
   height:519px;
   margin: 0 auto;
 }
@@ -144,6 +145,122 @@
   display:inline-block;
   float:right;
   margin:0;
+}
+
+@media (max-width: 1250px) {
+  #home_logo {
+    width: 781px;
+    height:199px;
+    background-image: asset_url("home/home_header_logo.png");
+    background-repeat: no-repeat;
+    background-position: center top;
+    margin: 0 auto;
+    background-size: cover;
+  }
+
+  #home_people {
+    clear: both;
+    background-image: asset_url("home/home_people.png");
+    background-repeat: no-repeat;
+    background-position: center top;
+    width:577px;
+    height:390px;
+    margin: 0 auto;
+    background-size: cover;
+  }
+
+  #home_container .search_container {
+    //display:block;
+    //position:relative;
+    width:637px;
+    margin:0 auto;
+    height:20px;
+    padding-top:40px;
+  }
+
+  #home_container .search_box {
+    position:relative;
+    width:505px;
+    height:30px;
+    font-size:22px;
+    border:1px solid rgba(188,207,231,.8);
+    padding:0 6px;
+    color:#666666;
+    background:#FFFFFF asset_url("shared/mag_glass.png") 705px 5px no-repeat;
+  }
+}
+
+/* responsive styles */
+
+@media (max-width: 767px) {
+
+  #home_logo {
+    width: 521px;
+    height:133px;
+    background-image: asset_url("home/home_header_logo.png");
+    background-repeat: no-repeat;
+    background-position: center top;
+    margin: 0 auto;
+    background-size: cover;
+  }
+
+  #home_people {
+    clear: both;
+    background-image: asset_url("home/home_people.png");
+    background-repeat: no-repeat;
+    background-position: center top;
+    width:385px;
+    height:260px;
+    margin: 0 auto;
+    background-size: cover;
+  }
+
+  #home_container .search_container {
+    //display:block;
+    //position:relative;
+    width:425px;
+    margin:0 auto;
+    height:20px;
+    padding-top:40px;
+  }
+
+  #home_container #search-form-header {
+    margin-top:-20px;
+    margin-bottom:-5px;
+    padding-top:0px;
+    height:30px;
+
+  }
+
+  #home_container .search_box {
+    position:relative;
+    width:370px;
+    height:30px;
+    font-size:22px;
+    border:1px solid rgba(188,207,231,.8);
+    padding:0 6px;
+    color:#666666;
+    background:#FFFFFF asset_url("shared/mag_glass.png") 705px 5px no-repeat;
+  }
+
+  #home_container .search_button {
+    position:relative;
+    top:-1px;
+    left:5px;
+    width:50px;
+    height:40px;
+    border:1px solid rgba(188,207,231,.8);
+    font-size:20px;
+    background-color:#cccccc;
+    /*background-color:#7289A9;
+    color:#00214d;*/
+  }
+
+}
+
+@media (max-width: 480px) {
+
+
 }
 
 

@@ -15,6 +15,11 @@ class CollectionsController < CatalogController
 
   before_action :verify_admin, except: [:show, :public_index, :public_show] #FIXME on change member
 
+  #FIXME: This is likely wrong...
+  def enforce_show_permissions
+    #DO NOTHING
+  end
+
   def index
     super
   end
