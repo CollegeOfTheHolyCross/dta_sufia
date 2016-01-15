@@ -28,6 +28,11 @@ Rails.application.routes.draw do
   resources :abouts, only: [:new, :edit, :create, :update, :show], :path => :about
   resources :learns, only: [:new, :edit, :create, :update, :show]
 
+  get 'feedback' => 'abouts#feedback', as: :feedback
+  post 'feedback' => 'abouts#feedback'
+  get 'feedback_complete' => 'abouts#feedback_complete', as: :feedback_complete
+  get 'subscribe' => 'abouts#subscribe', as: :subscribe
+
   #get 'about' => 'about#index', as: :about
   get 'about/project' => 'abouts#project', as: :about_project
   #get 'about/news' => 'abouts#news', as: :about_news

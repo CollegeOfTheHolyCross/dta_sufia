@@ -3,7 +3,7 @@
   <aside id="current_section_nav" class="widget well widget_side_nav">		<h2 class="widget-title" style="margin-top:-10px;"><%=@nav_section%></h2>		<ul>
     <% @nav_items.each do |nav|%>
     <li>
-      <%=nav%>
+      <%=nav.html_safe%>
     </li>
     <% end %>
   </ul>
@@ -28,7 +28,9 @@
 
 </ul>
 </aside><aside id="text-2" class="widget well widget_text" style="margin-top:-10px;"><h2 class="widget-title">Follow Us!</h2>
-  <div class="textwidget" style="max-width:150px; float:left; margin-left:30px;><!-- Facebook Badge START --><a href="https://www.facebook.com/digitaltransarc" title="Digital Transgender Archive" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;" target="_TOP">Digital Transgender Archive</a><br /><a href="https://www.facebook.com/digitaltransarc" title="Digital Transgender Archive" target="_TOP"><img class="img" src="https://badge.facebook.com/badge/1037238479651181.2647.1069946817.png" style="border: 0px;" alt="" /></a><br /><a href="https://www.facebook.com/advertising" title="Make your own badge!" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;" target="_TOP">Promote Your Page Too</a><!-- Facebook Badge END --></div>
+  <div class="textwidget" style="max-width:150px; float:left; margin-left:30px;">
+      <a href='https://www.facebook.com/digitaltransarc' title='Digital Transgender Archive' target='_TOP'><img src='https://badge.facebook.com/badge/1037238479651181.2647.1069946817.png' class='img'  style='border: 0px; width:275px;' alt='Digital Transgender Facebook icon' /></a>
+  </div>
 
   <div class="textwidget" style="max-width:150px; float:left; margin-left:30px;margin-top:35px;"><a href="https://twitter.com/digitaltransarc" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @digitaltransarc</a>
     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></div>

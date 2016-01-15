@@ -37,7 +37,9 @@
 
             <%= f.input :abstract, :as=>:text,:input_html => { :style=>"height:100px;" }  %>
 
-            <%= f.input :published, as: :boolean, :label=>'Visible?'  %>
+            <% if current_user.present? and current_user.superuser? %>
+                <%= f.input :published, as: :boolean, :label=>'Visible?'  %>
+            <% end %>
 
             <%= f.button :submit %>
 
