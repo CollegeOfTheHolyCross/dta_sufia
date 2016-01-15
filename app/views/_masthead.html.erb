@@ -1,8 +1,11 @@
 <div id="dtamasthead" class="container-fluid">
   <div class="row">
     <div class="col-xs-2 col-sm-3">
+
       <div id="logo">
-        <%=link_to(image_tag("shared/header_logo.png"), sufia.homepage_index_path) %>
+        <div style="float:left;">
+          <%= link_to application_name, root_path, :id => 'header_logo_link' %>
+        </div>
       </div>
 
     </div><!-- /.col-xs-5 -->

@@ -37,5 +37,12 @@
 .static_side_nav_container
 {
   max-width:425px;
+  min-width:360px;
+}
+
+@media (max-width: 767px) {
+  .static_side_nav_container {
+    display:none;
+  }
 }
 

@@ -11,9 +11,13 @@ module Sufia
     def send_file_contents
       self.status = 200
       prepare_file_headers
-      #if file.mime_type == "application/pdf"  file.content
-      stream_body file.stream
+      if file.mime_type == "application/pdf"
+        file.content
+      else
+        stream_body file.stream
+      end
     end
+
 
 
     def file_name
