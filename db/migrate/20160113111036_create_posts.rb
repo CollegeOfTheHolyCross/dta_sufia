@@ -7,6 +7,8 @@ class CreatePosts < ActiveRecord::Migration
       t.text :abstract
       t.boolean :published
       t.string :created_ym
+      t.string :created_ymd
+      t.string :thumbnail
       t.datetime :created
       t.datetime :updated
       t.string :user
