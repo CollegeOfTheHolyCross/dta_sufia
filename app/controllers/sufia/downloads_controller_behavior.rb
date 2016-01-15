@@ -12,7 +12,7 @@ module Sufia
       self.status = 200
       prepare_file_headers
       if file.mime_type == "application/pdf"
-        file.content
+        response.stream.write file.content
       else
         stream_body file.stream
       end
