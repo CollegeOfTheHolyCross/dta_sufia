@@ -7,6 +7,8 @@ class AboutsController < ApplicationController
 
   before_action :verify_superuser, only: [:new, :create, :edit, :update]
 
+  #layout 'static_layout'
+
   def index
     @nav_items[0] = "What is this?"
   end
