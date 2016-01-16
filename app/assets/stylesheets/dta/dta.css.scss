@@ -1060,3 +1060,14 @@ div.search_select_wrapper {
       background-color: rgba(255, 255, 255, 0.4);
     }
   }
+
+@media (max-width: 485px) {
+  .hideonsmall {
+    display:none;
+  }
+  .expandonsmall {
+    width:100%;
+    max-width:100%;
+    margin: 0 auto;
+  }
+}
