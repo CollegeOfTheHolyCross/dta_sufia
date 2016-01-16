@@ -2,7 +2,7 @@
   <ul class="main_nav_ul">
 
     <li id="fat-menu" class="dropdown outer_nav_li_style">
-      <a href="#" id="drop3" role="button" class="dropdown-toggle nav_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Browse <b class="caret"></b></a>
+      <a href="#" id="drop3" role="button" class="dropdown-toggle nav_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Browse <b class="caret hideonsmall"></b></a>
       <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
         <li><%= link_to 'By Map', '/places' %></li>
         <li class="divider"></li>
@@ -17,7 +17,7 @@
     <li class="outer_divider"></li>
 
     <li id="fat-menu" class="dropdown outer_nav_li_style">
-      <a href="#" id="drop3" role="button" class="dropdown-toggle nav_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Learn <b class="caret"></b></a>
+      <a href="#" id="drop3" role="button" class="dropdown-toggle nav_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Learn <b class="caret hideonsmall"></b></a>
       <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
         <% @learn_section_links ||= []
            counter = @learn_section_links.length
@@ -39,7 +39,7 @@
     <li class="outer_divider"></li>
 
     <li id="fat-menu" class="dropdown outer_nav_li_style">
-      <a href="#" id="drop3" role="button" class="dropdown-toggle nav_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About <b class="caret"></b></a>
+      <a href="#" id="drop3" role="button" class="dropdown-toggle nav_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About <b class="caret hideonsmall"></b></a>
       <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
         <% @about_section_links ||= []
            counter = @about_section_links.length
