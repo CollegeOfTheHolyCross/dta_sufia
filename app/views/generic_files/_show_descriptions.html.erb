@@ -160,19 +160,19 @@
           </dd>
       <% end %>
 
-      <% if @document[:related_url] %>
+      <% if @document[:related_url_tesim] %>
           <dt>Related URL</dt>
           <dd>
-            <% @document[:related_url].each do |val| %>
+            <% @document[:related_url_tesim].each do |val| %>
                 <%= link_to val %><br />
             <% end %>
           </dd>
       <% end %>
 
-      <% if @document[:rights] %>
+      <% if @document[:rights_tesim] %>
           <dt>Rights</dt>
           <dd>
-            <% @document[:rights].each do |val| %>
+            <% @document[:rights_tesim].each do |val| %>
                 <%= val %><br />
             <% end %>
           </dd>

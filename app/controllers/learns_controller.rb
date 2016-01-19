@@ -62,7 +62,7 @@ class LearnsController < ApplicationController
       if params[:id].present? and params[:id] == nav_item.url_label
         @nav_items << nav_item.title
       else
-        @nav_items << (ActionController::Base.helpers.link_to nav_item.title, about_path(:id=>nav_item))
+        @nav_items << (ActionController::Base.helpers.link_to nav_item.title, learn_path(:id=>nav_item))
       end
 
     end
