@@ -25,12 +25,12 @@ class Notifier < ActionMailer::Base
     File.join(app_root, 'config', 'contact_emails.yml')
   end
 
-  def support_email
-    Notifier.local_config[:support_email]
+  def support_bcc_emails
+    @support_bcc_emails ||= Notifier.local_config[:support_bcc_emails]
   end
 
   def general_email
-    Notifier.local_config[:general_email]
+    @general_email ||= Notifier.local_config[:general_email]
   end
 
   def feedback(details)
@@ -41,21 +41,32 @@ class Notifier < ActionMailer::Base
     @name = details[:name]
     @recipient = route_email(details[:topic])
 
-    mail(:to => @recipient,
-         :from => t('blacklight.email.record_mailer.name') + ' <' + t('blacklight.email.record_mailer.email') + '>',
-         :subject => t('blacklight.feedback.text.subject') + details[:topic].capitalize)
+    if topic == 'error' && support_bcc_emails.present?
+      mail(:to => @recipient,
+           :from => t('blacklight.email.record_mailer.name') + ' <' + t('blacklight.email.record_mailer.email') + '>',
+           :subject => t('blacklight.feedback.text.subject') + details[:topic].capitalize,
+            :bcc => support_bcc_emails)
+    else
+      mail(:to => @recipient,
+           :from => t('blacklight.email.record_mailer.name') + ' <' + t('blacklight.email.record_mailer.email') + '>',
+           :subject => t('blacklight.feedback.text.subject') + details[:topic].capitalize)
+    end
+
 
   end
 
   private
 
   def route_email(topic)
+=begin
     if topic == 'error'
       recipient_email = support_email
     else
       recipient_email = general_email
     end
     recipient_email
+=end
+    general_email
   end
 
 
