@@ -13,14 +13,15 @@ module Sufia
       prepare_file_headers
       if file.mime_type == "application/pdf"
         #response.stream.write file.content
-        stream_body file.stream
+        #stream_body file.stream
+        render body: file.content, content_type: "application/pdf"
       else
         stream_body file.stream
       end
     end
     def content_options
       if file.mime_type == "application/pdf"
-        { disposition: 'inline', type: file.mime_type, filename: file_name+' .pdf' }
+        { disposition: 'inline', type: file.mime_type, filename: file_name+ '.pdf' }
       else
         { disposition: 'inline', type: file.mime_type, filename: file_name }
       end
