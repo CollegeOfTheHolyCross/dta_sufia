@@ -41,7 +41,7 @@ class Notifier < ActionMailer::Base
     @name = details[:name]
     @recipient = route_email(details[:topic])
 
-    if topic == 'error' && support_bcc_emails.present?
+    if details[:topic] == 'error' && support_bcc_emails.present?
       mail(:to => @recipient,
            :from => t('blacklight.email.record_mailer.name') + ' <' + t('blacklight.email.record_mailer.email') + '>',
            :subject => t('blacklight.feedback.text.subject') + details[:topic].capitalize,
