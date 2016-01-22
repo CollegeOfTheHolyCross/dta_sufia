@@ -228,7 +228,7 @@ class GenericFile < ActiveFedora::Base
       else
         doc['date_start_dtsi'] = date.first.year.to_s + '-01-01T00:00:00.000Z'
         doc['date_end_dtsi'] = date.last.year.to_s + '-01-01T00:00:00.000Z'
-        doc['dta_sortable_date_dtsi'] = ((date.last.year.to_i - date.first.year.to_i) / 2).to_i.to_s + '-01-01T00:00:00.000Z'
+        doc['dta_sortable_date_dtsi'] = (((date.last.year.to_i - date.first.year.to_i) / 2) + date.first.year.to_i).to_i.to_s + '-01-01T00:00:00.000Z'
         (date.first.year..date.last.year).step(1) do |year_step|
           doc['dta_dates_ssim'] << year_step
         end
@@ -245,7 +245,7 @@ class GenericFile < ActiveFedora::Base
       else
         doc['date_start_dtsi'] = date.first.year.to_s + '-01-01T00:00:00.000Z'
         doc['date_end_dtsi'] = date.last.year.to_s + '-01-01T00:00:00.000Z'
-        doc['dta_sortable_date_dtsi'] = ((date.last.year.to_i - date.first.year.to_i) / 2).to_i.to_s + '-01-01T00:00:00.000Z'
+        doc['dta_sortable_date_dtsi'] = (((date.last.year.to_i - date.first.year.to_i) / 2) + date.first.year.to_i).to_i.to_s + '-01-01T00:00:00.000Z'
         (date.first.year..date.last.year).step(1) do |year_step|
           doc['dta_dates_ssim'] << year_step
         end
