@@ -224,11 +224,11 @@ class GenericFile < ActiveFedora::Base
         doc['date_start_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
         doc['date_end_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
         doc['dta_dates_ssim'] << date.year
-        doc['dta_sortable_date_dtsi'].append(date.year.to_s + '-01-01T00:00:00.000Z')
+        doc['dta_sortable_date_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
       else
         doc['date_start_dtsi'] = date.first.year.to_s + '-01-01T00:00:00.000Z'
         doc['date_end_dtsi'] = date.last.year.to_s + '-01-01T00:00:00.000Z'
-        doc['dta_sortable_date_dtsi'].append(((date.last.year - date.first.year) / 2).to_i.to_s + '-01-01T00:00:00.000Z')
+        doc['dta_sortable_date_dtsi'] = ((date.last.year.to_i - date.first.year.to_i) / 2).to_i.to_s + '-01-01T00:00:00.000Z'
         (date.first.year..date.last.year).step(1) do |year_step|
           doc['dta_dates_ssim'] << year_step
         end
@@ -241,18 +241,18 @@ class GenericFile < ActiveFedora::Base
         doc['date_start_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
         doc['date_end_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
         doc['dta_dates_ssim'] << date.year
-        doc['dta_sortable_date_dtsi'].append(date.year.to_s + '-01-01T00:00:00.000Z')
+        doc['dta_sortable_date_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
       else
         doc['date_start_dtsi'] = date.first.year.to_s + '-01-01T00:00:00.000Z'
         doc['date_end_dtsi'] = date.last.year.to_s + '-01-01T00:00:00.000Z'
-        doc['dta_sortable_date_dtsi'].append(((date.last.year - date.first.year) / 2).to_i.to_s + '-01-01T00:00:00.000Z')
+        doc['dta_sortable_date_dtsi'] = ((date.last.year.to_i - date.first.year.to_i) / 2).to_i.to_s + '-01-01T00:00:00.000Z'
         (date.first.year..date.last.year).step(1) do |year_step|
           doc['dta_dates_ssim'] << year_step
         end
       end
     end
 
-    doc['dta_sortable_date_dtsi'] = [doc['dta_sortable_date_dtsi'].first] if doc['dta_sortable_date_dtsi'].present?
+    #doc['dta_sortable_date_dtsi'] = [doc['dta_sortable_date_dtsi'].first] if doc['dta_sortable_date_dtsi'].present?
 
     doc['subject_geojson_facet_ssim'] = []
     doc['subject_geographic_ssim'] = []
