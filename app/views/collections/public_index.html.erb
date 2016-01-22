@@ -1,4 +1,4 @@
-<% @page_title = t('blacklight.collections.index.page_title', :application_name => application_name) %>
+<% @page_title = t('blacklight.collections.index.page_title', :application_name => application_name) + " - " +  application_name %>
 <% content_for(:head) { render_opensearch_response_metadata } %>
 
 <div id="content" class="col-sm-12 collections-list">

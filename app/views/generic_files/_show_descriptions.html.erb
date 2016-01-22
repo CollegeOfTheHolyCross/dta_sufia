@@ -164,7 +164,7 @@
           <dt>Related URL</dt>
           <dd>
             <% @document[:related_url_tesim].each do |val| %>
-                <%= link_to val %><br />
+                <%= link_to val, val, :target => "_blank" %><br />
             <% end %>
           </dd>
       <% end %>

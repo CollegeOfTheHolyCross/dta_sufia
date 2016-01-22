@@ -2,6 +2,8 @@
     <%= render :partial => 'catalog/_show_partials/show_flagged_notice' %>
 <% end %>
 
+<% @page_title = "#{@document[:title_tesim].first} -  #{application_name}" %>
+
 <style>
   figcaption {
     display:none;
