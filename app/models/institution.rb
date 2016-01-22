@@ -2,6 +2,7 @@ class Institution < ActiveFedora::Base
   include Hydra::WithDepositor # for access to apply_depositor_metadata
   include Hydra::AccessControls::Permissions
   include Sufia::Permissions::Readable
+  include Sufia::Noid
 
   contains "content", class_name: 'FileContentDatastream'
   contains "thumbnail"
