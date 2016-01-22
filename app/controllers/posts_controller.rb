@@ -38,7 +38,7 @@ class PostsController < ApplicationController
 
       @post.update(post_params)
 
-      potential_image = @post.content.match(/<img[\w \.\/\'\"\=&#\-_\:]+>/)
+      potential_image = @post.content.match(/<img[\w \.\/\'\"\=&#\-_\:“”;,—–\s]+>/)
       if potential_image.present?
 
         result = potential_image.to_s.match(/src\=[\'\"][\w\.\/\-_\:]+[\'\"]/)
@@ -64,7 +64,7 @@ class PostsController < ApplicationController
     @post.created_ymd = current_time.strftime("%Y-%m-%d")
     @post.created = current_time
     @post.updated = current_time
-    potential_image = @post.content.match(/<img[\w \.\/\'\"\=&#\-_\:]+>/)
+    potential_image = @post.content.match(/<img[\w \.\/\'\"\=&#\-_\:“”;,—–\s]+>/)
     if potential_image.present?
 
       result = potential_image.to_s.match(/src\=[\'\"][\w\.\/\-_\:]+[\'\"]/)

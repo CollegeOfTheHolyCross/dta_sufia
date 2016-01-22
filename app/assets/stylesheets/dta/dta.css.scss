@@ -6,6 +6,11 @@ body {
   font-family: 'Lato', Verdana, Arail, Helvetica, sans-serif;
 }
 
+#search_field {
+  height: 34px;
+  margin-top:-1px;
+}
+
 /* was #222 */
 a {
   color: #337ab7;
@@ -536,7 +541,9 @@ div.search_select_wrapper {
   }
 
   #search_field {
+    height: 34px;
     max-width:150px;
+    margin-top:-1px;
   }
 
   #main_nav_buttons {
@@ -759,7 +766,9 @@ div.search_select_wrapper {
   }
 
   #search_field {
+    height: 34px;
     max-width: 100px;
+    margin-top:-1px;
   }
 
   #main_nav_buttons {
@@ -964,7 +973,9 @@ div.search_select_wrapper {
     }
 
     #search_field {
+      height: 34px;
       max-width:75px;
+      margin-top:-1px;
     }
 
     #main_nav_buttons {
