@@ -26,7 +26,7 @@ Rails.application.routes.draw do
 
   #Static Paths
   resources :abouts, only: [:new, :edit, :create, :update, :show], :path => :about
-  resources :learns, only: [:new, :edit, :create, :update, :show]
+  resources :learns, only: [:new, :edit, :create, :update, :show], :path => :learn
 
   get 'feedback' => 'abouts#feedback', as: :feedback
   post 'feedback' => 'abouts#feedback'
