@@ -11,10 +11,12 @@ class DownloadsController < ApplicationController
     if file.mime_type == "application/pdf"
       self.status = 200
       response.headers['Content-Length'] = file.size.to_s
-      render body: file.content, content_type: "application/pdf", content_length: file.size.to_s
+      response.headers['Content-Disposition'] = "inline;filename=#{asset.label.gsub(/[,;]/, '')}.pdf"
+      render body: file.content, content_type: "application/pdf"
     else
-     super
+      super
     end
+
   end
 
 end
