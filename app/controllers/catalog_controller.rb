@@ -204,7 +204,7 @@ class CatalogController < ApplicationController
     # This one uses all the defaults set by the solr request handler. Which
     # solr request handler? The one set in config[:default_solr_parameters][:qt],
     # since we aren't specifying it otherwise.
-    config.add_search_field('all_fields', label: 'Everything', include_in_advanced_search: false) do |field|
+    config.add_search_field('all_fields', label: 'All Text', include_in_advanced_search: false) do |field|
       #all_names = config.show_fields.values.map(&:field).join(" ")
       title_name = solr_name("title", :stored_searchable)
 
@@ -348,6 +348,10 @@ class CatalogController < ApplicationController
 
     blacklight_config.facet_fields['institution_name_ssim'].show = false
     blacklight_config.facet_fields['institution_name_ssim'].if = false
+
+    #Needs to be fixed...
+    blacklight_config.facet_fields['dta_dates_ssim'].show = false
+    blacklight_config.facet_fields['dta_dates_ssim'].if = false
 
     # collapse remaining facets
     #blacklight_config.facet_fields['subject_facet_ssim'].collapse = true

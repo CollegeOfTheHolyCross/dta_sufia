@@ -25,7 +25,6 @@ module Mei
       return "http://ws.geonames.org/searchJSON"
     end
 
-
     #result["geonames"].first["name"]
     #result["geonames"].first["geonameId"]
     #bbox
