@@ -44,6 +44,12 @@ class OtherSubjectResource
   end
 
   def self.solr_exact_clean(term)
-    return "(#{term})"
+    #FIXME: This stinks and is a bad workaround. Will fail if both paranthesis and quotes.
+    if term.include?(')') || term.include?('(')
+      return "\"#{term}\""
+    else
+      return "(#{term})"
+    end
+
   end
 end

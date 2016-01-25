@@ -254,6 +254,8 @@ class GenericFile < ActiveFedora::Base
 
     #doc['dta_sortable_date_dtsi'] = [doc['dta_sortable_date_dtsi'].first] if doc['dta_sortable_date_dtsi'].present?
 
+    doc['based_near_ssim'] = self.based_near if self.based_near.present?
+
     doc['subject_geojson_facet_ssim'] = []
     doc['subject_geographic_ssim'] = []
     doc['subject_geographic_tesim'] = []
