@@ -132,6 +132,7 @@ class CatalogController < ApplicationController
 =end
 
     config.global_search_fields = []
+    config.global_search_fields << solr_name("title", :stored_searchable)
     config.global_search_fields << 'ident_tesi'
     config.global_search_fields << 'alternative_tesim'
     config.global_search_fields << 'dta_altLabel_all_subject_tsim'
