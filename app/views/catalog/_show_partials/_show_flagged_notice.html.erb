@@ -13,7 +13,12 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-warning" data-dismiss="modal">View Content</button>
         <!-- <button type="button" class="btn btn-danger">Back to Search</button> -->
-        <%= link_back_to_catalog :class => 'btn btn-danger' %>
+        <% if request.referer.blank? or URI(request.referer).path != '/catalog' %>
+            <%= link_to 'Go Back',  :back, :class => 'btn btn-danger' %>
+        <% else %>
+            <%= link_back_to_catalog :class => 'btn btn-danger' %>
+        <% end %>
+
       </div>
     </div>
   </div>
