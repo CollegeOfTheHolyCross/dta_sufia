@@ -95,15 +95,15 @@ class GenericFilesController < ApplicationController
             img = Magick::Image.read(file.path()).first
             img = Magick::Image.from_blob( img.to_blob { self.format = "jpg" } ).first
 
-            if File.extname(file) == '.pdf'
-              thumb = img.resize_to_fit(500,500) #338,493
+            if File.extname(file.original_filename) == '.pdf'
+              thumb = img.resize_to_fit(500,600) #338,493
             else
-              thumb = img.resize_to_fit(500,500) #FIXME?
+              thumb = img.resize_to_fit(500,600) #FIXME?
             end
 
 
 
-            actor.create_content(StringIO.open(thumb.to_blob), File.basename(file,File.extname(file)), file_path, 'image/jpeg', params[:collection])
+            actor.create_content(StringIO.open(thumb.to_blob), File.basename(file.original_filename,File.extname(file.original_filename)), file_path, 'image/jpeg', params[:collection])
           else
             saved = actor.save_characterize_and_record_committer
             actor.add_file_to_collection(params[:collection]) if saved
