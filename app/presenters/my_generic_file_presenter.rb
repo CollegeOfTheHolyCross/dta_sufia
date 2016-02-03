@@ -3,5 +3,5 @@ class MyGenericFilePresenter < Sufia::GenericFilePresenter
                 :temporal_coverage, :based_near,
                 :homosaurus_subject, :lcsh_subject, :other_subject,
                 :flagged,:resource_type,:genre, :analog_format, :digital_format, :description,:language,
-                :publisher,:related_url, :rights] #,:identifier :summary
+                :publisher,:related_url, :rights, :hosted_elsewhere, :is_shown_at] #, :preview,:identifier :summary
 end

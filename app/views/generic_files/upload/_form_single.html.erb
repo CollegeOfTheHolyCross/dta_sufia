@@ -1,4 +1,24 @@
- <%= simple_form_for [sufia, @form], html: { multipart: true, id: 'fileuploadsingle' } do |f| %>
+<script type="text/javascript">
+  $(document).ready(function(){
+    //alert($('#filedata').attr('required'));
+    if($('#generic_file_hosted_elsewhere').is(':checked')){
+      $("#hosted_elsewhere").show();
+    } else {
+      $("#hosted_elsewhere").hide();
+    }
+
+    $('#generic_file_hosted_elsewhere').click(function(){
+      if($(this).is(':checked')){
+        $("#hosted_elsewhere").show();
+      } else {
+        $("#hosted_elsewhere").hide();
+      }
+
+    });
+  });
+</script>
+
+<%= simple_form_for [sufia, @form], html: { multipart: true, id: 'fileuploadsingle' } do |f| %>
      <%= hidden_field_tag 'upload_type', 'single' %>
      <%= hidden_field_tag 'terms_of_service', 1%>
      <%= hidden_field_tag 'batch_id', @batch_id %>
@@ -16,15 +36,23 @@
       <% end %>
 
 
-      <p>Select a file to upload: <%= file_field_tag "filedata", required: 'required' %></p>
+      <p>Select a file to upload: <%= file_field_tag "filedata" %></p>
 
       <div class="form-group">
         <div class="col-xs-12">
-
+          <%= f.input_field :hosted_elsewhere, as: :boolean %> This item is hosted elsewhere.
         </div>
       </div>
 
-      <% f.object.terms.each do |term| %>
+      <div class="tab-content">
+        <div class="tab-pane" id="hosted_elsewhere" aria-labelledby="hosted_elsewhere_tab" role="tabpanel">
+          <% [:is_shown_at].each do |term| %>
+              <%= render_edit_field_partial(term, f: f) %>
+          <% end %>
+        </div>
+      </div>
+
+      <% (f.object.terms - [:hosted_elsewhere, :is_shown_at, :preview]).each do |term| %>
           <%= render_edit_field_partial(term, f: f) %>
       <% end %>
     </div>

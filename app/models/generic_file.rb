@@ -5,19 +5,19 @@ require 'rack/cache'
 class GenericFile < ActiveFedora::Base
   include Sufia::GenericFile
   
-  property :analog_format, predicate: ::RDF::DC.format, multiple: false do |index|
+  property :analog_format, predicate: ::RDF::Vocab::DC.format, multiple: false do |index|
     index.as :stored_searchable
   end
   
-  property :digital_format, predicate: ::RDF::DC11.format, multiple: false do |index|
+  property :digital_format, predicate: ::RDF::Vocab::DC11.format, multiple: false do |index|
     index.as :stored_searchable
   end
   
-  property :temporal_coverage, predicate: ::RDF::DC.temporal do |index|
+  property :temporal_coverage, predicate: ::RDF::Vocab::DC.temporal do |index|
     index.as :stored_searchable
   end
   
-  property :date_issued, predicate: ::RDF::DC.issued do |index|
+  property :date_issued, predicate: ::RDF::Vocab::DC.issued do |index|
     index.as :stored_searchable
   end
   #::RDF::SCHEMA.
@@ -25,7 +25,7 @@ class GenericFile < ActiveFedora::Base
     index.as :stored_searchable, :symbol
   end
   
-  property :alternative, predicate: ::RDF::DC.alternative do |index|
+  property :alternative, predicate: ::RDF::Vocab::DC.alternative do |index|
     index.as :stored_searchable
   end
 
@@ -36,17 +36,30 @@ class GenericFile < ActiveFedora::Base
     index.as :stored_searchable
   end
 
-  property :lcsh_subject, predicate: ::RDF::DC.subject do |index|
+  property :lcsh_subject, predicate: ::RDF::Vocab::DC.subject do |index|
     index.as :stored_searchable, :facetable, :symbol
   end
 
-  property :other_subject, predicate: ::RDF::DC.subject do |index|
+  property :other_subject, predicate: ::RDF::Vocab::DC.subject do |index|
     index.as :stored_searchable, :facetable, :symbol
   end
 
-  property :homosaurus_subject, predicate: ::RDF::DC.subject do |index|
+  property :homosaurus_subject, predicate: ::RDF::Vocab::DC.subject do |index|
     index.as :stored_searchable, :facetable, :symbol
   end
+
+  property :is_shown_at, predicate: ::RDF::Vocab::EDM.isShownAt, multiple: false do |index|
+    index.as :stored_searchable, :facetable, :symbol
+  end
+
+  property :preview, predicate: ::RDF::Vocab::EDM.preview, multiple: false do |index|
+    index.as :stored_searchable, :facetable, :symbol
+  end
+
+  property :hosted_elsewhere, predicate: ::RDF::URI.new('http://digitaltransgenderarchive.net/ns/hosted_elsewhere'), multiple: false do |index|
+    index.as :stored_searchable, :facetable
+  end
+
 
   def lcsh_subject_label
     ['hello']
