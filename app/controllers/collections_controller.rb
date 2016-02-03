@@ -138,7 +138,7 @@ class CollectionsController < CatalogController
     @collection[:date_created] =   [current_time.strftime("%Y-%m-%d")]
     #Contributor not being saved.... , {type: 'group', name: 'contributor', access: 'read'}
     @collection.permissions_attributes = [{type: 'group', name: 'admin', access: 'edit'}, {type: 'group', name: 'superuser', access: 'edit'}]
-    @collection.visibility = 'restricted'
+    #@collection.visibility = 'restricted'
     if params[:collection][:institution_ids].present?
       params[:collection][:institution_ids].each do |institution_id|
         institution = Institution.find(institution_id)
