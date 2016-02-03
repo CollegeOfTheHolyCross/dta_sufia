@@ -83,7 +83,7 @@ class CatalogController < ApplicationController
     #   The ordering of the field names is the order of the display
     config.add_facet_field solr_name("creator", :facetable), label: "Creator", limit: 6, collapse:false
     config.add_facet_field 'dta_all_subject_ssim', :label => 'Topic', :limit => 6, :sort => 'count', :collapse => false
-    config.add_facet_field 'dta_other_subject_ssim', :label => 'People/Organizations', :limit => 6, :sort => 'count', :collapse => false
+    config.add_facet_field 'dta_other_subject_ssim', :label => 'Subject', :limit => 6, :sort => 'count', :collapse => false
     config.add_facet_field 'dta_dates_ssim', :label => 'Date', :range => true, :collapse => false
     config.add_facet_field 'genre_ssim', :label => 'Genre', :limit => 6, :sort => 'count', :collapse => true
     config.add_facet_field 'subject_geographic_ssim', :label => 'Location', :limit => 6, :sort => 'count', :collapse => true

@@ -88,8 +88,31 @@ class GenericFilesController < ApplicationController
         @generic_file.label = params[:generic_file][:title]
 
         actor.create_metadata(params[:batch_id])
-        file = params[:filedata]
-        actor.create_content(file, file.original_filename, file_path, file.content_type, params[:collection])
+
+        if params[:generic_file][:hosted_elsewhere] != "0"
+          if params.key?(:filedata)
+            file = params[:filedata]
+            img = Magick::Image.read(file.path()).first
+            img = Magick::Image.from_blob( img.to_blob { self.format = "jpg" } ).first
+
+            if File.extname(file) == '.pdf'
+              thumb = img.resize_to_fit(500,500) #338,493
+            else
+              thumb = img.resize_to_fit(500,500) #FIXME?
+            end
+
+
+
+            actor.create_content(StringIO.open(thumb.to_blob), File.basename(file,File.extname(file)), file_path, 'image/jpeg', params[:collection])
+          else
+            saved = actor.save_characterize_and_record_committer
+            actor.add_file_to_collection(params[:collection]) if saved
+          end
+        else
+          file = params[:filedata]
+          actor.create_content(file, file.original_filename, file_path, file.content_type, params[:collection])
+        end
+
         update_metadata
 
         #@generic_file.edit_groups += ['admin', 'superuser']
@@ -110,7 +133,7 @@ class GenericFilesController < ApplicationController
 
 
   def validate_metadata(params)
-    if !params.key?(:filedata)
+    if !params.key?(:filedata) && params[:generic_file][:hosted_elsewhere] != "1"
       flash[:error] = 'No file was uploaded!'
 
       return false

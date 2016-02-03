@@ -47,6 +47,8 @@ gem 'edtf'
 gem "blacklight_range_limit"
 gem "blacklight-maps"
 
+gem 'rmagick', :require => 'RMagick'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

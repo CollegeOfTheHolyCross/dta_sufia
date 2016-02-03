@@ -1,7 +1,7 @@
 class InstitutionsController < CatalogController
   include DtaStaticBuilder
 
-  before_action :verify_admin, except: [:public_index, :public_show]
+  before_action :verify_admin, except: [:public_index, :public_show, :facet]
   include Blacklight::Configurable
   include Blacklight::SearchHelper
 

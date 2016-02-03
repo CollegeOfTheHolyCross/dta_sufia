@@ -201,6 +201,7 @@ en:
   simple_form:
     labels:
       generic_file:
+        is_shown_at:      "URL to Item"
         title:            "Title"
         alternative:      "Alternative Title"
         creator:          "Creator"
@@ -269,6 +270,7 @@ en:
         publisher: "An entity responsible for making the resource available. Examples of a Publisher include a person, an organization, or a service. Typically, the name of a Publisher should be used in the entirety.<ul><li>If published in digital form (i.e., on the Internet), the institution responsible for making the resource available should be considered the publisher.</li><li>For a record that includes a digital representation of an analog resource (i.e., a digitized object), refer to the publisher of the analog resource. If published in both analog and digital format, repeat the element to include both publishers.</li><li>Do not include place of publication.</li></ul>Example: Beacon Press<br />Example: Arizona Queer Archives."
         related: "FIXME"
         rights: "Information about rights held in and over the resource. Typically, rights information includes a statement about various property rights associated with the resource, including intellectual property rights.<ul><li>Standardized boilerplate statements</li><li>Determined by the Institution/Organization and generally consistent within a Collection.</li></ul>"
+        is_shown_at: "Please enter a url to the page of where this item is actually hosted. The above image (if provided) will only be saved as a thumbnail."
       collection:
         institution_ids:      "The institution a collection belongs to."
         title:            "The name of the collection itself."

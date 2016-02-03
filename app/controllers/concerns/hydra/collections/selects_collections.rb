@@ -1,11 +1,13 @@
 module Hydra::Collections::SelectsCollections
   extend ActiveSupport::Concern
 
+=begin
   included do
     configure_blacklight do |config|
       config.search_builder_class = Hydra::Collections::SearchBuilder
     end
   end
+=end
 
   def access_levels
     { read: [:read, :edit], edit: [:edit] }

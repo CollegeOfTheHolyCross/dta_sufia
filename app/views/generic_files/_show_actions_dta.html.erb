@@ -1,10 +1,18 @@
 <div class="well" style="max-width:400px; margin-top:20px;">
   <h2 style="margin-top:-15px;">Item Actions</h2>
   <dl class="dl-horizontal file-show-term" style="margin-bottom:-19px;">
-    <dt style="padding-left:0px;width:80px;">Download</dt>
-    <dd style="padding-left:0px;margin-left: 100px;">
-      <%= link_to "PDF File", sufia.download_path(@generic_file), download: @document['title_tesim'].first + ".pdf" %>
-    </dd>
+    <% if @generic_file.hosted_elsewhere == "1" %>
+        <dt style="padding-left:0px;width:80px;">View At</dt>
+        <dd style="padding-left:0px;margin-left: 100px;">
+          <%= link_to truncate(@generic_file.is_shown_at, {:length=>100}), @generic_file.is_shown_at %>
+        </dd>
+    <% else %>
+        <dt style="padding-left:0px;width:80px;">Download</dt>
+        <dd style="padding-left:0px;margin-left: 100px;">
+          <%= link_to "PDF File", sufia.download_path(@generic_file), download: @document['title_tesim'].first + ".pdf" %>
+        </dd>
+    <% end %>
+
 
     <dt style="padding-left:0px;width:80px;">Share</dt>
     <dd style="padding-left:0px;margin-left: 100px;">
