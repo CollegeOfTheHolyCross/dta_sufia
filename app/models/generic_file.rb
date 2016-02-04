@@ -220,7 +220,7 @@ class GenericFile < ActiveFedora::Base
           doc['dta_all_subject_ssim'] << english_label
 
           #FIXME
-          sleep(1.0)
+          #sleep(1.0)
         else
           doc['dta_lcsh_subject_ssim'] << subject
           doc['dta_all_subject_ssim'] << subject

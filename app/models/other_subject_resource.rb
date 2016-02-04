@@ -7,10 +7,11 @@ class OtherSubjectResource
     exclude_lcsh = 'http://id.loc.gov/authorities/subjects/'
     exclude_homosaurus= 'http://homosaurus.org/terms/'
     solr_response = ActiveFedora::Base.find_with_conditions("other_subject_ssim:#{solr_wildcard_clean(subject)}*", rows: '50', fl: 'other_subject_ssim' )
+    solr_response_tesim = ActiveFedora::Base.find_with_conditions("other_subject_tesim:#{solr_exact_clean(subject)}", rows: '50', fl: 'other_subject_tesim' )
 
     #FIXME - A result for "http" gives back the entire array of values...
+    values = []
     if solr_response.present?
-      values = []
       solr_response.each do |indv_response|
         indv_response["other_subject_ssim"].each do |indv_subj|
           if indv_subj.match(/#{subject}/) && !indv_subj.match(/http:\/\/id\.loc\.gov\/authorities\/subjects\//) && !indv_subj.match(/http:\/\/homosaurus\.org\/terms\//)
@@ -18,6 +19,19 @@ class OtherSubjectResource
           end
         end
       end
+    end
+    if solr_response_tesim.present?
+
+      solr_response_tesim.each do |indv_response|
+        indv_response["other_subject_tesim"].each do |indv_subj|
+          if indv_subj.match(/#{subject}/)
+            values << indv_subj
+          end
+        end
+      end
+    end
+
+    if values.present?
 
       values = values.uniq.take(10)
 
@@ -48,7 +62,8 @@ class OtherSubjectResource
     if term.include?(')') || term.include?('(')
       return "\"#{term}\""
     else
-      return "(#{term})"
+      return "\"#{term}\""
+      #return "(#{term})" #FIXME
     end
 
   end
