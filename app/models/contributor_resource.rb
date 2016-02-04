@@ -7,9 +7,11 @@ class ContributorResource
 
     solr_response = ActiveFedora::Base.find_with_conditions("contributor_ssim:#{solr_wildcard_clean(subject)}*", rows: '50', fl: 'contributor_ssim' )
 
+    solr_response_tesim = ActiveFedora::Base.find_with_conditions("contributor_tesim:#{solr_exact_clean(subject)}*", rows: '50', fl: 'contributor_tesim' )
+
     #FIXME - A result for "http" gives back the entire array of values...
+    values = []
     if solr_response.present?
-      values = []
       solr_response.each do |indv_response|
         indv_response["contributor_ssim"].each do |indv_subj|
           if indv_subj.match(/#{subject}/)
@@ -17,7 +19,20 @@ class ContributorResource
           end
         end
       end
+    end
 
+    if solr_response_tesim.present?
+
+      solr_response_tesim.each do |indv_response|
+        indv_response["contributor_tesim"].each do |indv_subj|
+          if indv_subj.match(/#{subject}/)
+            values << indv_subj
+          end
+        end
+      end
+    end
+
+    if values.present?
       values = values.uniq.take(10)
 
       return values.map! { |item|
@@ -47,7 +62,8 @@ class ContributorResource
     if term.include?(')') || term.include?('(')
       return "\"#{term}\""
     else
-      return "(#{term})"
+      return "\"#{term}\""
+      #return "(#{term})" #FIXME
     end
 
   end
