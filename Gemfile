@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'hydra-access-controls', '9.5.0'
+
 #Fix the 4kb session limit
 gem 'activerecord-session_store'
 

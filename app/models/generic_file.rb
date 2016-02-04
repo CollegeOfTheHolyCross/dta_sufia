@@ -106,6 +106,9 @@ class GenericFile < ActiveFedora::Base
 
     doc['title_primary_ssort'] = self.title.first
 
+    doc['creator_ssim'] = self.creator
+    doc['contributor_ssim'] = self.contributor
+
     self.collections.each do |collection|
       doc['collection_name_ssim'] << collection.title
       collection.institutions.each do |institution|
@@ -215,6 +218,9 @@ class GenericFile < ActiveFedora::Base
           english_label ||= default_label
           doc['dta_lcsh_subject_ssim'] << english_label
           doc['dta_all_subject_ssim'] << english_label
+
+          #FIXME
+          sleep(1.0)
         else
           doc['dta_lcsh_subject_ssim'] << subject
           doc['dta_all_subject_ssim'] << subject

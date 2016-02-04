@@ -14,6 +14,10 @@ class AuthoritiesController < ApplicationController
           HomosaurusSubjectResource.find_location(s)
         elsif params[:term] == "other_subject"
           OtherSubjectResource.find_location(s)
+        elsif params[:term] == "creator"
+          CreatorResource.find_location(s)
+        elsif params[:term] == "contributor"
+          ContributorResource.find_location(s)
         elsif params[:term] == "language"
           LanguageResource.find_location(s)
         else
