@@ -23,7 +23,7 @@ Blacklight.onLoad(function() {
 
     var autocomplete_vocab = new Object();
 
-    autocomplete_vocab.url_var = ['other_subject', 'language'];   // the url variable to pass to determine the vocab to attach to
+    autocomplete_vocab.url_var = ['other_subject', 'language', 'creator', 'contributor'];   // the url variable to pass to determine the vocab to attach to
     autocomplete_vocab.field_name = new Array(); // the form name to attach the event for autocomplete
 
     // loop over the autocomplete fields and attach the
@@ -46,7 +46,7 @@ Blacklight.onLoad(function() {
         original_element = $(event.target).parent().parent().parent().children().children();
         original_id = original_element.attr("id");
 
-        if(original_id == 'generic_file_language' || original_id == 'generic_file_other_subject' ) {
+        if(original_id == 'generic_file_language' || original_id == 'generic_file_other_subject' || original_id == 'generic_file_creator' || original_id == 'generic_file_contributor'  ) {
             cloned_element = $(event.target).parent().parent().parent().clone()
         } else {
             cloned_element = $(event.target).parent().parent().parent().clone(true, true);
@@ -80,7 +80,7 @@ Blacklight.onLoad(function() {
 
 
 
-        if(original_id == 'generic_file_language' || original_id == 'generic_file_other_subject' ) {
+        if(original_id == 'generic_file_language' || original_id == 'generic_file_other_subject' || original_id == 'generic_file_creator' || original_id == 'generic_file_contributor' ) {
             added_element = $(event.target).parent().parent().parent().next().children().children();
             added_add_button = $(event.target).parent().parent().parent().next().children().children('.regular_dta_duplicate_span').children('.regular_dta_duplicate_field');
             remove_add_button = $(event.target).parent().parent().parent().next().children().children('.regular_dta_delete_span').children('.regular_dta_delete_field');
@@ -89,6 +89,10 @@ Blacklight.onLoad(function() {
                 $(added_element).autocomplete(get_autocomplete_opts('language'));
             } else if(original_id == 'generic_file_other_subject') {
                 $(added_element).autocomplete(get_autocomplete_opts('other_subject'));
+            } else if(original_id == 'generic_file_creator') {
+                $(added_element).autocomplete(get_autocomplete_opts('creator'));
+            } else if(original_id == 'generic_file_contributor') {
+                $(added_element).autocomplete(get_autocomplete_opts('contributor'));
             }
 
             added_add_button.click(duplicate_field_click);

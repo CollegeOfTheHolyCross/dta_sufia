@@ -58,6 +58,11 @@ class GenericFilesController < ApplicationController
     if params.key?(:upload_type) and params[:upload_type] == 'single'
       if !validate_metadata(params)
 
+        if params[:generic_file][:other_subject].present?
+          params[:generic_file][:other_subject].collect!{|x| x.strip || x }
+          params[:generic_file][:other_subject].reject!{ |x| x.blank? }
+        end
+
         #FIXME: This should be done elsewhere...
         if params[:generic_file][:lcsh_subject].present? and !params[:generic_file][:other_subject].nil?
           params[:generic_file][:other_subject] += params[:generic_file][:lcsh_subject]
@@ -196,6 +201,11 @@ class GenericFilesController < ApplicationController
       params[:generic_file].delete(:lcsh_subject)
     end
 =end
+    if params[:generic_file][:other_subject].present?
+      params[:generic_file][:other_subject].collect!{|x| x.strip || x }
+      params[:generic_file][:other_subject].reject!{ |x| x.blank? }
+    end
+
     if params[:generic_file][:lcsh_subject].present? and !params[:generic_file][:other_subject].nil?
       params[:generic_file][:other_subject] += params[:generic_file][:lcsh_subject]
       params[:generic_file].delete(:lcsh_subject)
@@ -213,6 +223,16 @@ class GenericFilesController < ApplicationController
 
     if params[:generic_file][:title].present?
       params[:generic_file][:title] = [params[:generic_file][:title]]
+    end
+
+    if params[:generic_file][:creator].present?
+      params[:generic_file][:creator].collect!{|x| x.strip || x }
+      params[:generic_file][:creator].reject!{ |x| x.blank? }
+    end
+
+    if params[:generic_file][:contributor].present?
+      params[:generic_file][:contributor].collect!{|x| x.strip || x }
+      params[:generic_file][:contributor].reject!{ |x| x.blank? }
     end
 
     file_attributes = edit_form_class.model_attributes(params[:generic_file])
