@@ -7,7 +7,7 @@ class ContributorResource
 
     solr_response = ActiveFedora::Base.find_with_conditions("contributor_ssim:#{solr_wildcard_clean(subject)}*", rows: '50', fl: 'contributor_ssim' )
 
-    solr_response_tesim = ActiveFedora::Base.find_with_conditions("contributor_tesim:#{solr_exact_clean(subject)}*", rows: '50', fl: 'contributor_tesim' )
+    solr_response_tesim = ActiveFedora::Base.find_with_conditions("contributor_tesim:#{solr_exact_clean(subject)}", rows: '50', fl: 'contributor_tesim' )
 
     #FIXME - A result for "http" gives back the entire array of values...
     values = []
