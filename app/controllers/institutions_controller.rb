@@ -30,6 +30,25 @@ class InstitutionsController < CatalogController
   end
   helper_method :search_action_url
 
+  def update_collections
+    puts "Images are being placed right"
+    term_query = Collection.find_with_conditions("isMemberOfCollection_ssim:#{params[:id]}", rows: '10000', fl: 'id,title_tesim' )
+    term_query = term_query.sort_by { |term| term["title_tesim"].first }
+    @selectable_collection = []
+    term_query.each { |term| @selectable_collection << [term["title_tesim"].first, term["id"]] }
+
+    respond_to do |format|
+      if @selectable_collection.present?
+        format.html { render html: @selectable_collection.to_s }
+        format.json { render json: @selectable_collection.to_json, status: :created }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @selectable_collection, status: :unprocessable_entity }
+      end
+    end
+
+  end
+
   def index
     #@terms = Homosaurus.all.sort_by { |term| term.preferred_label }
     #@terms = Homosaurus.all
