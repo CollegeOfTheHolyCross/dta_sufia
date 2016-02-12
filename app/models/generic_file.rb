@@ -4,6 +4,7 @@ require 'rack/cache'
 
 class GenericFile < ActiveFedora::Base
   include Sufia::GenericFile
+  has_and_belongs_to_many :institution, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.isMemberOf, class_name: "Institution"
   
   property :analog_format, predicate: ::RDF::Vocab::DC.format, multiple: false do |index|
     index.as :stored_searchable

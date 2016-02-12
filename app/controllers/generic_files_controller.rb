@@ -46,13 +46,20 @@ class GenericFilesController < ApplicationController
     @selectable_collection = @selectable_collection.sort_by { |collection| collection.title.first }
 =end
 
-    term_query = Collection.find_with_conditions("*:*", rows: '10000', fl: 'id,title_tesim' )
-    term_query = term_query.sort_by { |term| term["title_tesim"].first }
+    #term_query = Collection.find_with_conditions("*:*", rows: '10000', fl: 'id,title_tesim' )
+    #term_query = term_query.sort_by { |term| term["title_tesim"].first }
     @selectable_collection = []
-    term_query.each { |term| @selectable_collection << [term["title_tesim"].first, term["id"]] }
+    #term_query.each { |term| @selectable_collection << [term["title_tesim"].first, term["id"]] }
+
+    term_query = Institution.find_with_conditions("*:*", rows: '10000', fl: 'id,name_ssim' )
+    term_query = term_query.sort_by { |term| term["name_ssim"].first }
+    @selectable_institution = []
+    term_query.each { |term| @selectable_institution << [term["name_ssim"].first, term["id"]] }
 
     #@selectable_collection = @selectable_collection
   end
+
+
 
   def create
     if params.key?(:upload_type) and params[:upload_type] == 'single'
