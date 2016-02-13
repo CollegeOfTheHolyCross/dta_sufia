@@ -80,6 +80,42 @@ class GenericFile < ActiveFedora::Base
     ['hello']
   end
 
+  def self.blazegraph_config
+    @blazegraph_config ||= YAML::load(File.open(blazegraph_config_path))[env]
+                               .with_indifferent_access
+  end
+
+  def self.app_root
+    return @app_root if @app_root
+    @app_root = Rails.root if defined?(Rails) and defined?(Rails.root)
+    @app_root ||= APP_ROOT if defined?(APP_ROOT)
+    @app_root ||= '.'
+  end
+
+  def self.env
+    return @env if @env
+    #The following commented line always returns "test" in a rails c production console. Unsure of how to fix this yet...
+    #@env = ENV["RAILS_ENV"] = "test" if ENV
+    @env ||= Rails.env if defined?(Rails) and defined?(Rails.root)
+    @env ||= 'development'
+  end
+
+  def self.blazegraph_config_path
+    File.join(app_root, 'config', 'blazegraph.yml')
+  end
+
+  def self.repo
+    @repo ||= ::RDF::Blazegraph::Repository.new(GenericFile.blazegraph_config[:url])
+  end
+
+  def self.qskos value
+    if value.match(/^sh\d+/)
+      return ::RDF::URI.new("http://id.loc.gov/authorities/subjects/#{value}")
+    else
+      return ::RDF::URI.new("http://www.w3.org/2004/02/skos/core##{value}")
+    end
+  end
+
   def to_solr(doc = {} )
     doc = super(doc)
 
@@ -133,85 +169,27 @@ class GenericFile < ActiveFedora::Base
           doc['dta_altLabel_all_subject_ssim'] << alt
         end
 
-      #FIXME: Not doing alts currently...
+        #FIXME: Not doing alts currently...
       elsif subject.match(/http:\/\/id.loc.gov\/authorities\/subjects\//)
-#http://www.geonames.org/5391959
-        #r = RestClient.get 'http://api.geonames.org/getJSON', {:params => {:geonameId=>"5391959", :username=>"boston_library"}, accept: :json}
-        #result = JSON.parse(r)
-
-
-        #/proxy?q=http://digitaltransgenderarchive.xyz/raw_proxy?q=<subject>.json
-
-=begin
-        label_holder = nil
-        any_match = nil
-        RestClient.enable Rack::Cache
-        r = RestClient.get "/proxy?q=http://digitaltransgenderarchive.xyz/proxy?q=#{subject}.json", { accept: :json }
-        RestClient.disable Rack::Cache
-        JSON.parse(r).first['http://www.w3.org/2004/02/skos/core#prefLabel'].each do |lcsh_label|
-          if !lcsh_label.has_key?('@language') || (lcsh_label.has_key?('@language') && lcsh_label['@language'] == 'en')
-            label_holder ||= lcsh_label['@value']
-          else
-            any_match ||= lcsh_label['@value']
-          end
-        end
-        label_holder ||= any_match
-        doc['dta_lcsh_subject_ssim'] << label_holder
-        doc['dta_all_subject_ssim'] << label_holder
-=end
-
-=begin
-        label_holder = nil
-        any_match = nil
-        RestClient.enable Rack::Cache
-        begin
-        r = RestClient.get  "/proxy_raw?q=http://digitaltransgenderarchive.xyz/proxy_raw?q=#{subject}.json", { accept: :json }
-        rescue
-          raise 'subject was: ' + subject
-          #subject was: http://id.loc.gov/authorities/subjects/sh2008004230
-        end
-        RestClient.disable Rack::Cache
-        result = JSON.parse(r)
-        #FIXME!!!
-        if result['http://www.w3.org/2004/02/skos/core#prefLabel'].present?
-          result.first['http://www.w3.org/2004/02/skos/core#prefLabel'].each do |lcsh_label|
-            if !lcsh_label.has_key?('@language') || (lcsh_label.has_key?('@language') && lcsh_label['@language'] == 'en')
-              label_holder ||= lcsh_label['@value']
-            else
-              any_match ||= lcsh_label['@value']
-            end
-          end
-          label_holder ||= any_match
-          doc['dta_lcsh_subject_ssim'] << label_holder
-          doc['dta_all_subject_ssim'] << label_holder
-        else
-          doc['dta_lcsh_subject_ssim'] << subject
-          doc['dta_all_subject_ssim'] << subject
-        end
-=end
-
-
-
         english_label = nil
         default_label = nil
         any_match = nil
         full_alt_term_list = []
-        RestClient.enable Rack::Cache
-        r = RestClient.get "#{subject}.json", { accept: :json }
-        RestClient.disable Rack::Cache
-        result = JSON.parse(r)
-        #FIXME!!!
-        subject_values = result.select { |res| res['@id'].present? and res['@id'] == subject }
-        if subject_values.present? and subject_values.first['http://www.w3.org/2004/02/skos/core#prefLabel'].present?
-          subject_values.first['http://www.w3.org/2004/02/skos/core#prefLabel'].each do |lcsh_label|
-            if lcsh_label.has_key?('@language') && lcsh_label['@language'] == 'en'
-              english_label ||= lcsh_label['@value']
-            elsif !lcsh_label.has_key?('@language')
-              default_label ||= lcsh_label['@value']
-            else
-              any_match ||= lcsh_label['@value']
-              #FIXME
-              full_alt_term_list << lcsh_label['@value']
+
+        if GenericFile.repo.query(:subject=>::RDF::URI.new(subject), :predicate=>GenericFile.qskos('prefLabel')).count > 0
+          GenericFile.repo.query(:subject=>::RDF::URI.new(subject), :predicate=>GenericFile.qskos('prefLabel')).each_statement do |result_statement|
+            #LoC has blank nodes... see alts of http://id.loc.gov/authorities/subjects/sh85102696 ... these aren't literals.
+            #LoC's blank node representation.... alt: to_s == "_:t829213" or check .resource? or check .node? or .id == 't829213'
+            if result_statement.object.literal?
+              if result_statement.object.language == :en
+                english_label ||= result_statement.object.value
+              elsif result_statement.object.language.blank?
+                default_label ||= result_statement.object.value
+              else
+                any_match ||= result_statement.object.value
+                #FIXME
+                full_alt_term_list << result_statement.object.value
+              end
             end
           end
 
@@ -227,10 +205,8 @@ class GenericFile < ActiveFedora::Base
           doc['dta_all_subject_ssim'] << subject
         end
 
-        if subject_values.present? and subject_values.first['http://www.w3.org/2004/02/skos/core#altLabel'].present?
-          subject_values.first['http://www.w3.org/2004/02/skos/core#altLabel'].each do |lcsh_label|
-              full_alt_term_list << lcsh_label['@value']
-          end
+        GenericFile.repo.query(:subject=>::RDF::URI.new(subject), :predicate=>GenericFile.qskos('altLabel')).each_statement do |result_statement|
+          full_alt_term_list << result_statement.object.value if result_statement.object.literal?
         end
 
         doc['dta_altLabel_all_subject_ssim'] += full_alt_term_list
@@ -241,6 +217,8 @@ class GenericFile < ActiveFedora::Base
 
       end
     end
+
+    doc['dta_altLabel_all_subject_ssim'].uniq!
 
     doc['dta_homosaurus_subject_ssim'].sort_by!{|word| word.downcase}
     doc['dta_all_subject_ssim'].sort_by!{|word| word.downcase}

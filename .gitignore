@@ -26,7 +26,8 @@ solr.yml
 secrets.yml
 blacklight.yml
 contact_emails.yml
-analytics.yml.sample
+analytics.yml
+blazegraph.yml
 
 # Files to ignore by default in Git #
 #####################################
