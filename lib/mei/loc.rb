@@ -5,6 +5,42 @@ module Mei
 
     include Mei::WebServiceBase
 
+    def self.blazegraph_config
+      @blazegraph_config ||= YAML::load(File.open(blazegraph_config_path))[env]
+                      .with_indifferent_access
+    end
+
+    def self.app_root
+      return @app_root if @app_root
+      @app_root = Rails.root if defined?(Rails) and defined?(Rails.root)
+      @app_root ||= APP_ROOT if defined?(APP_ROOT)
+      @app_root ||= '.'
+    end
+
+    def self.env
+      return @env if @env
+      #The following commented line always returns "test" in a rails c production console. Unsure of how to fix this yet...
+      #@env = ENV["RAILS_ENV"] = "test" if ENV
+      @env ||= Rails.env if defined?(Rails) and defined?(Rails.root)
+      @env ||= 'development'
+    end
+
+    def self.blazegraph_config_path
+      File.join(app_root, 'config', 'blazegraph.yml')
+    end
+
+    def self.repo
+      @repo ||= ::RDF::Blazegraph::Repository.new(Mei::Loc.blazegraph_config[:url])
+    end
+
+    def self.qskos value
+      if value.match(/^sh\d+/)
+        return ::RDF::URI.new("http://id.loc.gov/authorities/subjects/#{value}")
+      else
+        return ::RDF::URI.new("http://www.w3.org/2004/02/skos/core##{value}")
+      end
+    end
+
     def initialize(subauthority)
       @subauthority = subauthority
       #RestClient.enable Rack::Cache
@@ -33,7 +69,7 @@ module Mei
             end_response[local_pos] = loc_response_to_qa(response_to_struct(response), position_counter)
           }
           position_counter+=1
-          sleep(0.15)
+          #sleep(0.05)
 
         #loc_response_to_qa(response_to_struct(response))
       end
@@ -44,12 +80,13 @@ module Mei
     # Simple conversion from LoC-based struct to QA hash
     def loc_response_to_qa(data, counter)
       json_link = data.links.select { |link| link.first == 'application/json' }
-      if json_link.present? && counter < 7
+      if json_link.present?
         json_link = json_link[0][1]
         #puts 'Json Link is: ' + json_link
         #item_response = get_json(json_link.gsub('.json','.rdf'))
-        item_response = Nokogiri::XML(get_xml(json_link.gsub('.json','.rdf'))).remove_namespaces!
-        broader, narrower, variants = get_skos_concepts(item_response)
+        #item_response = Nokogiri::XML(get_xml(json_link.gsub('.json','.rdf'))).remove_namespaces!
+
+        broader, narrower, variants = get_skos_concepts(json_link.gsub('.json',''))
       end
 
       #count = ActiveFedora::Base.find_with_conditions("subject_tesim:#{data.id.gsub('info:lc', 'http://id.loc.gov').gsub(':','\:')}", rows: '100', fl: 'id' ).length
@@ -98,7 +135,47 @@ module Mei
       OpenStruct.new(result)
     end
 
-    def get_skos_concepts xml_response
+    def get_skos_concepts subject
+      broader_list = []
+      narrower_list = []
+      variant_list = []
+
+      #xml_response = Nokogiri::XML(response).remove_namespaces!
+
+      Mei::Loc.repo.query(:subject=>::RDF::URI.new(subject), :predicate=>Mei::Loc.qskos('broader')).each_statement do |result_statement|
+        if !result_statement.object.literal? and result_statement.object.uri?
+          broader_label = nil
+          broader_uri = result_statement.object.to_s
+          #if Mei::Loc.repo.query(:subject=>::RDF::URI.new(broader_uri), :predicate=>Mei::Loc.qskos('narrower'), :object=>::RDF::URI.new(subject)).count > 0
+            Mei::Loc.repo.query(:subject=>::RDF::URI.new(broader_uri), :predicate=>Mei::Loc.qskos('prefLabel')).each_statement do |broader_statement|
+              broader_label ||= broader_statement.object.value if broader_statement.object.literal?
+            end
+            broader_label ||= broader_uri
+            broader_list << {:uri_link=>broader_uri, :label=>broader_label}
+          #end
+        end
+      end
+
+      Mei::Loc.repo.query(:subject=>::RDF::URI.new(subject), :predicate=>Mei::Loc.qskos('narrower')).each_statement do |result_statement|
+        if !result_statement.object.literal? and result_statement.object.uri?
+          narrower_label = nil
+          narrower_uri = result_statement.object.to_s
+          Mei::Loc.repo.query(:subject=>::RDF::URI.new(narrower_uri), :predicate=>Mei::Loc.qskos('prefLabel')).each_statement do |narrower_statement|
+            narrower_label ||= narrower_statement.object.value if narrower_statement.object.literal?
+          end
+          narrower_label ||= narrower_uri
+          narrower_list << {:uri_link=>narrower_uri, :label=>narrower_label}
+        end
+      end
+
+      Mei::Loc.repo.query(:subject=>::RDF::URI.new(subject), :predicate=>Mei::Loc.qskos('altLabel')).each_statement do |result_statement|
+        variant_list << result_statement.object.value if result_statement.object.literal?
+      end
+
+      return broader_list, narrower_list, variant_list
+    end
+
+    def get_skos_concepts_newer_but_old xml_response
       broader_list = []
       narrower_list = []
       variant_list = []

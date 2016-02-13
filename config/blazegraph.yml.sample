@@ -1,0 +1,11 @@
+default: &default
+  url: http://localhost:9999/blazegraph/sparql
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

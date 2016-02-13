@@ -5,7 +5,7 @@
         $('#collection option:gt(0)').remove();
       } else {
         $.getJSON({
-              url: "https://www.digitaltransgenderarchive.net/ajax/cols/" + $(this).val(),
+              url: "http://localhost:3000/ajax/cols/" + $(this).val(),
               /*            beforeSend: function( xhr ) {
                xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
                }*/

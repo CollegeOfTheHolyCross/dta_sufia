@@ -85,6 +85,8 @@ gem 'devise-guests', '~> 0.3'
 gem 'friendly_id', '5.1.0'
 gem 'gon'
 
+gem 'rdf-blazegraph'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'jettywrapper'
