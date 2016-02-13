@@ -4,7 +4,12 @@
     <div class="col-xs-12 col-sm-6 col-md-6" style="float:left; margin:0px; padding: 0px;">
       <dt>Download</dt>
       <dd>
-        <%= link_to "PDF File", sufia.download_path(@generic_file), download: @document['title_tesim'].first + ".pdf" %>
+        <% if @generic_file.content.mime_type == "application/pdf" %>
+            <%= link_to "PDF File", sufia.download_path(@generic_file), download: @document['title_tesim'].first + ".pdf" %>
+        <% else %>
+            <%= link_to "Image File", sufia.download_path(@generic_file), download: @document['title_tesim'].first %>
+        <% end %>
+
       </dd>
 
     </div>
