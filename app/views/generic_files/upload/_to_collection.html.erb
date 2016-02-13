@@ -5,7 +5,7 @@
         $('#collection option:gt(0)').remove();
       } else {
         $.getJSON({
-              url: "http://localhost:3000/ajax/cols/" + $(this).val(),
+              url: "http://www.digitaltransgenderarchive.net/ajax/cols/" + $(this).val(),
               /*            beforeSend: function( xhr ) {
                xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
                }*/
@@ -31,7 +31,11 @@
 </script>
 
 <p>
+<<<<<<< HEAD
+  <label class="no_repeat_field_value required control-label"><abbr title="required">*</abbr> Upload to Institution: </label>
+=======
   <label class="no_repeat_field_value required control-label"><abbr title="required">*</abbr> Select the Institution: </label>
+>>>>>>> aa7352c152ac57fcaa500f992ca5f9738a67cd09
   <%= select_tag 'institution', options_for_select(@selectable_institution, @institution_id), required: true, include_blank: true, class: 'form-control form_single_style' %>
 </p>
 <p>&nbsp;</p>
