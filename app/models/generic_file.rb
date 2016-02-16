@@ -4,7 +4,7 @@ require 'rack/cache'
 
 class GenericFile < ActiveFedora::Base
   include Sufia::GenericFile
-  has_and_belongs_to_many :institution, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.isMemberOf, class_name: "Institution"
+  has_and_belongs_to_many :institutions, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.isMemberOf, class_name: "Institution"
   
   property :analog_format, predicate: ::RDF::Vocab::DC.format, multiple: false do |index|
     index.as :stored_searchable
@@ -148,9 +148,14 @@ class GenericFile < ActiveFedora::Base
 
     self.collections.each do |collection|
       doc['collection_name_ssim'] << collection.title
-      collection.institutions.each do |institution|
-        doc['institution_name_ssim'] << institution.name
-      end
+      #collection.institutions.each do |institution|
+        #doc['institution_name_ssim'] << institution.name
+      #end
+    end
+
+    self.institutions.each do |institution|
+      doc['primary_institution_ssi'] = institution.name
+      doc['institution_name_ssim'] = [institution.name]
     end
 
     self.language.each do |lang|

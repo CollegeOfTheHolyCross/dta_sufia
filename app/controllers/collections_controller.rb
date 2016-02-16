@@ -8,7 +8,7 @@ class CollectionsController < CatalogController
   before_action :build_breadcrumbs, only: [:edit, :show, :public_show, :facet]
   before_filter :authenticate_user!, :except => [:show, :public_index, :public_show, :facet]
 
-  before_filter :relation_base_blacklight_config, :only => [:show, :public_show, :facet]
+  before_filter :collection_base_blacklight_config, :only => [:show, :public_show, :facet]
 
   before_action :verify_admin, except: [:show, :public_index, :public_show, :facet] #FIXME on change member
 
@@ -48,7 +48,7 @@ class CollectionsController < CatalogController
   # set the correct facet params for facets from the collection
   def set_collection_facet_params(collection_title, document)
     facet_params = {blacklight_config.collection_field => [collection_title]}
-    facet_params[blacklight_config.institution_field] = document[blacklight_config.institution_field.to_sym]
+    #facet_params[blacklight_config.institution_field] = document[blacklight_config.institution_field.to_sym]
     facet_params
   end
 
@@ -101,6 +101,7 @@ class CollectionsController < CatalogController
 
   def update
     #Update is called from other areas like moving an item to a collection... need to fix that...
+    @reindex_members = false
     if params[:collection][:institution_ids].present?
       @collection.institutions.each do |institution|
         institution.members.delete(@collection)
@@ -114,6 +115,10 @@ class CollectionsController < CatalogController
         @collection.institutions = @collection.institutions + [institution]
         institution.members = institution.members + [@collection]
         institution.save
+      end
+
+      if @collection != params[:collection][:title]
+        @reindex_members = true
       end
     #FIXME: Detect updates outside of collection form elsewhere...
     else
@@ -130,6 +135,15 @@ class CollectionsController < CatalogController
     end
 
 
+    super
+  end
+
+  def after_update
+    if @reindex_members
+      @collection.members.each do |file|
+        file.update_index
+      end
+    end
     super
   end
 

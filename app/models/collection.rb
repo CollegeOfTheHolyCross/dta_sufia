@@ -35,6 +35,8 @@ class Collection < Sufia::Collection
       doc['institution_pid_ssi'] = institution.id
     end
 
+    doc['institution_name_ssim'].uniq! #unsure why this is needed... figure out later
+
     doc['collection_name_ssim'] = self.title
 
 

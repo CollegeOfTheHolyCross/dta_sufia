@@ -342,7 +342,7 @@ class CatalogController < ApplicationController
     config.spell_max = 5
   end
 
-  def relation_base_blacklight_config
+  def institution_base_blacklight_config
     # don't show collection facet
     blacklight_config.facet_fields['collection_name_ssim'].show = false
     blacklight_config.facet_fields['collection_name_ssim'].if = false
@@ -359,6 +359,27 @@ class CatalogController < ApplicationController
     #blacklight_config.facet_fields['subject_geographic_ssim'].collapse = true
     #blacklight_config.facet_fields['date_facet_ssim'].collapse = true
     #blacklight_config.facet_fields['genre_basic_ssim'].collapse = true
+  end
+
+  def collection_base_blacklight_config
+    blacklight_config.facet_fields['collection_name_ssim'].show = false
+    blacklight_config.facet_fields['collection_name_ssim'].if = false
+
+
+=begin
+    blacklight_config.facet_fields['institution_name_ssim'].show = true
+    blacklight_config.facet_fields['institution_name_ssim'].if = true
+    blacklight_config.facet_fields['institution_name_ssim'].collapse = false
+=end
+
+
+    blacklight_config.facet_fields['institution_name_ssim'].show = false
+    blacklight_config.facet_fields['institution_name_ssim'].if = false
+
+
+    #Needs to be fixed...
+    blacklight_config.facet_fields['dta_dates_ssim'].show = false
+    blacklight_config.facet_fields['dta_dates_ssim'].if = false
   end
 
 

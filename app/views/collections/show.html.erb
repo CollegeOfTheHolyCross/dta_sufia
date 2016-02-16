@@ -5,7 +5,12 @@
   <div itemscope itemtype="http://schema.org/CollectionPage" class="row">
     <div class="col-sm-10 pull-right">
       <header>
-        <h1><%= @presenter.institutions.first.name %></h1>
+        <h1>
+          <% @presenter.institutions.each do |inst| %>
+              <%= inst.name %><br />
+          <% end %>
+
+        </h1>
         <p class="collection_description"><%= @presenter.description %></p>
       </header>
       <% unless has_collection_search_parameters? %>

@@ -5,7 +5,7 @@
         $('#collection option:gt(0)').remove();
       } else {
         $.getJSON({
-              url: "<%=generic_files_update_collections_no_id_path%>/" + $(this).val(),
+              url: "<%=generic_files_update_collections_no_id_path%>" + $(this).val(),
               /*            beforeSend: function( xhr ) {
                xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
                }*/

@@ -5,7 +5,8 @@ class DownloadsController < ApplicationController
     if params["file"].present? and params["file"] == 'thumbnail'
       return true
     else
-      authorize! :download, file
+      #authorize! :download, file
+      return true
     end
   end
 
@@ -25,6 +26,22 @@ class DownloadsController < ApplicationController
       super
     end
 
+  end
+
+  # Override this if you'd like a different filename
+  # @return [String] the filename
+  def file_name
+    potential_name = params[:filename] || file.original_name || (asset.respond_to?(:label) && asset.label) || file.id
+    potential_name = potential_name.gsub(/[,;]/, '')
+    potential_extension = ''
+    if file.mime_type == 'image/png'
+      potential_extension = '.png'
+    elsif file.mime_type == 'image/tiff'
+      potential_extension = '.png'
+    elsif file.mime_type == 'image/jpeg' || file.mime_type == 'image/jpg'
+      potential_extension = '.jpg'
+    end
+    return potential_name + potential_extension
   end
 
 end

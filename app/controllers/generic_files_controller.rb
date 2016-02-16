@@ -118,12 +118,22 @@ class GenericFilesController < ApplicationController
             actor.create_content(StringIO.open(thumb.to_blob), File.basename(file.original_filename,File.extname(file.original_filename)), file_path, 'image/jpeg', params[:collection])
           else
             saved = actor.save_characterize_and_record_committer
-            actor.add_file_to_collection(params[:collection]) if saved
+            if saved
+              actor.add_file_to_collection(params[:collection])
+            end
+
           end
         else
           file = params[:filedata]
           actor.create_content(file, file.original_filename, file_path, file.content_type, params[:collection])
         end
+
+        #FIXME
+        institution = Institution.find(params[:institution])
+        institution.files = institution.files + [@generic_file]
+        @generic_file.institutions = @generic_file.institutions + [institution]
+        institution.save
+        @generic_file.save
 
         update_metadata
 
@@ -244,6 +254,58 @@ class GenericFilesController < ApplicationController
 
     file_attributes = edit_form_class.model_attributes(params[:generic_file])
     actor.update_metadata(file_attributes, params[:visibility])
+  end
+
+  def edit
+    object = GenericFile.find(params[:id])
+    term_query = Institution.find_with_conditions("*:*", rows: '10000', fl: 'id,name_ssim' )
+    term_query = term_query.sort_by { |term| term["name_ssim"].first }
+    @selectable_institution = []
+    term_query.each { |term| @selectable_institution << [term["name_ssim"].first, term["id"]] }
+    @institution_id = object.institutions.first.id
+
+    term_query = Collection.find_with_conditions("isMemberOfCollection_ssim:#{@institution_id}", rows: '10000', fl: 'id,title_tesim' )
+    term_query = term_query.sort_by { |term| term["title_tesim"].first }
+    @selectable_collection = []
+    term_query.each { |term| @selectable_collection << [term["title_tesim"].first, term["id"]] }
+    @collection_id = object.collections.first.id if object.collections.present?
+    super
+  end
+
+  def update
+    #FIXME
+    if params.key? :generic_file
+      @generic_file = GenericFile.find(params[:id])
+      @generic_file.collections.each do |collect|
+        #fresh_collect = Collection.find(collect.id)
+        collect.members.delete(@generic_file)
+        collect.save
+        @generic_file.collections.delete(collect)
+      end
+
+      @generic_file.institutions.each do |institution|
+        #fresh_institution = Institution.find(institution.id)
+        institution.files.delete(@generic_file)
+        institution.save
+        @generic_file.institutions.delete(institution)
+      end
+
+
+      collection = Collection.find(params[:collection])
+      collection.add_members [@generic_file.id]
+      @generic_file.collections = @generic_file.collections + [collection]
+      collection.save
+
+      institution = Institution.find(params[:institution])
+      institution.files = institution.files + [@generic_file]
+      @generic_file.institutions = @generic_file.institutions + [institution]
+      institution.save
+
+      @generic_file.save
+    end
+
+
+    super
   end
 
 

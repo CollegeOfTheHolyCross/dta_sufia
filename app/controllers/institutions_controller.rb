@@ -10,7 +10,7 @@ class InstitutionsController < CatalogController
   before_filter :remove_unwanted_views, :only => [:public_index]
 
   # remove collection facet and collapse others
-  before_filter :relation_base_blacklight_config, :only => [:public_show]
+  before_filter :institution_base_blacklight_config, :only => [:public_show]
 
 
   def enforce_show_permissions
@@ -31,7 +31,6 @@ class InstitutionsController < CatalogController
   helper_method :search_action_url
 
   def update_collections
-    puts "Images are being placed right"
     term_query = Collection.find_with_conditions("isMemberOfCollection_ssim:#{params[:id]}", rows: '10000', fl: 'id,title_tesim' )
     term_query = term_query.sort_by { |term| term["title_tesim"].first }
     @selectable_collection = []
@@ -152,12 +151,24 @@ class InstitutionsController < CatalogController
   end
 
   def update
+    @reindex_members = false
     @institution = Institution.find(params[:id])
+
+    if @institution != params[:institution][:name]
+      @reindex_members = true
+    end
+
     @institution.update(institution_params)
 
     if params.key?(:filedata)
       file = params[:filedata]
       @institution.add_file(file, path: 'content', original_name: file.original_filename, mime_type: file.content_type)
+    end
+
+    if @reindex_members
+      @institution.files.each do |file|
+        file.update_index
+      end
     end
 
 

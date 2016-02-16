@@ -3,7 +3,9 @@
 
 <h2 class="collection-title"><%= @collection_title %></h2>
 <h4 class="collection-provenance">
-      <%= @document[:institution_name_ssim][0] %>
+      <% @document[:institution_name_ssim].sort.each do |inst_name| %>
+        <%= inst_name %> <br />
+      <% end %>
 </h4>
 
 <div class="document">

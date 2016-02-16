@@ -52,6 +52,7 @@ Rails.application.routes.draw do
   get 'inst/facet/:id', :to => 'institutions#facet', :as => 'institutions_facet'
 
   get 'ajax/cols/:id', :to => 'institutions#update_collections', :as => 'generic_files_update_collections'
+  get 'ajax/cols', :to => 'institutions#update_collections', :as => 'generic_files_update_collections_no_id'
 
   # This must be the very last route in the file because it has a catch-all route for 404 errors.
     # This behavior seems to show up only in production mode.
