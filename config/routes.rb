@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   get 'proxy_raw' => 'commands#proxy_raw'
   get 'admin/reindex' => 'commands#reindex', as: :reindex_all
   get 'collections/member_visibility/:id' => 'collections#change_member_visibility', as: :collection_member_visibility
+  get 'collections/collection_invisible/:id' => 'collections#collection_invisible', as: :collection_invisible
+  get 'collections/collection_visible/:id' => 'collections#collection_visible', as: :collection_visible
 
   #Static Paths
   resources :abouts, only: [:new, :edit, :create, :update, :show], :path => :about

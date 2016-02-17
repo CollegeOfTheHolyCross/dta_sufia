@@ -182,7 +182,36 @@ class CollectionsController < CatalogController
       end
     end
 
+    if collection.visibility == 'restricted'
+      collection.visibility = 'open'
+      collection.save
+    end
+
     flash[:notice] = "Visibility of all objects was changed!"
+    redirect_to request.referrer
+  end
+
+  def collection_invisible
+    collection = ActiveFedora::Base.find(params[:id])
+    collection.visibility = 'restricted'
+    collection.save
+    collection.members.each do |obj|
+      if obj.visibility == 'open'
+        obj.visibility = 'restricted'
+        obj.save
+      end
+    end
+
+    flash[:notice] = "Visibility of collection and all objects now private!"
+    redirect_to request.referrer
+  end
+
+  def collection_visible
+    collection = ActiveFedora::Base.find(params[:id])
+    collection.visibility = 'open'
+    collection.save
+
+    flash[:notice] = "Collection now set to public!"
     redirect_to request.referrer
   end
 

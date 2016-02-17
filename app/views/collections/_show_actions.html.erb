@@ -4,6 +4,8 @@
       <% if current_user.admin? %>
           <span class="label label-default"><%= link_to t("sufia.collection.show.edit.label"), collections.edit_collection_path, title: t("sufia.collection.show.edit.label") %></span> &nbsp;&nbsp;
           <span class="label label-default"><%= link_to 'Make All Visible', collection_member_visibility_path(@collection.id), title: 'Make All Visible' %></span> &nbsp;&nbsp;
+          <span class="label label-default"><%= link_to 'Hide Collection', collection_invisible_path(@collection.id), title: 'Hide Collection' %></span> &nbsp;&nbsp;
+          <span class="label label-default"><%= link_to 'Show Collection Only', collection_visible_path(@collection.id), title: 'Show Collection Only' %></span> &nbsp;&nbsp;
       <% end %>
 
       <span class="label label-default"><%= link_to t("sufia.collection.show.add_files.label"),  sufia.dashboard_files_path( add_files_to_collection: @collection.id ), title: t("sufia.collection.show.add_files.label") %></span>
