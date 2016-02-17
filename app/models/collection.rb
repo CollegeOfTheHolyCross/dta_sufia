@@ -21,6 +21,10 @@ class Collection < Sufia::Collection
     index.as :stored_searchable
   end
 
+  def update_permissions
+    self.visibility = "open" unless self.visibility == 'restricted'
+  end
+
   def to_solr(doc = {} )
     doc = super(doc)
 
