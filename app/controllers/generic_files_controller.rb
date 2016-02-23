@@ -262,13 +262,18 @@ class GenericFilesController < ApplicationController
     term_query = term_query.sort_by { |term| term["name_ssim"].first }
     @selectable_institution = []
     term_query.each { |term| @selectable_institution << [term["name_ssim"].first, term["id"]] }
-    @institution_id = object.institutions.first.id
 
-    term_query = Collection.find_with_conditions("isMemberOfCollection_ssim:#{@institution_id}", rows: '10000', fl: 'id,title_tesim' )
-    term_query = term_query.sort_by { |term| term["title_tesim"].first }
-    @selectable_collection = []
-    term_query.each { |term| @selectable_collection << [term["title_tesim"].first, term["id"]] }
-    @collection_id = object.collections.first.id if object.collections.present?
+    if object.institutions.present?
+      @institution_id = object.institutions.first.id
+      term_query = Collection.find_with_conditions("isMemberOfCollection_ssim:#{@institution_id}", rows: '10000', fl: 'id,title_tesim' )
+      term_query = term_query.sort_by { |term| term["title_tesim"].first }
+      @selectable_collection = []
+      term_query.each { |term| @selectable_collection << [term["title_tesim"].first, term["id"]] }
+      @collection_id = object.collections.first.id if object.collections.present?
+    else
+      @selectable_collection = []
+    end
+
     super
   end
 

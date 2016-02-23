@@ -32,6 +32,7 @@ class CollectionsController < CatalogController
     @show_response, @document = fetch(params[:id])
     @collection_title = @document["title_tesim"].first
 
+
     # add params[:f] for proper facet links
     params[:f] = set_collection_facet_params(@collection_title, @document)
 
@@ -193,14 +194,16 @@ class CollectionsController < CatalogController
 
   def collection_invisible
     collection = ActiveFedora::Base.find(params[:id])
-    collection.visibility = 'restricted'
-    collection.save
+
     collection.members.each do |obj|
       if obj.visibility == 'open'
         obj.visibility = 'restricted'
         obj.save
       end
     end
+
+    collection.visibility = 'restricted'
+    collection.save
 
     flash[:notice] = "Visibility of collection and all objects now private!"
     redirect_to request.referrer
