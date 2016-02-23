@@ -19,5 +19,6 @@ end
 def collections_filter(solr_parameters = {}, wtf=nil)
   solr_parameters[:fq] ||= []
   solr_parameters[:fq] << "+active_fedora_model_ssi:\"Collection\""
+  solr_parameters[:fq] << "+is_public_ssi:\"true\""
 end
 end

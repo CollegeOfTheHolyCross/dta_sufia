@@ -41,7 +41,8 @@ class DownloadsController < ApplicationController
     elsif file.mime_type == 'image/jpeg' || file.mime_type == 'image/jpg'
       potential_extension = '.jpg'
     end
-    return potential_name + potential_extension
+    return potential_name
+    #return potential_name + potential_extension
   end
 
 end

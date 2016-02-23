@@ -133,7 +133,7 @@ class PostsController < ApplicationController
     nav_items_raw.each do |nav_item|
       if 'news' == nav_item.url_label
         if params[:id].present? and params[:id]
-          @nav_items << "<a href='#{posts_path}'>#{nav_item.title}</a><ul><li>#{params[:id]}</li></ul>"
+          @nav_items << "<a href='#{posts_path}'>#{nav_item.title}</a><ul><li>#{Posts.friendly.find(params[:id]).title}</li></ul>"
         else
           @nav_items << nav_item.title
         end
