@@ -32,7 +32,6 @@ class CollectionsController < CatalogController
     @show_response, @document = fetch(params[:id])
     @collection_title = @document["title_tesim"].first
 
-
     # add params[:f] for proper facet links
     params[:f] = set_collection_facet_params(@collection_title, @document)
 
@@ -74,6 +73,17 @@ class CollectionsController < CatalogController
     @nav_li_active = 'explore'
     self.search_params_logic += [:collections_filter]
     (@response, @document_list) = search_results({:f => {'active_fedora_model_ssi' => 'Collection'},:rows => 100, :sort => 'title_primary_ssort asc'}, search_params_logic)
+=begin
+    term_query = Collection.find_with_conditions("*:*", rows: '10000', fl: 'id,title_tesim' )
+    term_query = term_query.sort_by { |term| term["title_tesim"].first }
+    @document_list = []
+    term_query.each do |term|
+      term[:id] = term["id"]
+      @document_list << term
+    end
+=end
+
+
     params[:view] = 'list'
     params[:sort] = 'title_info_primary_ssort asc'
     #params[:per_page] = params[:per_page].presence || '50'

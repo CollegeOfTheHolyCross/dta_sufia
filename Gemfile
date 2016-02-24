@@ -9,7 +9,7 @@ gem 'google-api-client', '0.8.6'
 
 gem "rdf-vocab"
 #gem 'mysql2', '0.3.18'
-#gem 'blacklight', '5.14'
+#gem 'blacklight', '5.16.2'
 gem 'blacklight', '5.16.4'
 gem 'sufia', '6.4.0'
 #gem 'sufia', :git=>'https://github.com/projecthydra/sufia.git'

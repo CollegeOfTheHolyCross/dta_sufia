@@ -1,3 +1,43 @@
+$footer_logo_image: 'shared/bottom_logo.png' !default;
+
+$very_dark_gray: #555555 !default;
+$darker_gray: #666666 !default;
+$dark_gray: #A29E9E !default;
+$light_gray: #CACACA !default;
+$lighter_gray: #F1F1F1 !default;
+
+$bootstrap_text: #333333 !default;
+
+$bl_link: #428BCA !default;
+$bl_link_hover: #005580 !default;
+
+$well_bg_color: #F5F5F5 !default;
+$well_border_color: #E3E3E3 !default;
+$facets_border: #DDDDDD !default;
+
+$navbarBorder: #D4D4D4 !default;
+
+$dropdown-hover-background: #0081C2 !default;
+$dropdown-hover-background-gradient-start:#0088CC !default;
+$dropdown-hover-background-gradient-end: #0077B3 !default;
+
+$error_text: #b94a48 !default;
+$error_bg: #f2dede !default;
+$error_border: #eed3d7 !default;
+
+$viewer_bg: #111111 !default;
+@mixin rounded-corners($radius) {
+  -moz-border-radius: $radius;
+  -webkit-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin box-shadow($shadow...) {
+  -webkit-box-shadow: $shadow; // iOS <4.3 & Android <4.1
+  box-shadow: $shadow;
+}
+
+
 body {
   margin:0px;
   //background-color:#818e9e;
@@ -5,6 +45,7 @@ body {
   //font-family: Arial, Helvetica, sans-serif;
   font-family: 'Lato', Verdana, Arail, Helvetica, sans-serif;
 }
+
 
 #search_field {
   height: 34px;
