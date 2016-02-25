@@ -63,7 +63,7 @@ class GenericFilesController < ApplicationController
 
   def create
     if params.key?(:upload_type) and params[:upload_type] == 'single'
-      if !validate_metadata(params)
+      if !validate_metadata(params, 'create')
 
         if params[:generic_file][:other_subject].present?
           params[:generic_file][:other_subject].collect!{|x| x.strip || x }
@@ -154,8 +154,8 @@ class GenericFilesController < ApplicationController
   end
 
 
-  def validate_metadata(params)
-    if !params.key?(:filedata) && params[:generic_file][:hosted_elsewhere] != "1"
+  def validate_metadata(params, type)
+    if !params.key?(:filedata) && params[:generic_file][:hosted_elsewhere] != "1" && type != 'update'
       flash[:error] = 'No file was uploaded!'
 
       return false
@@ -280,37 +280,44 @@ class GenericFilesController < ApplicationController
   def update
     #FIXME
     if params.key? :generic_file
-      @generic_file = GenericFile.find(params[:id])
-      @generic_file.collections.each do |collect|
-        #fresh_collect = Collection.find(collect.id)
-        collect.members.delete(@generic_file)
-        collect.save
-        @generic_file.collections.delete(collect)
-      end
+      if !validate_metadata(params, 'update')
+        redirect_to sufia.edit_generic_file_path(:id => @generic_file.id), notice: "An error prevented this item from being updated."
+      else
+        super
+        #@generic_file = GenericFile.find(params[:id])
+        @generic_file.collections.each do |collect|
+          #fresh_collect = Collection.find(collect.id)
+          collect.members.delete(@generic_file)
+          collect.save
+          @generic_file.collections.delete(collect)
+        end
 
-      @generic_file.institutions.each do |institution|
-        #fresh_institution = Institution.find(institution.id)
-        institution.files.delete(@generic_file)
+        @generic_file.institutions.each do |institution|
+          #fresh_institution = Institution.find(institution.id)
+          institution.files.delete(@generic_file)
+          institution.save
+          @generic_file.institutions.delete(institution)
+        end
+
+
+        collection = Collection.find(params[:collection])
+        collection.add_members [@generic_file.id]
+        @generic_file.collections = @generic_file.collections + [collection]
+        collection.save
+
+        institution = Institution.find(params[:institution])
+        institution.files = institution.files + [@generic_file]
+        @generic_file.institutions = @generic_file.institutions + [institution]
         institution.save
-        @generic_file.institutions.delete(institution)
+        @generic_file.save
       end
-
-
-      collection = Collection.find(params[:collection])
-      collection.add_members [@generic_file.id]
-      @generic_file.collections = @generic_file.collections + [collection]
-      collection.save
-
-      institution = Institution.find(params[:institution])
-      institution.files = institution.files + [@generic_file]
-      @generic_file.institutions = @generic_file.institutions + [institution]
-      institution.save
-
-      @generic_file.save
+    else
+      super
     end
 
 
-    super
+
+
   end
 
 
