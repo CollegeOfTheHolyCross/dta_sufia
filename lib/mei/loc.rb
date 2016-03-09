@@ -173,7 +173,7 @@ module Mei
               narrower_label ||= narrower_statement.object.value if narrower_statement.object.literal?
             end
 
-            if broader_statement.predicate.to_s == Mei::Loc.qskos('member')
+            if narrower_statement.predicate.to_s == Mei::Loc.qskos('member')
               valid = true if narrower_statement.object.to_s == 'http://id.loc.gov/authorities/subjects/collection_LCSHAuthorizedHeadings'
             end
           end
