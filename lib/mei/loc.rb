@@ -147,6 +147,60 @@ module Mei
           broader_label = nil
           broader_uri = result_statement.object.to_s
           #if Mei::Loc.repo.query(:subject=>::RDF::URI.new(broader_uri), :predicate=>Mei::Loc.qskos('narrower'), :object=>::RDF::URI.new(subject)).count > 0
+          valid = false
+          Mei::Loc.repo.query(:subject=>::RDF::URI.new(broader_uri)).each_statement do |broader_statement|
+            if broader_statement.statement.to_s == Mei::Loc.qskos('prefLabel')
+              broader_label ||= broader_statement.object.value if broader_statement.object.literal?
+            end
+
+            if broader_statement.statement.to_s == Mei::Loc.qskos('member')
+              valid = true if broader_statement.object.to_s == 'http://id.loc.gov/authorities/subjects/collection_LCSHAuthorizedHeadings'
+            end
+          end
+          broader_label ||= broader_uri
+          broader_list << {:uri_link=>broader_uri, :label=>broader_label} if valid
+          #end
+        end
+      end
+
+      Mei::Loc.repo.query(:subject=>::RDF::URI.new(subject), :predicate=>Mei::Loc.qskos('narrower')).each_statement do |result_statement|
+        if !result_statement.object.literal? and result_statement.object.uri?
+          narrower_label = nil
+          narrower_uri = result_statement.object.to_s
+          valid = false
+          Mei::Loc.repo.query(:subject=>::RDF::URI.new(narrower_uri)).each_statement do |narrower_statement|
+            if narrower_statement.statement.to_s == Mei::Loc.qskos('prefLabel')
+              narrower_label ||= narrower_statement.object.value if narrower_statement.object.literal?
+            end
+
+            if broader_statement.statement.to_s == Mei::Loc.qskos('member')
+              valid = true if narrower_statement.object.to_s == 'http://id.loc.gov/authorities/subjects/collection_LCSHAuthorizedHeadings'
+            end
+          end
+          narrower_label ||= narrower_uri
+          narrower_list << {:uri_link=>narrower_uri, :label=>narrower_label} if valid
+        end
+      end
+
+      Mei::Loc.repo.query(:subject=>::RDF::URI.new(subject), :predicate=>Mei::Loc.qskos('altLabel')).each_statement do |result_statement|
+        variant_list << result_statement.object.value if result_statement.object.literal?
+      end
+
+      return broader_list, narrower_list, variant_list
+    end
+
+    def get_skos_concepts_working subject
+      broader_list = []
+      narrower_list = []
+      variant_list = []
+
+      #xml_response = Nokogiri::XML(response).remove_namespaces!
+
+      Mei::Loc.repo.query(:subject=>::RDF::URI.new(subject), :predicate=>Mei::Loc.qskos('broader')).each_statement do |result_statement|
+        if !result_statement.object.literal? and result_statement.object.uri?
+          broader_label = nil
+          broader_uri = result_statement.object.to_s
+          #if Mei::Loc.repo.query(:subject=>::RDF::URI.new(broader_uri), :predicate=>Mei::Loc.qskos('narrower'), :object=>::RDF::URI.new(subject)).count > 0
             Mei::Loc.repo.query(:subject=>::RDF::URI.new(broader_uri), :predicate=>Mei::Loc.qskos('prefLabel')).each_statement do |broader_statement|
               broader_label ||= broader_statement.object.value if broader_statement.object.literal?
             end
