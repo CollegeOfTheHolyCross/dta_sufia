@@ -149,11 +149,11 @@ module Mei
           #if Mei::Loc.repo.query(:subject=>::RDF::URI.new(broader_uri), :predicate=>Mei::Loc.qskos('narrower'), :object=>::RDF::URI.new(subject)).count > 0
           valid = false
           Mei::Loc.repo.query(:subject=>::RDF::URI.new(broader_uri)).each_statement do |broader_statement|
-            if broader_statement.statement.to_s == Mei::Loc.qskos('prefLabel')
+            if broader_statement.predicate.to_s == Mei::Loc.qskos('prefLabel')
               broader_label ||= broader_statement.object.value if broader_statement.object.literal?
             end
 
-            if broader_statement.statement.to_s == Mei::Loc.qskos('member')
+            if broader_statement.predicate.to_s == Mei::Loc.qskos('member')
               valid = true if broader_statement.object.to_s == 'http://id.loc.gov/authorities/subjects/collection_LCSHAuthorizedHeadings'
             end
           end
@@ -169,11 +169,11 @@ module Mei
           narrower_uri = result_statement.object.to_s
           valid = false
           Mei::Loc.repo.query(:subject=>::RDF::URI.new(narrower_uri)).each_statement do |narrower_statement|
-            if narrower_statement.statement.to_s == Mei::Loc.qskos('prefLabel')
+            if narrower_statement.predicate.to_s == Mei::Loc.qskos('prefLabel')
               narrower_label ||= narrower_statement.object.value if narrower_statement.object.literal?
             end
 
-            if broader_statement.statement.to_s == Mei::Loc.qskos('member')
+            if broader_statement.predicate.to_s == Mei::Loc.qskos('member')
               valid = true if narrower_statement.object.to_s == 'http://id.loc.gov/authorities/subjects/collection_LCSHAuthorizedHeadings'
             end
           end
