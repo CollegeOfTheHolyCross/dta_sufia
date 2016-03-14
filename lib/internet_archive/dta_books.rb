@@ -122,7 +122,7 @@ module InternetArchive
 
 
 
-          Zip::File.open(zipfile.path) do |file|
+          ::Zip::File.open(zipfile.path) do |file|
 
             file_path = "#{@ia_id}_jp2/#{cover_image}"
             entry = file.get_entry(file_path)
