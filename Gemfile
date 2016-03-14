@@ -89,6 +89,8 @@ gem 'rdf-blazegraph'
 
 gem 'typhoeus'
 
+gem 'rubyzip', '>= 1.0.0' # will load new rubyzip version
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'jettywrapper'

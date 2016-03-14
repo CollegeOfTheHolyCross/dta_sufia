@@ -1,3 +1,4 @@
+require 'zip'
 
 module InternetArchive
   class DtaBooks
@@ -12,7 +13,7 @@ module InternetArchive
       @institution = ActiveFedora::Base.find(@upload_institution_id)
       @depositor = args["depositor"]
       #@url = "http://archive.org/advancedsearch.php?q=collection%3A%22#{collection_id}%22&fl%5B%5D=identifier&output=json&rows=10000"
-      @url = "http://archive.org/advancedsearch.php?q=collection%3A%22#{collection_id}%22&fl%5B%5D=identifier&output=json&rows=5"
+      @url = "http://archive.org/advancedsearch.php?q=collection%3A%22#{collection_id}%22&fl%5B%5D=identifier&output=json&rows=3"
 
       record_metasource_xml = nil
       list_response = Typhoeus::Request.get(@url)
