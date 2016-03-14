@@ -61,6 +61,10 @@ class GenericFile < ActiveFedora::Base
     index.as :stored_searchable, :facetable
   end
 
+  property :ocr, predicate: ::RDF::URI.new('http://digitaltransgenderarchive.net/ns/ocr'), multiple: false do |index|
+    index.as :stored_searchable
+  end
+
   makes_derivatives do |obj|
     case obj.mime_type
       when *pdf_mime_types

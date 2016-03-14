@@ -62,7 +62,12 @@ class GenericFilesController < ApplicationController
 
 
   def create
-    if params.key?(:upload_type) and params[:upload_type] == 'single'
+    if params.key?(:upload_type) and params[:upload_type] == 'internetarchive'
+      result = Resque.enqueue(InternetArchive::DtaBooks, :collection_id=>params[:collection_internet_archive], :institution_id=>params[:institution_internet_archive], :depositor=>current_user.user_key)
+      #redirect_to sufia.dashboard_files_path, notice: render_to_string(partial: 'generic_files/asset_updated_flash', locals: { generic_file: @generic_file })
+      flash[:notice] = "Internet archive ingest started in background!"
+      redirect_to sufia.dashboard_files_path
+    elsif params.key?(:upload_type) and params[:upload_type] == 'single'
       if !validate_metadata(params, 'create')
 
         if params[:generic_file][:other_subject].present?

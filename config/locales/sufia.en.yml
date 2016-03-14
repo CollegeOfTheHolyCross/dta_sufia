@@ -36,6 +36,9 @@ en:
         html: '<span class="glyphicon glyphicon-search"></span> Go'
         text: "Search"
     upload:
+      internetarchive_computer:
+          sr_tab_label: ""
+          tab_label: "Internet Archive Upload"
       single_file_computer:
           sr_tab_label: ""
           tab_label: "Single File Upload"

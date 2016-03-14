@@ -87,6 +87,8 @@ gem 'gon'
 
 gem 'rdf-blazegraph'
 
+gem 'typhoeus'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'jettywrapper'
