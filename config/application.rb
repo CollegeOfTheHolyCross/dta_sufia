@@ -16,6 +16,9 @@ module Dta
 
     config.encoding = "utf-8"
 
+    config.action_mailer.delivery_method = :sendmail
+    config.action_mailer.default_url_options = { :host => 'www.digitaltransgenderarchive.net' }
+
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
