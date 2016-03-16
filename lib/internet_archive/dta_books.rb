@@ -128,6 +128,7 @@ module InternetArchive
             end
           end
 
+          retry_count = 0
           begin
             ::Zip::File.open(zipfile.path) do |file|
 
@@ -162,14 +163,19 @@ module InternetArchive
 
               iajp2file.delete
             end
+            zipfile.delete
           rescue => error
+            zipfile.delete
+            retry_count++
+            sleep(3)
+            retry if retry_count < 3
             current_error = "Either zip file is corrupt, derivatives broken, or relationships not being set right for http://archive.org/download/#{ia_id} \n"
             current_error += "Error message: #{error.message}\n"
             current_error += "Error backtrace: #{error.backtrace}\n"
             raise(current_error)
           end
 
-          zipfile.delete
+
 
         end
       end
