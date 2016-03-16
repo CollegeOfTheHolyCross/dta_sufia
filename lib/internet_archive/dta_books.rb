@@ -17,7 +17,6 @@ module InternetArchive
       @url = "http://archive.org/advancedsearch.php?q=collection%3A%22#{collection_id}%22&fl%5B%5D=identifier&output=json&rows=10000"
 
 
-
       record_metasource_xml = nil
       list_response = Typhoeus::Request.get(@url)
       list_response_as_json = JSON.parse(list_response.body)
@@ -129,40 +128,47 @@ module InternetArchive
             end
           end
 
+          begin
+            ::Zip::File.open(zipfile.path) do |file|
 
-          ::Zip::File.open(zipfile.path) do |file|
+              file_path = "#{@ia_id}_jp2/#{cover_image}"
+              entry = file.get_entry(file_path)
+              iajp2file = Tempfile.new(['iajp2file','.jp2'])
+              iajp2file.write(entry.get_input_stream.read)
+              iajp2file.close
 
-            file_path = "#{@ia_id}_jp2/#{cover_image}"
-            entry = file.get_entry(file_path)
-            iajp2file = Tempfile.new(['iajp2file','.jp2'])
-            iajp2file.write(entry.get_input_stream.read)
-            iajp2file.close
-
-            img = Magick::Image.read(iajp2file.path).first
-            img = Magick::Image.from_blob( img.to_blob { self.format = "jpg" } ).first
-
-
-            thumb = img.resize_to_fit(500,600) #FIXME?
-            @generic_file.add_file(StringIO.open(thumb.to_blob), path:  'content', mime_type: 'image/jpeg')
-
-            @generic_file.add_file(StringIO.open(djvu_data_text), path:  'ocr', mime_type: 'text/plain')
+              img = Magick::Image.read(iajp2file.path).first
+              img = Magick::Image.from_blob( img.to_blob { self.format = "jpg" } ).first
 
 
-            @generic_file.save
+              thumb = img.resize_to_fit(500,600) #FIXME?
+              @generic_file.add_file(StringIO.open(thumb.to_blob), path:  'content', mime_type: 'image/jpeg')
 
-            @collection.add_members [@generic_file.id]
-            @generic_file.collections = @generic_file.collections + [@collection]
-            @collection.save
+              @generic_file.add_file(StringIO.open(djvu_data_text), path:  'ocr', mime_type: 'text/plain')
 
-            @institution.files = @institution.files + [@generic_file]
-            @generic_file.institutions = @generic_file.institutions + [@institution]
-            @institution.save
-            @generic_file.save
 
-            Sufia.queue.push(CharacterizeJob.new(@generic_file.id))
+              @generic_file.save
 
-            iajp2file.delete
+              @collection.add_members [@generic_file.id]
+              @generic_file.collections = @generic_file.collections + [@collection]
+              @collection.save
+
+              @institution.files = @institution.files + [@generic_file]
+              @generic_file.institutions = @generic_file.institutions + [@institution]
+              @institution.save
+              @generic_file.save
+
+              Sufia.queue.push(CharacterizeJob.new(@generic_file.id))
+
+              iajp2file.delete
+            end
+          rescue => error
+            current_error = "Either zip file is corrupt, derivatives broken, or relationships not being set right for http://archive.org/download/#{ia_id} \n"
+            current_error += "Error message: #{error.message}\n"
+            current_error += "Error backtrace: #{error.backtrace}\n"
+            raise(current_error)
           end
+
           zipfile.delete
 
         end
