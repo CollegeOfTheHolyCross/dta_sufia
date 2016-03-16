@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'rest_client'
 require 'restclient/components'
 require 'rack/cache'
@@ -5,6 +6,7 @@ require 'rack/cache'
 class GenericFile < ActiveFedora::Base
   include Sufia::GenericFile
   has_and_belongs_to_many :institutions, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.isMemberOf, class_name: "Institution"
+  contains "ocr"
   
   property :analog_format, predicate: ::RDF::Vocab::DC.format, multiple: false do |index|
     index.as :stored_searchable
@@ -59,10 +61,6 @@ class GenericFile < ActiveFedora::Base
 
   property :hosted_elsewhere, predicate: ::RDF::URI.new('http://digitaltransgenderarchive.net/ns/hosted_elsewhere'), multiple: false do |index|
     index.as :stored_searchable, :facetable
-  end
-
-  property :ocr, predicate: ::RDF::URI.new('http://digitaltransgenderarchive.net/ns/ocr'), multiple: false do |index|
-    index.as :stored_searchable
   end
 
   makes_derivatives do |obj|
@@ -122,6 +120,11 @@ class GenericFile < ActiveFedora::Base
 
   def to_solr(doc = {} )
     doc = super(doc)
+
+    if self.ocr.present?
+      doc['dta_ocr_tiv'] = self.ocr.content.squish
+    end
+    doc['identifier_ssim'] = self.identifier
 
     doc['ident_tesi'] = self.id
 

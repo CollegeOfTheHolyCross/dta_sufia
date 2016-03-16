@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'zip'
 
 module InternetArchive
@@ -13,7 +14,9 @@ module InternetArchive
       @institution = ActiveFedora::Base.find(@upload_institution_id)
       @depositor = args["depositor"]
       #@url = "http://archive.org/advancedsearch.php?q=collection%3A%22#{collection_id}%22&fl%5B%5D=identifier&output=json&rows=10000"
-      @url = "http://archive.org/advancedsearch.php?q=collection%3A%22#{collection_id}%22&fl%5B%5D=identifier&output=json&rows=3"
+      @url = "http://archive.org/advancedsearch.php?q=collection%3A%22#{collection_id}%22&fl%5B%5D=identifier&output=json&rows=5"
+
+
 
       record_metasource_xml = nil
       list_response = Typhoeus::Request.get(@url)
@@ -22,7 +25,8 @@ module InternetArchive
         ia_id = result['identifier']
         @ia_id = ia_id
 
-        solr_response = GenericFile.find_with_conditions("identifier_tesim:#{ia_id}", rows: '25', fl: 'id' )
+        full_escaped_uri = solr_clean("https://archive.org/details/#{ia_id}")
+        solr_response = GenericFile.find_with_conditions("identifier_ssim:#{full_escaped_uri}", rows: '25', fl: 'id' )
         if solr_response.blank?
 
           record_metasource = Typhoeus::Request.get("http://archive.org/download/#{result['identifier']}/#{result['identifier']}_metasource.xml", {:followlocation => true})
@@ -60,7 +64,7 @@ module InternetArchive
           @generic_file.title = [main_title]
           @generic_file.alternative = alternative_titles if alternative_titles.present?
           @generic_file.label = main_title
-          @generic_file.identifier = [ia_id]
+          @generic_file.identifier = ["https://archive.org/details/#{ia_id}"]
           #@generic_file.ocr = djvu_data_text.to_s.force_encoding("UTF-8")
           @generic_file.hosted_elsewhere = "1"
           @generic_file.is_shown_at = "https://archive.org/details/#{ia_id}"
@@ -70,7 +74,7 @@ module InternetArchive
             if solr_response.present? and solr_response.count == 1
               @generic_file.homosaurus_subject += ['http://homosaurus.org/terms/' + solr_response.first['identifier_ssi']]
             elsif  solr_response.present? and solr_response.count > 1
-              raise "Solr count mismatch"
+              raise "Solr count mismatch for " + ia_id
             else
               authority_check = Mei::Loc.new('subjects')
               authority_result = authority_check.search(subject_element.text) #URI escaping doesn't work for Baseball fields?
@@ -95,6 +99,10 @@ module InternetArchive
 
           @record_meta_xml.xpath("//description").each do |description_element|
             @generic_file.description += [description_element.text] if description_element.present?
+          end
+
+          @record_meta_xml.xpath("//date").each do |date_element|
+            @generic_file.date_created += [date_element.text] if date_element.present? and Date.edtf(date_element.text).present?
           end
 
           @generic_file.rights = ["No known restrictions on use"]
@@ -122,7 +130,6 @@ module InternetArchive
           end
 
 
-
           ::Zip::File.open(zipfile.path) do |file|
 
             file_path = "#{@ia_id}_jp2/#{cover_image}"
@@ -137,6 +144,8 @@ module InternetArchive
 
             thumb = img.resize_to_fit(500,600) #FIXME?
             @generic_file.add_file(StringIO.open(thumb.to_blob), path:  'content', mime_type: 'image/jpeg')
+
+            @generic_file.add_file(StringIO.open(djvu_data_text), path:  'ocr', mime_type: 'text/plain')
 
 
             @generic_file.save

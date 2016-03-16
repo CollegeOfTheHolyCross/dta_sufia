@@ -19,8 +19,9 @@ Sufia.config do |config|
 
   config.spatial_dropdown = [
       ['Cities', 'P'],
-      ['State/Country/Region', 'A'],
       ['Building', 'S'],
+      ['State/Country/Region', 'A'],
+      ['Geographic Territory', 'T'],
       ['Continent/Area', 'L']
   ]
 
