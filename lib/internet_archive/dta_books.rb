@@ -89,8 +89,8 @@ module InternetArchive
           djvu_data_text = djvu_data_text_response.body
           rescue => error
             retry_count += 1
-            sleep(5)
-            retry if retry_count < 4
+            sleep(30)
+            retry if retry_count < 6
             current_error = "No response from a url at https://archive.org/download/#{ia_id} \n"
             current_error += "Error message: #{error.message}\n"
             current_error += "Error backtrace: #{error.backtrace}\n"
