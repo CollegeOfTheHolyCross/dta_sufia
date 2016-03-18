@@ -1,26 +1,56 @@
 # encoding: utf-8
 require 'zip'
+require "net/http"
+require "uri"
 
 module InternetArchive
   class DtaBooks
     @queue = :internet_archive
+
+    def self.fetch(uri_str, limit = 10)
+      # You should choose better exception.
+      raise ArgumentError, 'HTTP redirect too deep' if limit == 0
+
+      url = URI.parse(uri_str)
+      req = Net::HTTP::Get.new(url.path, { 'User-Agent' => 'Mozilla/5.0 (etc...)' })
+      response = Net::HTTP.start(url.host, url.port) { |http| http.request(req) }
+      case response
+        when Net::HTTPSuccess     then response
+        when Net::HTTPRedirection then fetch(response['location'], limit - 1)
+        else
+          response.error!
+      end
+    end
+
+    def self.get_redirect(uri_str)
+      # You should choose better exception.
+      url = URI.parse(uri_str)
+      req = Net::HTTP::Get.new(url.path, { 'User-Agent' => 'Mozilla/5.0 (etc...)' })
+      response = Net::HTTP.start(url.host, url.port) { |http| http.request(req) }
+      case response
+        when Net::HTTPRedirection then return response['location']
+        else
+          response.error!
+      end
+    end
 
     def self.perform(*args)
       args = args.first
       collection_id = 'digitaltransgenderarchive'
       @upload_collection_id = args["collection_id"]
       @upload_institution_id = args["institution_id"]
-      @collection = ActiveFedora::Base.find(@upload_collection_id)
-      @institution = ActiveFedora::Base.find(@upload_institution_id)
+
       @depositor = args["depositor"]
       #@url = "http://archive.org/advancedsearch.php?q=collection%3A%22#{collection_id}%22&fl%5B%5D=identifier&output=json&rows=10000"
-      @url = "http://archive.org/advancedsearch.php?q=collection%3A%22#{collection_id}%22&fl%5B%5D=identifier&output=json&rows=10000"
+      @url = "http://archive.org/advancedsearch.php?q=collection%3A%22#{collection_id}%22&fl%5B%5D=identifier&output=json&rows=30"
 
 
       record_metasource_xml = nil
       list_response = Typhoeus::Request.get(@url)
       list_response_as_json = JSON.parse(list_response.body)
       list_response_as_json["response"]["docs"].each do |result|
+        @collection = ActiveFedora::Base.find(@upload_collection_id)
+        @institution = ActiveFedora::Base.find(@upload_institution_id)
         retry_count = 0
         ia_id = result['identifier']
         @ia_id = ia_id
@@ -29,6 +59,7 @@ module InternetArchive
         solr_response = GenericFile.find_with_conditions("identifier_ssim:#{full_escaped_uri}", rows: '25', fl: 'id' )
         if solr_response.blank?
 
+=begin
           record_metasource = Typhoeus::Request.get("http://archive.org/download/#{result['identifier']}/#{result['identifier']}_metasource.xml", {:followlocation => true})
           record_metasource_xml= Nokogiri::XML(record_metasource.body)
 
@@ -40,6 +71,20 @@ module InternetArchive
 
 
           djvu_data_text_response = Typhoeus::Request.get("http://archive.org/download/#{ia_id}/#{ia_id}_djvu.txt", {:followlocation => true})
+          djvu_data_text = djvu_data_text_response.body
+=end
+
+          record_metasource = fetch("http://archive.org/download/#{result['identifier']}/#{result['identifier']}_metasource.xml")
+          record_metasource_xml= Nokogiri::XML(record_metasource.body)
+
+          record_meta = fetch("http://archive.org/download/#{result['identifier']}/#{result['identifier']}_meta.xml")
+          @record_meta_xml= Nokogiri::XML(record_meta.body)
+
+          scan_data_response = fetch("http://archive.org/download/#{ia_id}/#{ia_id}_scandata.xml")
+          scan_data_xml = Nokogiri::XML(scan_data_response.body)
+
+
+          djvu_data_text_response = fetch("http://archive.org/download/#{ia_id}/#{ia_id}_djvu.txt")
           djvu_data_text = djvu_data_text_response.body
 
 
@@ -59,7 +104,7 @@ module InternetArchive
             end
           end
 
-          main_title = "#{main_title} (#{volume})"
+          main_title = "#{main_title} (#{volume})" if volume.present?
 
           @generic_file.title = [main_title]
           @generic_file.alternative = alternative_titles if alternative_titles.present?
@@ -116,7 +161,17 @@ module InternetArchive
           zip_file_path = "http://archive.org/download/#{ia_id}/#{ia_id}_jp2.zip"
           zipfile = Tempfile.new(['iazip','.zip'])
           zipfile.binmode # This might not be necessary depending on the zip file
-          zipfile.write(Typhoeus.get(zip_file_path, followlocation: true).body)
+          uri = URI(get_redirect(zip_file_path))
+          Net::HTTP.start(uri.host, uri.port) do |http|
+            request = Net::HTTP::Get.new uri
+            http.request request do |response|
+                response.read_body do |chunk|
+                  zipfile.write chunk
+                end
+            end
+          end
+
+          #zipfile.write(fetch(zip_file_path).body)
           zipfile.close
 
           cover_image = nil
@@ -130,7 +185,7 @@ module InternetArchive
           end
 
 
-          begin
+          #begin
             ::Zip::File.open(zipfile.path) do |file|
 
               file_path = "#{@ia_id}_jp2/#{cover_image}"
@@ -139,32 +194,39 @@ module InternetArchive
               iajp2file.write(entry.get_input_stream.read)
               iajp2file.close
 
-              img = Magick::Image.read(iajp2file.path).first
-              img = Magick::Image.from_blob( img.to_blob { self.format = "jpg" } ).first
+              img = MiniMagick::Image.open(iajp2file.path) do |b|
+                b.format "jpg"
+                b.resize "500x600>"
+              end
 
-
-              thumb = img.resize_to_fit(500,600) #FIXME?
-              @generic_file.add_file(StringIO.open(thumb.to_blob), path:  'content', mime_type: 'image/jpeg')
+              @generic_file.add_file(StringIO.open(img.to_blob), path:  'content', mime_type: 'image/jpeg')
 
               @generic_file.add_file(StringIO.open(djvu_data_text), path:  'ocr', mime_type: 'text/plain')
 
 
               @generic_file.save
 
-              @collection.add_members [@generic_file.id]
-              @generic_file.collections = @generic_file.collections + [@collection]
-              @collection.save
+              collection = ActiveFedora::Base.find(@upload_collection_id)
+              acquire_lock_for(@upload_collection_id) do
+                collection.add_members [@generic_file.id]
+                collection.save
+              end
 
-              @institution.files = @institution.files + [@generic_file]
-              @generic_file.institutions = @generic_file.institutions + [@institution]
-              @institution.save
-              @generic_file.save
+              institution = ActiveFedora::Base.find(@upload_institution_id)
+              acquire_lock_for(@upload_institution_id) do
+                institution.files << ActiveFedora::Base.find([@generic_file.id])
+                institution.save
+              end
+
+              @generic_file.reload
+              @generic_file.update_index
 
               Sufia.queue.push(CharacterizeJob.new(@generic_file.id))
 
               iajp2file.delete
             end
             zipfile.delete
+=begin
           rescue => error
             zipfile.delete
             retry_count += 1
@@ -175,11 +237,21 @@ module InternetArchive
             current_error += "Error backtrace: #{error.backtrace}\n"
             raise(current_error)
           end
-
-
+=end
 
         end
       end
+    end
+
+    def self.acquire_lock_for(lock_key, &block)
+      lock_manager.lock(lock_key, &block)
+    end
+
+    def self.lock_manager
+      @lock_manager ||= Sufia::LockManager.new(
+          Sufia.config.lock_time_to_live,
+          Sufia.config.lock_retry_count,
+          Sufia.config.lock_retry_delay)
     end
 
     def self.solr_clean(term)
