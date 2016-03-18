@@ -12,8 +12,8 @@ module InternetArchive
       raise ArgumentError, 'HTTP redirect too deep' if limit == 0
 
       url = URI.parse(uri_str)
-      req = Net::HTTP::Get.new(url.to_s, { 'User-Agent' => 'Mozilla/5.0 (etc...)' })
-      response = Net::HTTP.start(url.host, url.port) { |http| http.request(req) }
+      req = Net::HTTP::Get.new(url.path, { 'User-Agent' => 'Mozilla/5.0 (etc...)' })
+      response = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') { |http| http.request(req) }
       case response
         when Net::HTTPSuccess     then response
         when Net::HTTPRedirection then fetch(response['location'], limit - 1)
@@ -25,8 +25,8 @@ module InternetArchive
     def self.get_redirect(uri_str)
       # You should choose better exception.
       url = URI.parse(uri_str)
-      req = Net::HTTP::Get.new(url.to_s, { 'User-Agent' => 'Mozilla/5.0 (etc...)' })
-      response = Net::HTTP.start(url.host, url.port) { |http| http.request(req) }
+      req = Net::HTTP::Get.new(url.path, { 'User-Agent' => 'Mozilla/5.0 (etc...)' })
+      response = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') { |http| http.request(req) }
       case response
         when Net::HTTPRedirection then return response['location']
         else
@@ -174,7 +174,7 @@ module InternetArchive
             zipfile = Tempfile.new(['iazip','.zip'])
             zipfile.binmode # This might not be necessary depending on the zip file
             uri = URI(get_redirect(zip_file_path))
-            Net::HTTP.start(uri.host, uri.port) do |http|
+            Net::HTTP.start(uri.host, uri.port, :use_ssl => url.scheme == 'https') do |http|
               request = Net::HTTP::Get.new uri
               http.request request do |response|
                 response.read_body do |chunk|
