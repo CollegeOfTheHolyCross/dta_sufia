@@ -174,7 +174,7 @@ module InternetArchive
             zipfile = Tempfile.new(['iazip','.zip'])
             zipfile.binmode # This might not be necessary depending on the zip file
             uri = URI(get_redirect(zip_file_path))
-            Net::HTTP.start(uri.host, uri.port, :use_ssl => url.scheme == 'https') do |http|
+            Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
               request = Net::HTTP::Get.new uri
               http.request request do |response|
                 response.read_body do |chunk|
