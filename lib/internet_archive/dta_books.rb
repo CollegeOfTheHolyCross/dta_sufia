@@ -88,7 +88,6 @@ module InternetArchive
           djvu_data_text_response = fetch("https://archive.org/download/#{ia_id}/#{ia_id}_djvu.txt")
           djvu_data_text = djvu_data_text_response.body
           rescue => error
-            zipfile.delete
             retry_count += 1
             sleep(5)
             retry if retry_count < 4
