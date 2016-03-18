@@ -25,7 +25,7 @@ module InternetArchive
     def self.get_redirect(uri_str)
       # You should choose better exception.
       url = URI.parse(uri_str)
-      req = Net::HTTP::Get.new(url.path, { 'User-Agent' => 'Mozilla/5.0 (etc...)' })
+      req = Net::HTTP::Get.new(url.to_s, { 'User-Agent' => 'Mozilla/5.0 (etc...)' })
       response = Net::HTTP.start(url.host, url.port) { |http| http.request(req) }
       case response
         when Net::HTTPRedirection then return response['location']
