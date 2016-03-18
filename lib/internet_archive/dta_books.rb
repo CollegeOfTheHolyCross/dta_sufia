@@ -74,18 +74,29 @@ module InternetArchive
           djvu_data_text = djvu_data_text_response.body
 =end
 
-          record_metasource = fetch("http://archive.org/download/#{result['identifier']}/#{result['identifier']}_metasource.xml")
+          begin
+          record_metasource = fetch("https://archive.org/download/#{ia_id}/#{ia_id}_metasource.xml")
           record_metasource_xml= Nokogiri::XML(record_metasource.body)
 
-          record_meta = fetch("http://archive.org/download/#{result['identifier']}/#{result['identifier']}_meta.xml")
+          record_meta = fetch("https://archive.org/download/#{ia_id}/#{ia_id}_meta.xml")
           @record_meta_xml= Nokogiri::XML(record_meta.body)
 
-          scan_data_response = fetch("http://archive.org/download/#{ia_id}/#{ia_id}_scandata.xml")
+          scan_data_response = fetch("https://archive.org/download/#{ia_id}/#{ia_id}_scandata.xml")
           scan_data_xml = Nokogiri::XML(scan_data_response.body)
 
 
-          djvu_data_text_response = fetch("http://archive.org/download/#{ia_id}/#{ia_id}_djvu.txt")
+          djvu_data_text_response = fetch("https://archive.org/download/#{ia_id}/#{ia_id}_djvu.txt")
           djvu_data_text = djvu_data_text_response.body
+          rescue => error
+            zipfile.delete
+            retry_count += 1
+            sleep(5)
+            retry if retry_count < 4
+            current_error = "No response from a url at https://archive.org/download/#{ia_id} \n"
+            current_error += "Error message: #{error.message}\n"
+            current_error += "Error backtrace: #{error.backtrace}\n"
+            raise(current_error)
+          end
 
 
           @generic_file = ::GenericFile.new
@@ -158,34 +169,34 @@ module InternetArchive
           @generic_file.visibility = 'restricted'
 
 
-          zip_file_path = "http://archive.org/download/#{ia_id}/#{ia_id}_jp2.zip"
-          zipfile = Tempfile.new(['iazip','.zip'])
-          zipfile.binmode # This might not be necessary depending on the zip file
-          uri = URI(get_redirect(zip_file_path))
-          Net::HTTP.start(uri.host, uri.port) do |http|
-            request = Net::HTTP::Get.new uri
-            http.request request do |response|
+          begin
+
+            zip_file_path = "https://archive.org/download/#{ia_id}/#{ia_id}_jp2.zip"
+            zipfile = Tempfile.new(['iazip','.zip'])
+            zipfile.binmode # This might not be necessary depending on the zip file
+            uri = URI(get_redirect(zip_file_path))
+            Net::HTTP.start(uri.host, uri.port) do |http|
+              request = Net::HTTP::Get.new uri
+              http.request request do |response|
                 response.read_body do |chunk|
                   zipfile.write chunk
                 end
+              end
             end
-          end
 
-          #zipfile.write(fetch(zip_file_path).body)
-          zipfile.close
+            #zipfile.write(fetch(zip_file_path).body)
+            zipfile.close
 
-          cover_image = nil
-          leafNum = nil
-          scan_data_xml.xpath("//pageData/page").each do |page|
-            page_type = page.xpath('./pageType').first.text
-            if page_type == 'Cover'
-              leafNum ||= page.attributes["leafNum"].text
-              cover_image ||= ia_id + '_' + "0000"[0..3-leafNum.length] + leafNum + ".jp2"
+            cover_image = nil
+            leafNum = nil
+            scan_data_xml.xpath("//pageData/page").each do |page|
+              page_type = page.xpath('./pageType').first.text
+              if page_type == 'Cover'
+                leafNum ||= page.attributes["leafNum"].text
+                cover_image ||= ia_id + '_' + "0000"[0..3-leafNum.length] + leafNum + ".jp2"
+              end
             end
-          end
 
-
-          #begin
             ::Zip::File.open(zipfile.path) do |file|
 
               file_path = "#{@ia_id}_jp2/#{cover_image}"
@@ -226,18 +237,18 @@ module InternetArchive
               iajp2file.delete
             end
             zipfile.delete
-=begin
+
           rescue => error
             zipfile.delete
             retry_count += 1
-            #sleep(3)
-            retry if retry_count < 3
+            sleep(5)
+            retry if retry_count < 4
             current_error = "Either zip file is corrupt, derivatives broken, or relationships not being set right for http://archive.org/download/#{ia_id} \n"
             current_error += "Error message: #{error.message}\n"
             current_error += "Error backtrace: #{error.backtrace}\n"
             raise(current_error)
           end
-=end
+
 
         end
       end
