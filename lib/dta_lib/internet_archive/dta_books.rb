@@ -75,22 +75,22 @@ module InternetArchive
 =end
 
           begin
-          record_metasource = fetch("https://archive.org/download/#{ia_id}/#{ia_id}_metasource.xml")
+          record_metasource = fetch("http://archive.org/download/#{ia_id}/#{ia_id}_metasource.xml")
           record_metasource_xml= Nokogiri::XML(record_metasource.body)
 
-          record_meta = fetch("https://archive.org/download/#{ia_id}/#{ia_id}_meta.xml")
+          record_meta = fetch("http://archive.org/download/#{ia_id}/#{ia_id}_meta.xml")
           @record_meta_xml= Nokogiri::XML(record_meta.body)
 
-          scan_data_response = fetch("https://archive.org/download/#{ia_id}/#{ia_id}_scandata.xml")
+          scan_data_response = fetch("http://archive.org/download/#{ia_id}/#{ia_id}_scandata.xml")
           scan_data_xml = Nokogiri::XML(scan_data_response.body)
 
 
-          djvu_data_text_response = fetch("https://archive.org/download/#{ia_id}/#{ia_id}_djvu.txt")
+          djvu_data_text_response = fetch("http://archive.org/download/#{ia_id}/#{ia_id}_djvu.txt")
           djvu_data_text = djvu_data_text_response.body
           rescue => error
             retry_count += 1
-            sleep(5)
-            retry if retry_count < 4
+            sleep(30)
+            retry if retry_count < 6
             current_error = "No response from a url at https://archive.org/download/#{ia_id} \n"
             current_error += "Error message: #{error.message}\n"
             current_error += "Error backtrace: #{error.backtrace}\n"
@@ -170,7 +170,7 @@ module InternetArchive
 
           begin
 
-            zip_file_path = "https://archive.org/download/#{ia_id}/#{ia_id}_jp2.zip"
+            zip_file_path = "http://archive.org/download/#{ia_id}/#{ia_id}_jp2.zip"
             zipfile = Tempfile.new(['iazip','.zip'])
             zipfile.binmode # This might not be necessary depending on the zip file
             uri = URI(get_redirect(zip_file_path))
