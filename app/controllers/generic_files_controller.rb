@@ -64,7 +64,14 @@ class GenericFilesController < ApplicationController
   def create
     if params.key?(:upload_type) and params[:upload_type] == 'internetarchive'
       #result = Resque.enqueue(InternetArchive::DtaBooks, :collection_id=>params[:collection_internet_archive], :institution_id=>params[:institution_internet_archive], :depositor=>current_user.user_key)
-      InternetArchiveBooks.perform_async(params[:collection_internet_archive], params[:institution_internet_archive], current_user.user_key)
+      collection_id = 'digitaltransgenderarchive'
+      @url = "http://archive.org/advancedsearch.php?q=collection%3A%22#{collection_id}%22&fl%5B%5D=identifier&output=json&rows=10000"
+      list_response = Typhoeus::Request.get(@url)
+      list_response_as_json = JSON.parse(list_response.body)
+      list_response_as_json["response"]["docs"].each do |result|
+        result = Resque.enqueue(InternetArchive::DtaSingleBook, :collection_id=>params[:collection_internet_archive], :institution_id=>params[:institution_internet_archive], :depositor=>current_user.user_key, :ia_id=>result['identifier'])
+      end
+      #InternetArchiveBooks.perform_async(params[:collection_internet_archive], params[:institution_internet_archive], current_user.user_key)
       #redirect_to sufia.dashboard_files_path, notice: render_to_string(partial: 'generic_files/asset_updated_flash', locals: { generic_file: @generic_file })
       flash[:notice] = "Internet archive ingest started in background!"
       redirect_to sufia.dashboard_files_path
