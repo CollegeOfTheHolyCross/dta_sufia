@@ -216,14 +216,14 @@ module InternetArchive
 
               @generic_file.save
 
-              collection = ActiveFedora::Base.find(@upload_collection_id)
               acquire_lock_for(@upload_collection_id) do
+                collection = ::Collection.find(@upload_collection_id)
                 collection.add_members [@generic_file.id]
                 collection.save
               end
 
-              institution = ActiveFedora::Base.find(@upload_institution_id)
               acquire_lock_for(@upload_institution_id) do
+                institution = ::Institution.find(@upload_institution_id)
                 institution.files << ActiveFedora::Base.find([@generic_file.id])
                 institution.save
               end

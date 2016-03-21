@@ -19,3 +19,6 @@ After alphaSort:
         />
       </analyzer>
     </fieldType>
+
+
+Note: To start sidekiq, use: bundle exec sidekiq

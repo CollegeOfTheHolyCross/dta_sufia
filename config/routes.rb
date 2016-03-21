@@ -56,6 +56,12 @@ Rails.application.routes.draw do
   get 'ajax/cols/:id', :to => 'institutions#update_collections', :as => 'generic_files_update_collections'
   get 'ajax/cols', :to => 'institutions#update_collections', :as => 'generic_files_update_collections_no_id'
 
+  namespace :admin do
+    authenticate :user, -> (u) { u.admin? } do
+      mount Sidekiq::Web => '/sidekiq'
+    end
+  end
+
   # This must be the very last route in the file because it has a catch-all route for 404 errors.
     # This behavior seems to show up only in production mode.
     mount Sufia::Engine => '/'
