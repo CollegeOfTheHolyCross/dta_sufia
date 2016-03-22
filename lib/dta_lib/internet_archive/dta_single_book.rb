@@ -134,7 +134,7 @@ module InternetArchive
               if  authority_result.present?
                 @generic_file.homosaurus_subject += [authority_result.first["id"].gsub('info:lc', 'http://id.loc.gov')]
               else
-                raise "No homosaurus or LCSH match for " + ia_id
+                @generic_file.homosaurus_subject += ["#{subject_element.text}"]
               end
             end
           end

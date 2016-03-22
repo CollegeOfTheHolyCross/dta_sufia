@@ -93,7 +93,7 @@ gem 'typhoeus'
 
 gem 'rubyzip', '>= 1.0.0' # will load new rubyzip version
 
-gem 'sidekiq', :require=>['sidekiq', 'sidekiq/web']
+#gem 'sidekiq', :require=>['sidekiq', 'sidekiq/web']
 
 group :development, :test do
   gem 'rspec-rails'
