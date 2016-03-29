@@ -323,8 +323,8 @@ class GenericFilesController < ApplicationController
           institution.files << [@generic_file]
           institution.save
         end
-
-        @generic_file.reload
+        
+        @generic_file = GenericFile.find(@generic_file.id)
         @generic_file.update_index
         #raise params[:institution]
       end

@@ -58,7 +58,7 @@ class CollectionsController < CatalogController
     end
 
     items.each do |item|
-      item.reload
+      item = GenericFile.find(item.id)
       item.update_index
     end
   end
