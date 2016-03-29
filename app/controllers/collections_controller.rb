@@ -1,5 +1,6 @@
 class CollectionsController < CatalogController
   include Sufia::CollectionsControllerBehavior
+  include Sufia::Lockable
   include DtaSearchBuilder
   include DtaStaticBuilder
 
@@ -25,6 +26,40 @@ class CollectionsController < CatalogController
 
   def show
     super
+  end
+
+  #override
+  def add_members_to_collection collection = nil
+    collection ||= @collection
+    return if batch.nil? || batch.size < 1
+    items = ActiveFedora::Base.find(batch)
+    items.each do |item|
+      item.institutions.each do |inst|
+        inst.files.delete(item)
+      end
+      item.collections.each do |coll|
+        coll.members.delete(item)
+      end
+
+      item.institutions = []
+      item.collections = []
+    end
+
+    acquire_lock_for(collection.id) do
+      collection.reload
+      collection.members << items
+      collection.save
+    end
+
+    acquire_lock_for(collection.institutions.first.id) do
+      collection.institutions.first.reload
+      collection.institutions.first.files << items
+      collection.institutions.first.save
+    end
+
+    items.each do |item|
+      item.update_index
+    end
   end
 
   def public_show

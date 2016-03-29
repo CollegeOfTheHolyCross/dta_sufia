@@ -78,6 +78,10 @@ class GenericFile < ActiveFedora::Base
     end
   end
 
+  def remove_collection
+
+  end
+
   def lcsh_subject_label
     ['hello']
   end

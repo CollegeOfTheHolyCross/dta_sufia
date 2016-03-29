@@ -1,6 +1,7 @@
 class GenericFilesController < ApplicationController
   include Sufia::Controller
   include Sufia::FilesControllerBehavior
+  include Sufia::Lockable
   include DtaStaticBuilder
 
   before_action :get_latest_content
@@ -142,13 +143,14 @@ class GenericFilesController < ApplicationController
         end
 
         #FIXME
-        institution = Institution.find(params[:institution])
-        institution.files = institution.files + [@generic_file]
-        @generic_file.institutions = @generic_file.institutions + [institution]
-        institution.save
-        @generic_file.save
+        acquire_lock_for(params[:institution]) do
+          institution = Institution.find(params[:institution])
+          institution.files << [@generic_file]
+          institution.save
+        end
 
         update_metadata
+        @generic_file.update_index
 
         #@generic_file.edit_groups += ['admin', 'superuser']
 
@@ -296,33 +298,34 @@ class GenericFilesController < ApplicationController
       if !validate_metadata(params, 'update')
         redirect_to sufia.edit_generic_file_path(:id => @generic_file.id), notice: "An error prevented this item from being updated."
       else
+
         super
         #@generic_file = GenericFile.find(params[:id])
-        @generic_file.collections.each do |collect|
-          #fresh_collect = Collection.find(collect.id)
-          collect.members.delete(@generic_file)
-          collect.save
-          @generic_file.collections.delete(collect)
+
+        @generic_file.institutions.each do |inst|
+          inst.files.delete(@generic_file)
+        end
+        @generic_file.collections.each do |coll|
+          coll.members.delete(@generic_file)
+        end
+        @generic_file.institutions = []
+        @generic_file.collections = []
+
+        #FIXME
+        acquire_lock_for(params[:collection]) do
+          collection = Collection.find(params[:collection])
+          collection.members << [@generic_file]
+          collection.save
         end
 
-        @generic_file.institutions.each do |institution|
-          #fresh_institution = Institution.find(institution.id)
-          institution.files.delete(@generic_file)
+        acquire_lock_for(params[:institution]) do
+          institution = Institution.find(params[:institution])
+          institution.files << [@generic_file]
           institution.save
-          @generic_file.institutions.delete(institution)
         end
 
-
-        collection = Collection.find(params[:collection])
-        collection.add_members [@generic_file.id]
-        @generic_file.collections = @generic_file.collections + [collection]
-        collection.save
-
-        institution = Institution.find(params[:institution])
-        institution.files = institution.files + [@generic_file]
-        @generic_file.institutions = @generic_file.institutions + [institution]
-        institution.save
-        @generic_file.save
+        @generic_file.update_index
+        #raise params[:institution]
       end
     else
       super

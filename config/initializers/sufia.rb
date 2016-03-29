@@ -1,4 +1,8 @@
 Sufia.config do |config|
+  config.lock_retry_count = 600 # Up to 2 minutes of trying at intervals up to 200ms
+  config.lock_time_to_live = 6_000 # milliseconds
+  config.lock_retry_delay = 200 # milliseconds
+
   config.fits_to_desc_mapping = {
     file_title: :title,
     file_author: :creator

@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'active-fedora', '9.9.1'
+
 gem 'hydra-access-controls', '9.5.0'
 
 #Fix the 4kb session limit
