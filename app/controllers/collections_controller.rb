@@ -58,6 +58,7 @@ class CollectionsController < CatalogController
     end
 
     items.each do |item|
+      item.reload
       item.update_index
     end
   end

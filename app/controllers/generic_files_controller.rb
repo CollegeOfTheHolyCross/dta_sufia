@@ -324,6 +324,7 @@ class GenericFilesController < ApplicationController
           institution.save
         end
 
+        @generic_file.reload
         @generic_file.update_index
         #raise params[:institution]
       end
