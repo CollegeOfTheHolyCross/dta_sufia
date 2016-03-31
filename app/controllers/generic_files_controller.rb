@@ -17,14 +17,18 @@ class GenericFilesController < ApplicationController
   # routed to /files/:id
   def show
     #super
-    respond_to do |format|
-      format.html do
-        @events = @generic_file.events(100)
-        @presenter = presenter
-        @audit_status = audit_service.human_readable_audit_status
-        @show_response, @document = fetch(params[:id])
+    if @generic_file.visibility == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED and !current_or_guest_user.contributor?
+      redirect_to root_path
+    else
+      respond_to do |format|
+        format.html do
+          @events = @generic_file.events(100)
+          @presenter = presenter
+          @audit_status = audit_service.human_readable_audit_status
+          @show_response, @document = fetch(params[:id])
+        end
+        format.endnote { render text: @generic_file.export_as_endnote }
       end
-      format.endnote { render text: @generic_file.export_as_endnote }
     end
   end
 
@@ -294,7 +298,7 @@ class GenericFilesController < ApplicationController
 
   def update
     #FIXME
-    if params.key? :generic_file
+    if params.key? :generic_file and !params[:generic_file][:permissions_attributes]
       if !validate_metadata(params, 'update')
         redirect_to sufia.edit_generic_file_path(:id => @generic_file.id), notice: "An error prevented this item from being updated."
       else
