@@ -22,6 +22,9 @@ class MyController < ApplicationController
     blacklight_config.add_sort_field 'dta_sortable_date_dtsi asc, title_primary_ssort asc', :label => "date \u25B2"
     blacklight_config.add_sort_field 'dta_sortable_date_dtsi desc, title_primary_ssort asc', :label => "date \u25BC"
 
+
+    blacklight_config.add_sort_field 'collection_name_ssort asc, dta_sortable_date_dtsi asc', :label => "collection \u25B2"
+    blacklight_config.add_sort_field 'collection_name_ssort desc, dta_sortable_date_dtsi asc', :label => "collection \u25BC"
     #blacklight_config.default_sort_field = blacklight_config.sort_fields["#{uploaded_field} desc"]
   end
 

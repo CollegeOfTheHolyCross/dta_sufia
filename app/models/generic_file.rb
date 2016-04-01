@@ -159,6 +159,7 @@ class GenericFile < ActiveFedora::Base
 
     self.collections.each do |collection|
       doc['collection_name_ssim'] << collection.title
+      doc['collection_name_ssort'] = collection.title
       #collection.institutions.each do |institution|
         #doc['institution_name_ssim'] << institution.name
       #end
@@ -253,7 +254,7 @@ class GenericFile < ActiveFedora::Base
         doc['date_end_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
         doc['dta_dates_ssim'] << date.year
         doc['dta_sortable_date_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
-      else
+      elsif date.present?
         doc['date_start_dtsi'] = date.first.year.to_s + '-01-01T00:00:00.000Z'
         doc['date_end_dtsi'] = date.last.year.to_s + '-01-01T00:00:00.000Z'
         doc['dta_sortable_date_dtsi'] = (((date.last.year.to_i - date.first.year.to_i) / 2) + date.first.year.to_i).to_i.to_s + '-01-01T00:00:00.000Z'
@@ -270,7 +271,7 @@ class GenericFile < ActiveFedora::Base
         doc['date_end_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
         doc['dta_dates_ssim'] << date.year
         doc['dta_sortable_date_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
-      else
+      elsif date.present?
         doc['date_start_dtsi'] = date.first.year.to_s + '-01-01T00:00:00.000Z'
         doc['date_end_dtsi'] = date.last.year.to_s + '-01-01T00:00:00.000Z'
         doc['dta_sortable_date_dtsi'] = (((date.last.year.to_i - date.first.year.to_i) / 2) + date.first.year.to_i).to_i.to_s + '-01-01T00:00:00.000Z'
