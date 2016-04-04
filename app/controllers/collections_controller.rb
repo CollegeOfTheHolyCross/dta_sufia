@@ -35,10 +35,19 @@ class CollectionsController < CatalogController
     items = ActiveFedora::Base.find(batch)
     items.each do |item|
       item.institutions.each do |inst|
-        inst.files.delete(item)
+        acquire_lock_for(inst.id) do
+          inst.reload
+          inst.files.delete(item)
+          #inst.save
+        end
       end
+
       item.collections.each do |coll|
-        coll.members.delete(item)
+        acquire_lock_for(coll.id) do
+          coll.reload
+          coll.members.delete(item)
+          #coll.save
+        end
       end
 
       item.institutions = []

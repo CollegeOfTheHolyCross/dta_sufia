@@ -307,11 +307,19 @@ class GenericFilesController < ApplicationController
         #@generic_file = GenericFile.find(params[:id])
 
         @generic_file.institutions.each do |inst|
-          inst.files.delete(@generic_file)
+          acquire_lock_for(inst.id) do
+            inst.reload
+            inst.files.delete(@generic_file)
+          end
         end
+
         @generic_file.collections.each do |coll|
-          coll.members.delete(@generic_file)
+          acquire_lock_for(coll.id) do
+            coll.reload
+            coll.members.delete(@generic_file)
+          end
         end
+
         @generic_file.institutions = []
         @generic_file.collections = []
 
