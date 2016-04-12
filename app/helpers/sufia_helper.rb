@@ -12,8 +12,8 @@ module SufiaHelper
       #FIXME: This can be done more efficiently...
       if document["hasCollectionMember_ssim"].present?
         document["hasCollectionMember_ssim"].each do |member|
-          visibility_check = GenericFile.find_with_conditions("id:#{member}", rows: '1', fl: 'id,is_public_ssi' ).first
-          if visibility_check.present? and visibility_check['is_public_ssi'] == 'true'
+          visibility_check = GenericFile.find_with_conditions("id:#{member}", rows: '1', fl: 'id,is_public_ssi,flagged_tesim' ).first
+          if visibility_check.present? and visibility_check['is_public_ssi'] == 'true' and visibility_check['flagged_tesim'] == ['No explicit content']
             path = sufia.download_path member, file: 'thumbnail'
             options[:alt] = ""
             return image_tag path, options
