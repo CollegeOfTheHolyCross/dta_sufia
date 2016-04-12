@@ -21,4 +21,8 @@ module DtaSearchBuilder
     solr_parameters[:fq] << "+active_fedora_model_ssi:\"Collection\""
     solr_parameters[:fq] << "+is_public_ssi:\"true\""
   end
+
+  def flagged_filter(solr_parameters = {}, wtf=nil)
+    solr_parameters[:fq] << "-flagged_tesim:\"Explicit content in thumbnail\""
+  end
 end

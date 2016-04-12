@@ -117,6 +117,7 @@ class CollectionsController < CatalogController
 
     @nav_li_active = 'explore'
     self.search_params_logic += [:collections_filter]
+    self.search_params_logic += [:flagged_filter] unless self.search_params_logic.include?(:flagged_filter)
     (@response, @document_list) = search_results({:f => {'active_fedora_model_ssi' => 'Collection'},:rows => 100, :sort => 'title_primary_ssort asc'}, search_params_logic)
 =begin
     term_query = Collection.find_with_conditions("*:*", rows: '10000', fl: 'id,title_tesim' )

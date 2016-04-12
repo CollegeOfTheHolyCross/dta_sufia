@@ -41,7 +41,9 @@ module SufiaHelper
       image_tag "shared/institution_icon.png", options
     else
       path =
-          if document.image? || document.pdf? || document.video? || document.office_document?
+          if document['flagged_tesim'] == ['Explicit content in thumbnail']
+            "default.png"
+          elsif document.image? || document.pdf? || document.video? || document.office_document?
             sufia.download_path document, file: 'thumbnail'
           elsif document.audio?
             "audio.png"

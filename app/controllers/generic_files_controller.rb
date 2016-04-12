@@ -298,7 +298,24 @@ class GenericFilesController < ApplicationController
 
   def update
     #FIXME
-    if params.key? :generic_file and !params[:generic_file][:permissions_attributes]
+    if wants_to_upload_new_version? and @generic_file.hosted_elsewhere == "1"
+      if params[:filedata]
+        file = params[:filedata]
+        img = Magick::Image.read(file.path()).first
+        img = Magick::Image.from_blob( img.to_blob { self.format = "jpg" } ).first
+
+        if File.extname(file.original_filename) == '.pdf'
+          thumb = img.resize_to_fit(500,600) #338,493
+        else
+          thumb = img.resize_to_fit(500,600) #FIXME?
+        end
+        @generic_file.add_file(StringIO.open(thumb.to_blob), path: file_path, original_name: File.basename(file.original_filename,File.extname(file.original_filename)), mime_type: 'image/jpeg')
+        actor.save_characterize_and_record_committer
+
+        redirect_to sufia.edit_generic_file_path(tab: params[:redirect_tab]), notice:
+            render_to_string(partial: 'generic_files/asset_updated_flash', locals: { generic_file: @generic_file })
+      end
+    elsif params.key? :generic_file and !params[:generic_file][:permissions_attributes]
       if !validate_metadata(params, 'update')
         redirect_to sufia.edit_generic_file_path(:id => @generic_file.id), notice: "An error prevented this item from being updated."
       else
