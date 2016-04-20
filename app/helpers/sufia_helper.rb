@@ -45,8 +45,9 @@ module SufiaHelper
             "default.png"
           elsif document.image? || document.pdf? || document.video? || document.office_document?
             sufia.download_path document, file: 'thumbnail'
-          elsif document.audio?
-            "audio.png"
+          elsif document.audio? || document['resource_type_tesim'].include?('Audio') || document['genre_tesim'].include?('Sound Recordings')
+            #"audio.png"
+            "shared/dta_audio_icon.jpg"
           else
             "default.png"
           end

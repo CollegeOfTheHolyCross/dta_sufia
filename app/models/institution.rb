@@ -76,7 +76,8 @@ class Institution < ActiveFedora::Base
 
     doc['institution_name_ssim'] = []
 
-    doc['title_primary_ssort'] = self.name
+    doc['title_primary_ssort'] = self.name.gsub(/^The /, '').gsub(/^A /, '').gsub(/^An /, '')
+
     doc['institution_name_ssim'] << self.name
 
     doc['has_image_ssi'] = self.content.present?.to_s

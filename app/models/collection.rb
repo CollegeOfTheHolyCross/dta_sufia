@@ -30,7 +30,7 @@ class Collection < Sufia::Collection
 
     doc['is_public_ssi'] = self.public?.to_s
 
-    doc['title_primary_ssort'] = self.title
+    doc['title_primary_ssort'] = self.title.gsub(/^The /, '').gsub(/^A /, '').gsub(/^An /, '')
     doc['title_primary_ssi'] = self.title
 
     doc['institution_name_ssim'] = []

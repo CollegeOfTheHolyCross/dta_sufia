@@ -86,6 +86,10 @@ class GenericFile < ActiveFedora::Base
     ['hello']
   end
 
+  def audio?
+    self.class.audio_mime_types.include? mime_type
+  end
+
   def self.blazegraph_config
     @blazegraph_config ||= YAML::load(File.open(blazegraph_config_path))[env]
                                .with_indifferent_access
