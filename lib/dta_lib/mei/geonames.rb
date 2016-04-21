@@ -22,7 +22,7 @@ module Mei
     def build_query_url q
       @escaped_query = URI.escape(q)
       @escaped_query = q
-      return "http://ws.geonames.org/searchJSON"
+      return "http://api.geonames.org/searchJSON"
     end
 
     #result["geonames"].first["name"]

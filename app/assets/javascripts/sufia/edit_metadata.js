@@ -9,7 +9,7 @@ Blacklight.onLoad(function() {
     var cities_autocomplete_opts = {
         source: function( request, response ) {
             $.ajax( {
-                url: "http://ws.geonames.org/searchJSON",
+                url: "http://api.geonames.org/searchJSON",
                 dataType: "jsonp",
                 data: {
                     featureClass: "P",
