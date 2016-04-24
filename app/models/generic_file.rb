@@ -66,7 +66,21 @@ class GenericFile < ActiveFedora::Base
   makes_derivatives do |obj|
     case obj.mime_type
       when *pdf_mime_types
-        obj.transform_file :content, thumbnail: { format: 'jpg', size: '338x493', datastream: 'thumbnail' }
+        #obj.transform_file :content, thumbnail: { format: 'jpg', size: '338x493', datastream: 'thumbnail' }
+        obj.thumbnail.delete
+        ActiveFedora::Base.eradicate("#{obj.id}/thumbnail")
+
+        img = MiniMagick::Image.read(obj.content.content)
+
+        img.combine_options do |c|
+          c.trim "+repage"
+        end
+
+        img.format 'jpg'
+        img.resize '338x493'
+        obj.thumbnail.content = img.to_blob
+        obj.mime_type = 'image/jpeg'
+        obj.thumbnail.original_name = obj.content.original_name.split('.').first + '.jpg'
       when *office_document_mime_types
         obj.transform_file :content, { thumbnail: { format: 'jpg', size: '338x493', datastream: 'thumbnail' } }, processor: :document
       when *audio_mime_types
