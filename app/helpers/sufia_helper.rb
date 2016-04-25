@@ -42,7 +42,7 @@ module SufiaHelper
     else
       path =
           if document['flagged_tesim'] == ['Explicit content in thumbnail']
-            "dta_default_icon.jpg"
+            "shared/dta_default_icon.jpg"
           elsif document.image? || document.pdf? || document.video? || document.office_document?
             sufia.download_path document, file: 'thumbnail'
           elsif document.audio? || (document['resource_type_tesim'].present? and document['resource_type_tesim'].include?('Audio')) || (document['genre_tesim'].present? and document['genre_tesim'].include?('Sound Recordings'))
