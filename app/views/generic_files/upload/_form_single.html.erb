@@ -53,7 +53,12 @@
       </div>
 
       <% (f.object.terms - [:hosted_elsewhere, :is_shown_at, :preview]).each do |term| %>
-          <%= render_edit_field_partial(term, f: f) %>
+          <% if term == :language %>
+              <%= f.input term, as: :language_string_with_default, input_html: { class: 'form-control' }, required: f.object.required?(term) %>
+          <% else %>
+              <%= render_edit_field_partial(term, f: f) %>
+          <% end %>
+
       <% end %>
     </div>
 
