@@ -38,7 +38,7 @@ class PostsController < ApplicationController
 
       @post.update(post_params)
 
-      potential_image = @post.content.match(/<img[\w \.\/\'\"\=&#\-_\:“”;,—–\s]+>/)
+      potential_image = @post.content.match(/<img[\w \.\/\'\"\=&#\-_\:“”;,—–\s\(\)\?]+>/)
       if potential_image.present?
 
         result = potential_image.to_s.match(/src\=[\'\"][\w\.\/\-_\:]+[\'\"]/)
