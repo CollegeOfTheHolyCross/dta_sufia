@@ -122,6 +122,17 @@
           </dd>
       <% end %>
 
+    <% if @document[:toc_tesim] %>
+        <dt>Table of Contents</dt>
+        <dd>
+          <% @document[:toc_tesim].each do |val| %>
+              <% val.split('--').each do |toc_entry| %>
+                  <%= toc_entry.strip %><br />
+              <% end %>
+          <% end %>
+        </dd>
+    <% end %>
+
       <% if @document[:resource_type_tesim] %>
           <dt>Resource Type</dt>
           <dd>

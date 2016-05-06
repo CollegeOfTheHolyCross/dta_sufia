@@ -7,7 +7,11 @@ class GenericFile < ActiveFedora::Base
   include Sufia::GenericFile
   has_and_belongs_to_many :institutions, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.isMemberOf, class_name: "Institution"
   contains "ocr"
-  
+
+  property :toc, predicate: ::RDF::Vocab::DC.tableOfContents, multiple: false do |index|
+    index.as :stored_searchable
+  end
+
   property :analog_format, predicate: ::RDF::Vocab::DC.format, multiple: false do |index|
     index.as :stored_searchable
   end

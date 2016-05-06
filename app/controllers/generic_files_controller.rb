@@ -64,8 +64,6 @@ class GenericFilesController < ApplicationController
     #@selectable_collection = @selectable_collection
   end
 
-
-
   def create
     if params.key?(:upload_type) and params[:upload_type] == 'internetarchive'
       #result = Resque.enqueue(InternetArchive::DtaBooks, :collection_id=>params[:collection_internet_archive], :institution_id=>params[:institution_internet_archive], :depositor=>current_user.user_key)

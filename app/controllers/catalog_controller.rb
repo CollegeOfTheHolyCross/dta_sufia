@@ -146,6 +146,7 @@ class CatalogController < ApplicationController
     config.global_search_fields << 'subject_geographic_tesim'
     config.global_search_fields << 'dta_subject_primary_searchable_tesim'
     config.global_search_fields << 'dta_subject_alt_searchable_tesim'
+    config.global_search_fields << 'toc_tesim'
     config.global_search_fields << 'dta_ocr_tiv'
 
 
