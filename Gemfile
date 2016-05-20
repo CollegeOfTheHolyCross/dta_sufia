@@ -1,21 +1,23 @@
 source 'https://rubygems.org'
 
-gem 'active-fedora', '9.9.1'
+#gem 'active-fedora', '9.9.1'
 
-gem 'hydra-access-controls', '9.5.0'
+#gem 'hydra-access-controls', '9.5.0'
 
 #Fix the 4kb session limit
 gem 'activerecord-session_store'
 
 
 
-gem "rdf-vocab"
+#gem "rdf-vocab"
+gem 'rdf', '1.99.0'
+
 #gem 'mysql2', '0.3.18'
 #gem 'blacklight', '5.16.2'
 gem 'blacklight', '5.16.4'
 #gem 'sufia', '6.4.0'
 #gem 'google-api-client', '0.8.6'
-gem 'sufia', '6.6.0'
+gem 'sufia', '6.6.1'
 #gem 'sufia', :git=>'https://github.com/projecthydra/sufia.git'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'  # required to handle pagination properly in dashboard. See https://github.com/amatsuda/kaminari/pull/322
 gem "hydra-role-management"
