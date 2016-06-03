@@ -385,5 +385,30 @@ class CatalogController < ApplicationController
     blacklight_config.facet_fields['dta_dates_ssim'].if = false
   end
 
+  # displays values and pagination links for Format field
+  def genre_facet
+    @nav_li_active = 'explore'
+
+    @facet = blacklight_config.facet_fields['genre_ssim']
+    @response = get_facet_field_response(@facet.key, params)
+    @display_facet = @response.aggregations[@facet.key]
+
+    @pagination = facet_paginator(@facet, @display_facet)
+
+    render :full_browse_facet
+  end
+
+  def topic_facet
+    @nav_li_active = 'explore'
+
+    @facet = blacklight_config.facet_fields['dta_all_subject_ssim']
+    @response = get_facet_field_response(@facet.key, params)
+    @display_facet = @response.aggregations[@facet.key]
+
+    @pagination = facet_paginator(@facet, @display_facet)
+
+    render :full_browse_facet
+  end
+
 
 end
