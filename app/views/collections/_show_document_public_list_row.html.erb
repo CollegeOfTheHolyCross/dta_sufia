@@ -14,7 +14,7 @@
           <%= link_to document.title_or_label, collections_public_show_path(document), id: "src_copy_link#{id}", class: "#{'document-title' if document.title_or_label == document.label}" %>
           <a href="#" class="small" title="Click for more details"><i id="expand_<%= id %>" class="glyphicon glyphicon-chevron-right"></i></a>
         </h4>
-        <p><%= document["description_tesim"].first %></p>
+        <p><%= document["description_tesim"].first.html_safe %></p>
 
 
         <%= render_collection_list(gf) %>

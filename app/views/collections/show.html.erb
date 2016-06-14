@@ -11,7 +11,7 @@
           <% end %>
 
         </h1>
-        <p class="collection_description"><%= @presenter.description %></p>
+        <p class="collection_description"><%= @presenter.description.html_safe %></p>
       </header>
       <% unless has_collection_search_parameters? %>
       <%= render 'collections/show_descriptions' %>
