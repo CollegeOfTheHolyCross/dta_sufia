@@ -1,0 +1,75 @@
+<% # main container for facets/limits menu -%>
+<style type="text/css">
+  .dtalimits_checkboxes input { float: left;}
+  .dtalimits_checkboxes label { display: block; margin-left: 1.5em; padding-top:2px;}
+
+  .dtalimits_checkboxes {
+    clear:both;
+  }
+
+  .dtalimits_selected {
+      color: rgb(60, 118, 61);
+      background-color: rgb(223, 240, 216);
+      border-bottom-color: rgb(214, 233, 198);
+      border-left-color: rgb(214, 233, 198);
+      border-right-color: rgb(214, 233, 198);
+      border-top-color: rgb(214, 233, 198);
+
+    }
+
+    .panel-dta_limits {
+      padding-top:7px;
+      padding-bottom: 7px;
+    }
+</style>
+
+
+<% if has_facet_values?  %>
+<div id="facets" class="facets sidenav">
+
+  <div class="top-panel-heading panel-heading">
+    <button type="button" class="facets-toggle" data-toggle="collapse" data-target="#facet-panel-collapse">
+      <span class="sr-only">Toggle facets</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+
+  <h4 class='facets-heading'>
+
+  	<%= t('blacklight.search.facets.title') %>
+  </h4>
+    </div>
+
+
+
+  <div id="facet-panel-collapse" class="collapse panel-group">
+
+    <div class="panel panel-default facet_limit blacklight-creator_sim <%if facet_in_params?(:dtalimits, "ex_fa")%>dtalimits_selected<%end%>">
+      <div id="facet-creator_sim" class="panel-collapse facet-content in">
+        <div class="panel-body panel-dta_limits">
+          <div class="dtalimits_checkboxes">
+            <% dtalimits_item = 'ex_fa'
+               dtalimits_facet_field = 'dtalimits'
+            %>
+            <% if facet_in_params?(:dtalimits, "ex_fa") %>
+                <% dtalimits_path = search_action_path(remove_facet_params(dtalimits_facet_field, dtalimits_item, params)) %>
+                <%= check_box_tag 'exclude_finding_aids', 'exclude_finding_aids', true, :id => 'exclude_finding_aids_checkbox', :onclick=>"window.location.assign('#{dtalimits_path}');this.disabled=true;" %>
+            <% else %>
+              <% dtalimits_path = path_for_facet(dtalimits_facet_field, dtalimits_item) %>
+                <%= check_box_tag 'exclude_finding_aids', 'exclude_finding_aids', false, :id => 'exclude_finding_aids_checkbox', :onclick=>"window.location.assign('#{dtalimits_path}');this.disabled=true;" %>
+            <% end %>
+            <%= label_tag(:online_only, "Exclude Finding Aids?", :id => "exclude_finding_aids_checkbox_label", :style=>"font-weight:normal;") %>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+
+
+  <%= render_facet_partials %>
+</div>
+</div>
+<% end %>

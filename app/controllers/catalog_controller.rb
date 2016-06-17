@@ -91,6 +91,16 @@ class CatalogController < ApplicationController
     config.add_facet_field 'institution_name_ssim', :label => 'Institution', :limit => 8, :sort => 'count', :collapse => true
     config.add_facet_field 'subject_geojson_facet_ssim', :limit => -2, :label => 'Coordinates', :show => false
 
+    # https://bibwild.wordpress.com/2011/06/13/customing-blacklight-a-limit-checkbox/
+=begin
+    config.add_facet_field 'a_query_field', partial: 'custom_format_facet', query: {
+        :a_to_n => { label: 'A-N', fq: 'genre_ssim:[A* TO Z*]' },
+        :m_to_z => { label: 'M-Z', fq: '-genre_ssim:"Finding Aids"' }
+    }
+=end
+    config.add_facet_field 'dtalimits', label: "Limit", :show => false, query: {
+        :ex_fa => { label: 'Exclude Finding Aids', fq: '-genre_ssim:"Finding Aids"' }
+    }
 
     #config.add_facet_field solr_name("genre", :facetable), label: "Genre", limit: 6, :collapse => true
     #config.add_facet_field solr_name("resource_type", :facetable), label: "Resource Type", limit: 5
@@ -388,6 +398,7 @@ class CatalogController < ApplicationController
   # displays values and pagination links for Format field
   def genre_facet
     @nav_li_active = 'explore'
+    @facet_no_more_link = true
 
     @facet = blacklight_config.facet_fields['genre_ssim']
     @response = get_facet_field_response(@facet.key, params)
@@ -400,6 +411,7 @@ class CatalogController < ApplicationController
 
   def topic_facet
     @nav_li_active = 'explore'
+    @facet_no_more_link = true
 
     @facet = blacklight_config.facet_fields['dta_all_subject_ssim']
     @response = get_facet_field_response(@facet.key, params)
