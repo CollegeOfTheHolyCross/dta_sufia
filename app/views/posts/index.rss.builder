@@ -22,17 +22,7 @@ xml.rss :version => "2.0",  'xmlns:atom'=>"http://www.w3.org/2005/Atom" do
         xml.guid "https://www.digitaltransgenderarchive.net/news/#{article.friendly_id}"
 
         text = article.content
-        # if you like, do something with your content text here e.g. insert image tags.
-        # Optional. I'm doing this on my website.
-        if article.thumbnail.present?
-          image_url = "https://www.digitaltransgenderarchive.net/#{article.thumbnail}"
-          image_caption = ''
-          image_align = "left"
-          image_tag = "
-                <p><img src='" + image_url +  "' alt='" + image_caption + "' title='" + image_caption + "' align='" + image_align  + "' /></p>
-              "
-          text = text.sub('{image}', image_tag)
-        end
+        text.gsub!('/uploads/ckeditor','https://www.digitaltransgenderarchive.net/uploads/ckeditor')
         xml.description "<p>" + text + "</p>"
       end
     end
