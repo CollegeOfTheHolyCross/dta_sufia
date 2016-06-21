@@ -357,6 +357,7 @@ class CatalogController < ApplicationController
 
   def institution_base_blacklight_config
     # don't show collection facet
+    @skip_dta_limits_render = true
     blacklight_config.facet_fields['collection_name_ssim'].show = false
     blacklight_config.facet_fields['collection_name_ssim'].if = false
 
@@ -375,6 +376,7 @@ class CatalogController < ApplicationController
   end
 
   def collection_base_blacklight_config
+    @skip_dta_limits_render = true
     blacklight_config.facet_fields['collection_name_ssim'].show = false
     blacklight_config.facet_fields['collection_name_ssim'].if = false
 

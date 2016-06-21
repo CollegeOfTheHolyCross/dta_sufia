@@ -55,6 +55,16 @@ class CommandsController < ApplicationController
     render html: "<h1>Reindex sucessful</h1>"
   end
 
+
+
+  def restart_resque
+    ` /etc/init.d/resque stop`
+    sleep(10)
+    ` /etc/init.d/resque start`
+
+    render html: "<h1>Resque Restarted</h1>"
+  end
+
   def descendant_uris(uri)
     resource = Ldp::Resource::RdfSource.new(ActiveFedora.fedora.connection, uri)
     # GET could be slow if it's a big resource, we're using HEAD to avoid this problem,
@@ -66,5 +76,13 @@ class CommandsController < ApplicationController
       all_descendants_uris += descendant_uris(descendant_uri)
     end
     all_descendants_uris
+  end
+
+  def admin_actions
+=begin
+    if !verify_superuser
+      raise "Access Not Allowed"
+    end
+=end
   end
 end

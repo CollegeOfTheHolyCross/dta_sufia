@@ -1,0 +1,31 @@
+<div class="col-xs-12 heading-row">
+  <% if current_user.superuser? %>
+      <div class="col-xs-6 col-sm-2 heading-tile">
+        <%= link_to reindex_all_path do %>
+            <span class="glyphicon glyphicon-refresh"></span>
+            Reindex System
+        <% end %>
+      </div>
+  <% end %>
+
+
+  <% if current_user.superuser? %>
+      <div class="col-xs-6 col-sm-2 heading-tile">
+        <%= link_to reload_app_path do %>
+            <span class="glyphicon glyphicon-download-alt"></span>
+            Pull Latest Code
+        <% end %>
+      </div>
+  <% end %>
+
+
+  <% if current_user.superuser? %>
+      <div class="col-xs-6 col-sm-2 heading-tile">
+        <%= link_to restart_resque_path do %>
+            <span class="glyphicon glyphicon-upload"></span>
+            Restart Background Scripts
+        <% end %>
+      </div>
+  <% end %>
+
+</div>

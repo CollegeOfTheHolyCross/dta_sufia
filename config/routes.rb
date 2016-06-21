@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   get 'proxy' => 'commands#proxy'
   get 'proxy_raw' => 'commands#proxy_raw'
   get 'admin/reindex' => 'commands#reindex', as: :reindex_all
+  get 'admin/restart_resque' => 'commands#restart_resque', as: :restart_resque
+  get 'admin/actions' => 'commands#admin_actions', as: :admin_actions
   get 'collections/member_visibility/:id' => 'collections#change_member_visibility', as: :collection_member_visibility
   get 'collections/collection_invisible/:id' => 'collections#collection_invisible', as: :collection_invisible
   get 'collections/collection_visible/:id' => 'collections#collection_visible', as: :collection_visible

@@ -32,7 +32,9 @@
       <div id="collection_desc">
         <% if @document[:description_tesim] %>
             <% @document[:description_tesim].each do |abstract| %>
-                <%= abstract.html_safe %>
+                <%=
+                  make_links_clickable(abstract).html_safe
+                %>
             <% end %>
         <% end %>
       </div>

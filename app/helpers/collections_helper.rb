@@ -21,6 +21,21 @@ module CollectionsHelper
     false
   end
 
+  def make_links_clickable(str)
+    match_strings = []
+    local_str = str.clone
+
+    while local_str.match(/https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,}/) do
+      match_strings << local_str.match(/https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,}/)
+      local_str.gsub!(match_strings[-1].to_s, '')
+    end
+
+    match_strings.each do |match_string|
+      str.gsub!(match_string.to_s, "<a href='#{match_string.to_s}' title='Click here to visit #{match_string.to_s} (new window)' target='_blank'>#{match_string.to_s}</a>")
+    end
+    str
+  end
+
 
   #COPIED FROM HYDRA COLLECTIONS COLLECTIONS HELPER
   # Displays the Collections create collection button.  Put this in your search result page template.  We recommend putting it in catalog/_sort_and_per_page.html.erb
