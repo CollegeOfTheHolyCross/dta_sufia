@@ -142,17 +142,20 @@ class CollectionsController < CatalogController
   end
 
   def new
-    institution_query = Institution.find_with_conditions("*:*", rows: '100000', fl: 'id,name_ssim' )
+    term_query = Institution.find_with_conditions("*:*", rows: '10000', fl: 'id,name_ssim' )
+    term_query = term_query.sort_by { |term| term["name_ssim"].first }
     @all_institutions = []
-    institution_query.each { |term| @all_institutions << [term["name_ssim"].first, term["id"]] }
+    term_query.each { |term| @all_institutions << [term["name_ssim"].first, term["id"]] }
+
     flash[:notice] = nil if flash[:notice] == "Select something first"
     super
   end
 
   def edit
-    institution_query = Institution.find_with_conditions("*:*", rows: '100000', fl: 'id,name_ssim' )
+    term_query = Institution.find_with_conditions("*:*", rows: '10000', fl: 'id,name_ssim' )
+    term_query = term_query.sort_by { |term| term["name_ssim"].first }
     @all_institutions = []
-    institution_query.each { |term| @all_institutions << [term["name_ssim"].first, term["id"]] }
+    term_query.each { |term| @all_institutions << [term["name_ssim"].first, term["id"]] }
     super
   end
 

@@ -18,7 +18,7 @@
   </h4>
     </div>
   <div id="facet-panel-collapse" class="collapse panel-group">
-    <%= render 'catalog/_show_partials/dta_limits_facet' unless @skip_dta_limits_render %>
+    <%= render 'catalog/_show_partials/dta_limits_facet' unless @skip_dta_limits_render or true %>
 
     <%= render_facet_partials %>
   </div>
