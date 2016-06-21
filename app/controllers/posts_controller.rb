@@ -9,11 +9,16 @@ class PostsController < ApplicationController
 
   def index
     if current_user.present? and current_user.admin?
-      @posts = Posts.all.order("created DESC")
+      #@posts = Posts.all.order("created DESC")
+      @posts = Posts.order("created DESC").page params[:page]
     else
-      @posts = Posts.where(:published=>true).order("created DESC")
+      @posts = Posts.where(:published=>true).order("created DESC").page params[:page]
     end
 
+    respond_to do |format|
+      format.html { }
+      format.rss { render :layout => false }
+    end
 
   end
 

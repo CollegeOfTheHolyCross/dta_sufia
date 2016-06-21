@@ -89,7 +89,7 @@
           <% end %>
       <% end %>
     </h4>
-    <p class="genericfile_description"><%= display_multiple @presenter.description %></p>
+    <p class="genericfile_description"><%= display_multiple(@presenter.description).html_safe %></p>
     <%= render 'show_descriptions' %>
 
 

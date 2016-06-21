@@ -58,9 +58,9 @@ class CommandsController < ApplicationController
 
 
   def restart_resque
-    ` /etc/init.d/resque stop`
+    `/etc/init.d/resque stop`
     sleep(10)
-    ` /etc/init.d/resque start`
+    `/etc/init.d/resque start`
 
     render html: "<h1>Resque Restarted</h1>"
   end
