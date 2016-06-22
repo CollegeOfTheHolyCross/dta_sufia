@@ -47,7 +47,7 @@ body {
 }
 
 //Fix a bug in Safari where documents need to be set to display: block
-#documents.gallary {
+#documents.gallery {
   display: block;
   flex-flow: row wrap;
 }
