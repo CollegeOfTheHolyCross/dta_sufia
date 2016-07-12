@@ -92,7 +92,7 @@ class GenericFile < ActiveFedora::Base
         reader.pages.each do |page|
           text_content << page.text
         end
-        text_content = text_content.join(" ").gsub(/\n/, '').squish
+        text_content = text_content.join(" ").gsub(/\n/, ' ').gsub(/\uFFFF/, ' ').squish
 
         obj.ocr.delete
         ActiveFedora::Base.eradicate("#{obj.id}/ocr")
