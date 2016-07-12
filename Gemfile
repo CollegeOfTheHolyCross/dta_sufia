@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-#gem 'active-fedora', '9.9.1'
+gem 'active-fedora', '9.7.2'
 
 #gem 'hydra-access-controls', '9.5.0'
 
@@ -57,6 +57,8 @@ gem "blacklight_range_limit"
 gem "blacklight-maps"
 
 gem 'rmagick', :require => 'RMagick'
+
+gem 'pdf-reader'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

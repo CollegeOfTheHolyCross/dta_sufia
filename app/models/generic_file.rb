@@ -83,8 +83,22 @@ class GenericFile < ActiveFedora::Base
         img.format 'jpg'
         img.resize '338x493'
         obj.thumbnail.content = img.to_blob
-        obj.mime_type = 'image/jpeg'
+        obj.thumbnail.mime_type = 'image/jpeg'
         obj.thumbnail.original_name = obj.content.original_name.split('.').first + '.jpg'
+
+        reader = PDF::Reader.new(StringIO.open(obj.content.content))
+
+        text_content = []
+        reader.pages.each do |page|
+          text_content << page.text
+        end
+        text_content = text_content.join(" ").gsub(/\n/, '').squish
+
+        obj.ocr.delete
+        ActiveFedora::Base.eradicate("#{obj.id}/ocr")
+        obj.ocr.content = text_content
+        obj.ocr.mime_type = 'text/plain'
+        obj.ocr.original_name = obj.content.original_name.split('.').first + '.txt'
       when *office_document_mime_types
         obj.transform_file :content, { thumbnail: { format: 'jpg', size: '338x493', datastream: 'thumbnail' } }, processor: :document
       when *audio_mime_types

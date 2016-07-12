@@ -154,7 +154,7 @@ class InstitutionsController < CatalogController
     @reindex_members = false
     @institution = Institution.find(params[:id])
 
-    if @institution != params[:institution][:name]
+    if @institution.label != params[:institution][:name]
       @reindex_members = true
     end
 
