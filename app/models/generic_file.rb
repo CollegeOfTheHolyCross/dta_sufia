@@ -94,6 +94,7 @@ class GenericFile < ActiveFedora::Base
             text_content = ''
             #Internet Archive Object
             if obj.identifier.present?
+              ia_id = obj.identifier[0].split('/').last
               djvu_data_text_response = fetch("http://archive.org/download/#{ia_id}/#{ia_id}_djvu.txt")
               text_content = djvu_data_text_response.body.squish if djvu_data_text_response.body.present?
             else
