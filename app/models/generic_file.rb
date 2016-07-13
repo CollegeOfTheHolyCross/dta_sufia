@@ -117,7 +117,14 @@ class GenericFile < ActiveFedora::Base
             #Ignore this...malformed PDF. Might be able to patch as posted in:
             #https://groups.google.com/forum/#!topic/pdf-reader/e_Ba-myn584
           rescue => ex
-            raise ex
+            # Line 104 of reader.pages.each do |page| can raise an error message of
+            # NoMethodError: undefined method `flatten' for nil:NilClass
+            # Likely a nil value of text in PDF...
+            unless ex.message.include?('flatten')
+              raise ex
+            end
+
+            #Ignore for the moment
           end
       when *office_document_mime_types
         obj.transform_file :content, { thumbnail: { format: 'jpg', size: '338x493', datastream: 'thumbnail' } }, processor: :document
