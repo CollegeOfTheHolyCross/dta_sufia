@@ -86,19 +86,26 @@ class GenericFile < ActiveFedora::Base
         obj.thumbnail.mime_type = 'image/jpeg'
         obj.thumbnail.original_name = obj.content.original_name.split('.').first + '.jpg'
 
-        reader = PDF::Reader.new(StringIO.open(obj.content.content))
+        begin
+          reader = PDF::Reader.new(StringIO.open(obj.content.content))
 
-        text_content = []
-        reader.pages.each do |page|
-          text_content << page.text
+          text_content = []
+          reader.pages.each do |page|
+            text_content << page.text
+          end
+          text_content = text_content.join(" ").gsub(/\n/, ' ').gsub(/\uFFFF/, ' ').squish
+
+          obj.ocr.delete
+          ActiveFedora::Base.eradicate("#{obj.id}/ocr")
+          obj.ocr.content = text_content
+          obj.ocr.mime_type = 'text/plain'
+          obj.ocr.original_name = obj.content.original_name.split('.').first + '.txt'
+        rescue PDF::Reader::MalformedPDFError => ex
+          #Ignore this...malformed PDF. Might be able to patch as posted in:
+          #https://groups.google.com/forum/#!topic/pdf-reader/e_Ba-myn584
+        rescue => ex
+          raise ex
         end
-        text_content = text_content.join(" ").gsub(/\n/, ' ').gsub(/\uFFFF/, ' ').squish
-
-        obj.ocr.delete
-        ActiveFedora::Base.eradicate("#{obj.id}/ocr")
-        obj.ocr.content = text_content
-        obj.ocr.mime_type = 'text/plain'
-        obj.ocr.original_name = obj.content.original_name.split('.').first + '.txt'
       when *office_document_mime_types
         obj.transform_file :content, { thumbnail: { format: 'jpg', size: '338x493', datastream: 'thumbnail' } }, processor: :document
       when *audio_mime_types
