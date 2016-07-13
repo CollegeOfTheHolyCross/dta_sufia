@@ -2,6 +2,7 @@
 require 'rest_client'
 require 'restclient/components'
 require 'rack/cache'
+require "net/http"
 
 class GenericFile < ActiveFedora::Base
   include Sufia::GenericFile
@@ -67,6 +68,9 @@ class GenericFile < ActiveFedora::Base
     index.as :stored_searchable, :facetable
   end
 
+  # For local items, mime_type seems to work. But seems like not setting mime_type correctly for items with no image originally.
+  # Hosted elsewhere objects currently show as image/jp2...
+
   makes_derivatives do |obj|
     case obj.mime_type
       when *pdf_mime_types
@@ -86,29 +90,34 @@ class GenericFile < ActiveFedora::Base
         obj.thumbnail.mime_type = 'image/jpeg'
         obj.thumbnail.original_name = obj.content.original_name.split('.').first + '.jpg'
 
-        #Don't overwrite Internet Archive OCR... currently only those items have an identifier of their IA ID.
-        if obj.identifier.blank?
           begin
-            reader = PDF::Reader.new(StringIO.open(obj.content.content))
+            text_content = ''
+            #Internet Archive Object
+            if obj.identifier.present?
+              djvu_data_text_response = fetch("http://archive.org/download/#{ia_id}/#{ia_id}_djvu.txt")
+              text_content = djvu_data_text_response.body.squish if djvu_data_text_response.body.present?
+            else
+              reader = PDF::Reader.new(StringIO.open(obj.content.content))
 
-            text_content = []
-            reader.pages.each do |page|
-              text_content << page.text
+              text_content = []
+              reader.pages.each do |page|
+                text_content << page.text
+              end
+              text_content = text_content.join(" ").gsub(/\n/, ' ').gsub(/\uFFFF/, ' ').squish
             end
-            text_content = text_content.join(" ").gsub(/\n/, ' ').gsub(/\uFFFF/, ' ').squish
 
             obj.ocr.delete
             ActiveFedora::Base.eradicate("#{obj.id}/ocr")
             obj.ocr.content = text_content
             obj.ocr.mime_type = 'text/plain'
             obj.ocr.original_name = obj.content.original_name.split('.').first + '.txt'
+
           rescue PDF::Reader::MalformedPDFError => ex
             #Ignore this...malformed PDF. Might be able to patch as posted in:
             #https://groups.google.com/forum/#!topic/pdf-reader/e_Ba-myn584
           rescue => ex
             raise ex
           end
-        end
       when *office_document_mime_types
         obj.transform_file :content, { thumbnail: { format: 'jpg', size: '338x493', datastream: 'thumbnail' } }, processor: :document
       when *audio_mime_types
@@ -165,6 +174,33 @@ class GenericFile < ActiveFedora::Base
       return ::RDF::URI.new("http://id.loc.gov/authorities/subjects/#{value}")
     else
       return ::RDF::URI.new("http://www.w3.org/2004/02/skos/core##{value}")
+    end
+  end
+
+  def self.fetch(uri_str, limit = 10)
+    # You should choose better exception.
+    raise ArgumentError, 'HTTP redirect too deep' if limit == 0
+
+    url = URI.parse(uri_str)
+    req = Net::HTTP::Get.new(url.path, { 'User-Agent' => 'Mozilla/5.0 (etc...)' })
+    response = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') { |http| http.request(req) }
+    case response
+      when Net::HTTPSuccess     then response
+      when Net::HTTPRedirection then fetch(response['location'], limit - 1)
+      else
+        response.error!
+    end
+  end
+
+  def self.get_redirect(uri_str)
+    # You should choose better exception.
+    url = URI.parse(uri_str)
+    req = Net::HTTP::Get.new(url.path, { 'User-Agent' => 'Mozilla/5.0 (etc...)' })
+    response = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') { |http| http.request(req) }
+    case response
+      when Net::HTTPRedirection then return response['location']
+      else
+        response.error!
     end
   end
 
