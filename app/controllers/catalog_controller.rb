@@ -142,21 +142,22 @@ class CatalogController < ApplicationController
 =end
 
     config.global_search_fields = []
-    config.global_search_fields << solr_name("title", :stored_searchable)
-    config.global_search_fields << 'ident_tesi'
-    config.global_search_fields << 'alternative_tesim'
-    config.global_search_fields << 'dta_altLabel_all_subject_tsim'
-    config.global_search_fields << 'institution_name_ssim'
-    config.global_search_fields << 'collection_name_ssim'
-    config.global_search_fields << 'description_tesim'
-    config.global_search_fields << 'creator_tesim'
-    config.global_search_fields << 'contributor_tesim'
-    config.global_search_fields << 'genre_tesim'
-    config.global_search_fields << 'publisher_tesim'
-    config.global_search_fields << 'subject_geographic_tesim'
-    config.global_search_fields << 'dta_subject_primary_searchable_tesim'
-    config.global_search_fields << 'dta_subject_alt_searchable_tesim'
-    config.global_search_fields << 'toc_tesim'
+    #config.global_search_fields << solr_name("title", :stored_searchable)
+    config.global_search_fields << 'title_tesim^20'
+    config.global_search_fields << 'ident_tesi^20'
+    config.global_search_fields << 'alternative_tesim^10'
+    #config.global_search_fields << 'dta_altLabel_all_subject_tsim' #Seems Replaced By dta_subject_alt_searchable_tesim
+    config.global_search_fields << 'institution_name_ssim^4'
+    config.global_search_fields << 'collection_name_ssim^4'
+    config.global_search_fields << 'description_tesim^6'
+    config.global_search_fields << 'creator_tesim^8'
+    config.global_search_fields << 'contributor_tesim^8'
+    config.global_search_fields << 'genre_tesim^4'
+    config.global_search_fields << 'publisher_tesim^4'
+    config.global_search_fields << 'subject_geographic_tesim^8'
+    config.global_search_fields << 'dta_subject_primary_searchable_tesim^8'
+    config.global_search_fields << 'dta_subject_alt_searchable_tesim^6'
+    config.global_search_fields << 'toc_tesim^2'
     config.global_search_fields << 'dta_ocr_tiv'
 
 
