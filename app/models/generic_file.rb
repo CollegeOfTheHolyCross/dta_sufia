@@ -72,6 +72,7 @@ class GenericFile < ActiveFedora::Base
   # Hosted elsewhere objects currently show as image/jp2...
 
   makes_derivatives do |obj|
+
     case obj.mime_type
       when *pdf_mime_types
         #obj.transform_file :content, thumbnail: { format: 'jpg', size: '338x493', datastream: 'thumbnail' }
@@ -104,7 +105,8 @@ class GenericFile < ActiveFedora::Base
               reader.pages.each do |page|
                 text_content << page.text
               end
-              text_content = text_content.join(" ").gsub(/\n/, ' ').gsub(/\uFFFF/, ' ').squish
+              #cntrl is for control characters. Taken from: https://github.com/sunspot/sunspot/issues/570
+              text_content = text_content.join(" ").gsub(/\n/, ' ').gsub(/\uFFFF/, ' ').gsub(/[[:cntrl:]]/,' ').squish
             end
 
             obj.ocr.delete
