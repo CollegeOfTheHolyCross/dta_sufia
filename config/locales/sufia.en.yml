@@ -226,6 +226,7 @@ en:
         publisher:        "Publisher"
         related_url:      "Relation"
         rights:           "Rights"
+        rights_free_text: "Additional Rights Information"
 
         description:      "Description"
         toc:              "Table of Contents"
@@ -276,6 +277,7 @@ en:
         publisher: "An entity responsible for making the resource available. Examples of a Publisher include a person, an organization, or a service. Typically, the name of a Publisher should be used in the entirety.<ul><li>If published in digital form (i.e., on the Internet), the institution responsible for making the resource available should be considered the publisher.</li><li>For a record that includes a digital representation of an analog resource (i.e., a digitized object), refer to the publisher of the analog resource. If published in both analog and digital format, repeat the element to include both publishers.</li><li>Do not include place of publication.</li></ul>Example: Beacon Press<br />Example: Arizona Queer Archives."
         related: "A related resource. Recommended best practice is to identify the related resource by means of a string conforming to a formal identification system.<ul><li>When referencing another resource in the collection, use the unique DTA Identifier URI. When referencing an outside resource, use free, uncontrolled text.</li><li>Often used to represent part-to-whole, equivalence, and derivative relations.</li></ul>Example: http://www.digitaltransgenderarchive.net/collection/123456.html<br />Example: First image in a series taken by Loren Cameron, late 1994.<br />Example: Second version of book with a significantly revised introduction, a new conclusion, and an updated cover."
         rights: "Information about rights held in and over the resource. Typically, rights information includes a statement about various property rights associated with the resource, including intellectual property rights.<ul><li>Standardized boilerplate statements</li><li>Determined by the Institution/Organization and generally consistent within a Collection.</li></ul>"
+        rights_free_text: "Additional rights information about a resource"
         is_shown_at: "Please enter a url to the page of where this item is actually hosted. The above image (if provided) will only be saved as a thumbnail."
         identifier: "Currently just the internet archive ID of the item."
         contributor_html: "A person or group you want to recognize for playing a role in the creation of the file, but not the primary role. If there is a specific role you would like noted, include it in parentheses, e.g. &quot;Jones, Mary (advisor).&quot;"

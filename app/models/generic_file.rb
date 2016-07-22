@@ -68,6 +68,10 @@ class GenericFile < ActiveFedora::Base
     index.as :stored_searchable, :facetable
   end
 
+  property :rights_free_text, predicate: ::RDF::Vocab::DC11.rights, multiple: true do |index|
+    index.as :stored_searchable, :symbol
+  end
+
   # For local items, mime_type seems to work. But seems like not setting mime_type correctly for items with no image originally.
   # Hosted elsewhere objects currently show as image/jp2...
 

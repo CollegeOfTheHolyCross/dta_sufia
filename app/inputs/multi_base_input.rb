@@ -61,7 +61,8 @@ class MultiBaseInput < SimpleForm::Inputs::CollectionInput
 
     options[:value] = value
     if @rendered_first_element
-      options[:id] = nil
+      #options[:id] = nil
+      options[:id] ||= input_dom_id #FIXME: Snould update javascript to use something other than id...
       options[:required] = nil
     else
       options[:id] ||= input_dom_id

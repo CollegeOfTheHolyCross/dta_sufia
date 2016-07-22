@@ -16,8 +16,8 @@ class AuthoritiesController < ApplicationController
           OtherSubjectResource.find_location(s)
         elsif params[:term] == "creator"
           CreatorResource.find_location(s)
-        elsif params[:term] == "contributor"
-          ContributorResource.find_location(s)
+        elsif params[:term] == "rights_free_text"
+          RightsFreeTextResource.find_location(s)
         elsif params[:term] == "language"
           LanguageResource.find_location(s)
         else
