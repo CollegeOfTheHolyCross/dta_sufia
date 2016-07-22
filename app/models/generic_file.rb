@@ -7,7 +7,7 @@ require "net/http"
 class GenericFile < ActiveFedora::Base
   include Sufia::GenericFile
   #has_and_belongs_to_many :institutions, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.isMemberOf, class_name: "Institution"
-  has_many :institutions, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.isMemberOf, class_name: "Institution"
+  has_many :institutions, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.hasMember, class_name: "ActiveFedora::Base"
   contains "ocr"
 
   property :toc, predicate: ::RDF::Vocab::DC.tableOfContents, multiple: false do |index|
