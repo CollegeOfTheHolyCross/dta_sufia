@@ -186,8 +186,10 @@
             <% @document[:rights_tesim].each do |val| %>
                 <%= val %><br />
             <% end %>
-            <% @document[:rights_free_text_tesim].each do |val| %>
-                <%= val %><br />
+            <% if @document[:rights_free_text_tesim] %>
+                <% @document[:rights_free_text_tesim].each do |val| %>
+                    <%= val %><br />
+                <% end %>
             <% end %>
             For more information on copyright, please read our <a href="https://www.digitaltransgenderarchive.net/about/policies" title="See our policies">policies</a><br/>
           </dd>
