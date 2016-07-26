@@ -54,12 +54,12 @@ class Institution < ActiveFedora::Base
   end
 
   def show_fields
-    attributes.keys - ["id", "members_ids", "files_ids"]
+    attributes.keys - ["id", "member_ids", "file_ids"]
   end
 
   def terms
     #fields - [:issued, :modified]
-    attributes.keys - ["date_created", "id", "members_ids", "files_ids"]
+    attributes.keys - ["date_created", "id", "member_ids", "file_ids"]
   end
 
   def required? key

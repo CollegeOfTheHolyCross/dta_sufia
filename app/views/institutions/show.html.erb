@@ -10,7 +10,6 @@
 <dl>
   <% @institution.show_fields.each do |field| %>
     <dt><%= field.to_s.humanize %>:</dt>
-      <%= puts field %>
     <% @institution.get_values(field).each do |value| %>
       <dd><%= value %></dd>
     <% end %>
@@ -19,6 +18,6 @@
 
 <h3>Collections:</h3>
   <% @institution.members.each do |collection| %>
-    <div style="padding-left:20px;"><%= link_to "#{collection.title}", collection_path(:id => collection.id)%></div>
+    <div style="padding-left:20px;"><%= link_to "#{collection.title}", collections.collection_path(:id => collection.id)%></div>
   <% end %>
 
