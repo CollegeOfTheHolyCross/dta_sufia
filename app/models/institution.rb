@@ -7,7 +7,8 @@ class Institution < ActiveFedora::Base
   contains "content", class_name: 'FileContentDatastream'
   contains "thumbnail"
 
-  has_and_belongs_to_many :members, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.hasCollectionMember, class_name: "Collection"
+  #has_and_belongs_to_many :members, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.hasCollectionMember, class_name: "Collection"
+  has_many :members, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.isMemberOfCollection, class_name: "Collection"
 
   has_and_belongs_to_many :files, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.hasMember, class_name: "GenericFile"
 

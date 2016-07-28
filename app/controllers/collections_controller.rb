@@ -217,7 +217,7 @@ class CollectionsController < CatalogController
       params[:collection][:institution_ids].each do |institution_id|
         institution = Institution.find(institution_id)
         @collection.institutions = @collection.institutions + [institution]
-        institution.members = institution.members + [@collection]
+        #institution.members = institution.members + [@collection]
 
       end
     end

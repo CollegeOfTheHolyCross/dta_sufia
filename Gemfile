@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'active-fedora', '9.7.2'
+#gem 'active-fedora', '9.7.1'
 
 #gem 'hydra-access-controls', '9.5.0'
 

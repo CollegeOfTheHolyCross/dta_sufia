@@ -1,5 +1,6 @@
 class Collection < Sufia::Collection
   has_and_belongs_to_many :institutions, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.isMemberOfCollection, class_name: "Institution"
+  #has_many :institutions, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.isMemberOfCollection, class_name: "Institution"
 
 =begin
   property :institutions, predicate: ::RDF::URI.new("http://dbpedia.org/ontology/institution"), multiple: false do |index|

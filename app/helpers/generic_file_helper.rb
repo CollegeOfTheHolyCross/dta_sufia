@@ -34,10 +34,7 @@ module GenericFileHelper
   end
 
   def render_collection_list(gf)
-    begin
       ("Is part of: " + gf.collections.map { |c| link_to(c.title, collections.collection_path(c)) }.join(", ")).html_safe unless gf.collections.empty?
-    rescue
-    end
   end
 
   def display_multiple(value)
