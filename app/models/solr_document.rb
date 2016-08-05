@@ -35,4 +35,5 @@ class SolrDocument
   def institution
     Array(self[Solrizer.solr_name('institution')]).first
   end
+
 end

@@ -442,4 +442,100 @@ class GenericFile < ActiveFedora::Base
 
 
   end
+
+  def dta_dc_xml_output
+    Nokogiri::XML::Builder.new do |x|
+      x.dta_dc(xmlns: 'https://www.digitaltransgenderarchive.net/dc/v1') do
+        x.title(self.title[0])
+
+        self.alternative.each do |alt_title|
+          x.alternative(alt_title)
+        end
+
+        self.description.each do |abstract|
+          x.abstract(abstract)
+        end
+
+        self.genre.each do |item|
+          x.genre(item)
+        end
+
+        self.resource_type.each do |item|
+          x.resource_type(item)
+        end
+
+        x.format(self.analog_format, type: 'analog') if self.analog_format.present?
+        x.format(self.digital_format, type: 'digital') if self.digital_format.present?
+
+        self.date_created.each do |item|
+          x.date_created(item)
+        end
+
+        self.date_issued.each do |item|
+          x.date_issued(item)
+        end
+
+
+        self.temporal_coverage.each do |item|
+          x.temporal(item)
+        end
+
+
+
+
+
+        self.lcsh_subject.each do |item|
+          x.subject(item)
+        end
+
+        self.based_near.each do |item|
+          x.geographic(item)
+        end
+
+        self.creator.each do |item|
+          x.creator(item)
+        end
+
+        self.contributor.each do |item|
+          x.contributor(item)
+        end
+
+        self.publisher.each do |item|
+          x.publisher(item)
+        end
+
+        x.tableOfContents(self.toc) if self.toc.present?
+
+        self.language.each do |item|
+          x.language(item)
+        end
+
+        if self.is_shown_at.present?
+          x.isShownAt(self.is_shown_at)
+        else
+          x.isShownAt('https://www.digitaltransgenderarchive.net/files/' + id)
+        end
+
+        x.preview("https://www.digitaltransgenderarchive.net/downloads/#{id}?file=thumbnail")
+
+        self.related_url.each do |item|
+          x.seeAlso(item)
+        end
+
+        x.identifier(self.identifier[0]) if self.identifier.present?
+
+        x.rights(self.rights[0], type: 'standardized')
+        self.rights_free_text.each do |item|
+          x.rights(item, type: 'free_text')
+        end
+
+        x.flagged(self.flagged) if self.flagged
+
+        x.hosted_elsewhere(self.hosted_elsewhere) if self.hosted_elsewhere
+
+
+
+      end
+    end.to_xml.sub('<?xml version="1.0"?>', '').strip
+  end
 end
