@@ -21,6 +21,9 @@ gem 'blacklight', '5.16.4'
 gem 'sufia', '6.6.1'
 #gem 'sufia', :git=>'https://github.com/projecthydra/sufia.git'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'  # required to handle pagination properly in dashboard. See https://github.com/amatsuda/kaminari/pull/322
+
+gem 'bpl_enrich', github: 'boston-library/bpl_enrich'
+
 #gem 'kaminari', '0.16.3'
 gem "hydra-role-management"
 

@@ -271,6 +271,11 @@ class GenericFile < ActiveFedora::Base
     self.language.each do |lang|
       if lang.match(/eng$/)
         doc['language_label_ssim'] << 'English'
+      else
+        result = BplEnrich::Authorities.parse_language(lang.split('/').last)
+        if result.present?
+          doc['language_label_ssim'] << result[:label]
+        end
       end
     end
 
