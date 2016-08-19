@@ -59,6 +59,12 @@
 <script type="text/javascript">
     var mei_element_to_update_<%=key%>;
     var mei_last_value_<%=key%> = '';
+
+    //Shown is after bootstrap modal transitions have completed. See: http://getbootstrap.com/javascript/#modals-events
+    $("#meiLookupModal_<%=key%>").on('shown.bs.modal', function (event) {
+      $('#mei_lcsh_term_<%=key%>').focus();
+    });
+
     $("#meiLookupModal_<%=key%>").on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         //alert(button.prev().val());
@@ -71,7 +77,7 @@
         //var modal = $(this)
         //modal.find('.modal-title').text('New message to ' + recipient)
         //modal.find('.modal-body input').val(recipient)
-    })
+    });
 
     function mei_use_last_<%=key%>() {
         if(mei_last_value_<%=key%> == '' &&  $('#mei_lcsh_term_<%=key%>').val() != '') {
