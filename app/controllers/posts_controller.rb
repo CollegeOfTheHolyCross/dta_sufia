@@ -5,14 +5,42 @@ class PostsController < ApplicationController
 
   before_action :set_nav_heading
 
+  before_action :build_global_tag_list
+
   before_action :verify_admin, only: [:new, :create, :edit, :update]
 
+  def build_global_tag_list
+    @tag_links = []
+    tags = ActsAsTaggableOn::Tag.most_used(30)
+    tags.each do |tag|
+      if params[:tag].present? and tag.name == params[:tag]
+        @tag_links << "#{tag} (#{tag.taggings_count})"
+      else
+        @tag_links << (view_context.link_to "#{tag} (#{tag.taggings_count})", "#{posts_path}?tag=#{tag}", class: "#{'document-title'}")
+      end
+
+    end
+
+  end
+
   def index
+    @current_tag = params[:tag]
+
     if current_user.present? and current_user.admin?
       #@posts = Posts.all.order("created DESC")
-      @posts = Posts.order("created DESC").page params[:page]
+      if params[:tag].present?
+        @posts = Posts.tagged_with(params[:tag]).order("created DESC").page params[:page]
+      else
+        @posts = Posts.order("created DESC").page params[:page]
+      end
+
     else
-      @posts = Posts.where(:published=>true).order("created DESC").page params[:page]
+      if params[:tag].present?
+        @posts = Posts.tagged_with(params[:tag]).where(:published=>true).order("created DESC").page params[:page]
+      else
+        @posts = Posts.where(:published=>true).order("created DESC").page params[:page]
+      end
+
     end
 
     respond_to do |format|
@@ -107,6 +135,14 @@ class PostsController < ApplicationController
   def show
     @post = Posts.friendly.find(params[:id])
 
+    @next_post = @post.next
+    @prev_post = @post.prev
+
+    @tag_links = []
+    @post.tags.each do |tag|
+      @tag_links << (view_context.link_to "#{tag} (#{tag.taggings_count})", "#{posts_path}?tag=#{tag}", class: "#{'document-title'}")
+    end
+
     respond_to do |format|
       format.html
       #format.nt { render body: @homosaurus.full_graph.dump(:ntriples), :content_type => Mime::NT }
@@ -116,7 +152,7 @@ class PostsController < ApplicationController
 
 
   def post_params
-    params.require(:posts).permit(:content, :title, :published, :abstract)
+    params.require(:posts).permit(:content, :title, :published, :abstract, :tag_list)
   end
 
   def set_nav_heading

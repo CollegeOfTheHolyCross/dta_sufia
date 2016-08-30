@@ -2,7 +2,7 @@
 <div id="static_holder" class="container-fluid">
   <div class="row">
     <div class="col-xs-4 col-sm-4 static_side_nav_container">
-      <%= render partial: '/shared/static_extra_nav' %>
+      <%= render partial: '/shared/static_news_nav' %>
 
     </div>
     <div class="col-xs-8 col-sm-8">
@@ -22,6 +22,10 @@
               &nbsp;&nbsp;&nbsp;<%= link_to 'Change Order', edit_about_path(:id=>'news')  %>
           <% end %>
         </div>
+
+        <% if @current_tag.present? %>
+            Showing posts tagged: <strong><%= @current_tag %></strong> <%= link_to '(Undo)', posts_path %>
+        <% end %>
 
         <table class="table table-zebra-striped inst_collection_table">
           <tbody>

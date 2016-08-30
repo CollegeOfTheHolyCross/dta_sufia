@@ -2,13 +2,33 @@
 <div id="static_holder" class="container-fluid">
   <div class="row">
     <div class="col-xs-4 col-sm-4 static_side_nav_container">
-      <%= render partial: '/shared/static_extra_nav' %>
+      <%= render partial: '/shared/static_news_nav' %>
 
     </div>
     <div class="col-xs-8 col-sm-8 static_holder_content_container">
       <div id="static_holder_content" class="about_section">
         <h2><%= @post.title %> <% if current_user.present? and current_user.admin? %>&nbsp;<%= link_to '[Edit]', edit_post_path(@post) %><%end%></h2>
         <%= @post.content.html_safe %>
+      </div>
+
+
+      <% if @showmenot.present? and @post.tag_list.present? %>
+          <% tag_links = [] %>
+        Posted in:
+          <% @post.tag_list.each do |tag| %>
+              <% tag_links << (link_to "#{tag}", "#{posts_path}?tag=#{tag}", class: "#{'document-title'}") %>
+          <% end %>
+          <%= tag_links.join(', ').html_safe %>
+      <% end %>
+
+      <div style="clear:both;padding-top:20px;">
+      <% if @prev_post.present? %>
+          <div style="float:left;"><%= link_to "<< Previous (#{truncate(@prev_post.title, length: 25)})", post_path(@prev_post), class: "#{'document-title'}" %></div>
+      <% end %>
+
+      <% if @next_post.present? %>
+          <div style="float:right;"><%= link_to "(#{truncate(@next_post.title, length: 25)}) Next >>", post_path(@next_post), class: "#{'document-title'}" %></div>
+      <% end %>
       </div>
 
     </div>

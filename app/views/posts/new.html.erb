@@ -1,7 +1,7 @@
 <div id="static_holder" class="container-fluid">
   <div class="row">
     <div class="col-xs-4 col-sm-4 static_side_nav_container">
-      <%= render partial: '/shared/static_extra_nav' %>
+      <%= render partial: '/shared/static_news_nav' %>
 
     </div>
     <div class="col-xs-8 col-sm-8">
@@ -36,6 +36,8 @@
             </script>
 
             <%= f.input :abstract, :as=>:text,:input_html => { :style=>"height:100px;" }  %>
+
+            <%= f.input :tag_list, :placeholder=>'Tags seperated by commas' %>
 
             <% if current_user.present? and current_user.superuser? %>
                 <%= f.input :published, as: :boolean, :label=>'Visible?'  %>

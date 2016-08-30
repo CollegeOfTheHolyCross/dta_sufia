@@ -8,6 +8,8 @@ gem 'active-fedora', '9.7.2'
 #Fix the 4kb session limit
 gem 'activerecord-session_store'
 
+gem 'acts-as-taggable-on', '~> 4.0'
+
 
 
 #gem "rdf-vocab"
