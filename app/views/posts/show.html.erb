@@ -1,4 +1,27 @@
 <% @page_title = "#{@post.title} -  #{application_name}" %>
+<%= javascript_include_tag 'https://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4ff1d986721ebb24' %>
+
+<style type="text/css">
+  .post_end_left
+  {
+    float: left;
+    width: 33%;
+  }
+
+  .post_end_mid
+  {
+    margin-left: auto;
+    margin-right: auto;
+    width: 33%;
+  }
+
+  .post_end_right
+  {
+    float: right;
+    width: 33%;
+  }
+</style>
+
 <div id="static_holder" class="container-fluid">
   <div class="row">
     <div class="col-xs-4 col-sm-4 static_side_nav_container">
@@ -21,15 +44,27 @@
           <%= tag_links.join(', ').html_safe %>
       <% end %>
 
-      <div style="clear:both;padding-top:20px;">
-      <% if @prev_post.present? %>
-          <div style="float:left;"><%= link_to "<< Previous (#{truncate(@prev_post.title, length: 25)})", post_path(@prev_post), class: "#{'document-title'}" %></div>
-      <% end %>
+      <div style="padding-top:20px; clear:both;">
 
-      <% if @next_post.present? %>
-          <div style="float:right;"><%= link_to "(#{truncate(@next_post.title, length: 25)}) Next >>", post_path(@next_post), class: "#{'document-title'}" %></div>
-      <% end %>
+        <% if @prev_post.present? %>
+            <div class="post_end_left"><%= link_to "<< Previous (#{truncate(@prev_post.title, length: 15)})", post_path(@prev_post), class: "#{'document-title'}" %></div>
+        <% end %>
+
+        <% if @next_post.present? %>
+            <div class="post_end_right"><%= link_to "(#{truncate(@next_post.title, length: 15)}) Next >>", post_path(@next_post), class: "#{'document-title'}" %></div>
+        <% end %>
+
+        <div class="addthis_toolbox addthis_default_style post_end_mid">
+          <a class="addthis_button_preferred_1"></a>
+          <a class="addthis_button_preferred_2"></a>
+          <a class="addthis_button_preferred_3"></a>
+          <a class="addthis_button_preferred_4"></a>
+          <a class="addthis_button_compact"></a>
+          <a class="addthis_counter addthis_bubble_style"></a>
+        </div>
       </div>
+
+
 
     </div>
 

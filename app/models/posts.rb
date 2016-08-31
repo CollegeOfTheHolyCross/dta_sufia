@@ -17,11 +17,11 @@ class Posts < ActiveRecord::Base
   end
 
   def next
-    Posts.where("created > ?", created).order("created DESC").first
+    Posts.where("created > ?", created).order("created DESC").last
   end
 
   def prev
-    Posts.where("created < ?", created).order("created DESC").last
+    Posts.where("created < ?", created).order("created DESC").first
   end
 
 end

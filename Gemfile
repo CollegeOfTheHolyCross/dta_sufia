@@ -10,6 +10,8 @@ gem 'activerecord-session_store'
 
 gem 'acts-as-taggable-on', '~> 4.0'
 
+#gem 'social-share-button'
+
 
 
 #gem "rdf-vocab"
