@@ -145,11 +145,15 @@ class GenericFilesController < ApplicationController
         end
 
         #FIXME
+=begin
         acquire_lock_for(params[:institution]) do
           institution = Institution.find(params[:institution])
           institution.files << [@generic_file]
           institution.save
         end
+=end
+        institution = Institution.find(params[:institution])
+        @generic_file.institutions << [institution]
 
         update_metadata
         @generic_file.update_index
@@ -322,10 +326,13 @@ class GenericFilesController < ApplicationController
         #@generic_file = GenericFile.find(params[:id])
 
         @generic_file.institutions.each do |inst|
+          @generic_file.institutions.delete(inst)
+=begin
           acquire_lock_for(inst.id) do
             inst.reload
             inst.files.delete(@generic_file)
           end
+=end
         end
 
         @generic_file.collections.each do |coll|
@@ -345,11 +352,15 @@ class GenericFilesController < ApplicationController
           collection.save
         end
 
+        institution = Institution.find(params[:institution])
+        @generic_file.institutions << [institution]
+
+=begin
         acquire_lock_for(params[:institution]) do
           institution = Institution.find(params[:institution])
-          institution.files << [@generic_file]
-          institution.save
+          @generic_file.institutions << [institution]
         end
+=end
         
         @generic_file = GenericFile.find(@generic_file.id)
         @generic_file.update_index

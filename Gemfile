@@ -12,7 +12,7 @@ gem 'acts-as-taggable-on', '~> 4.0'
 
 #gem 'social-share-button'
 
-
+gem 'rest-client', '1.8.0'
 
 #gem "rdf-vocab"
 gem 'rdf', '1.99.0'
@@ -31,7 +31,7 @@ gem 'bpl_enrich', github: 'boston-library/bpl_enrich'
 #gem 'kaminari', '0.16.3'
 gem "hydra-role-management"
 
-gem "rest-client-components"
+gem "rest-client-components" #Broken in RestClient 2.0: https://github.com/crohr/rest-client-components/issues/13
 gem "rack-cache"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

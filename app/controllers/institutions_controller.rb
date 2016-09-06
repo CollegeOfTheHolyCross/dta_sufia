@@ -2,6 +2,8 @@ class InstitutionsController < CatalogController
   include DtaStaticBuilder
 
   before_action :verify_admin, except: [:public_index, :public_show, :facet]
+  before_action :verify_superuser, only: [:destroy, :edit]
+
   include Blacklight::Configurable
   include Blacklight::SearchHelper
 
@@ -191,6 +193,31 @@ class InstitutionsController < CatalogController
     else
       redirect_to new_institution_path
     end
+  end
+
+  def destroy
+    #do nothing at fist
+    @institution = Institution.find(params[:id])
+
+    @institution.members.each do |coll|
+      #acquire_lock_for(coll.id) do
+        @institution.reload
+        @institution.members.delete(coll)
+        coll.update_index
+      #end
+
+    end
+
+    @institution.files.each do |file|
+      file.institutions.delete(@institution)
+      file.save
+    end
+
+    @institution.reload
+
+    @institution.delete
+
+    redirect_to institutions_path, notice: "Institution was deleted!"
   end
 
 

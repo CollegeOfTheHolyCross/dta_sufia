@@ -177,7 +177,7 @@ class CollectionsController < CatalogController
         institution.save
       end
 
-      if @collection != params[:collection][:title]
+      if @collection.title != params[:collection][:title]
         @reindex_members = true
       end
     #FIXME: Detect updates outside of collection form elsewhere...
