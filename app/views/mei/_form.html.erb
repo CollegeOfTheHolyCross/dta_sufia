@@ -131,13 +131,13 @@
 
               for (var j in json_obj[i].broader)
               {
-                  output+= '<a href="#" onClick="setMeiLCSHSubjVal_<%=key%>(\'' + json_obj[i].broader[j].uri_link + '\'); return false;">' + json_obj[i].broader[j].label + '</a> &nbsp;';
+                  output+= '<a href="#" onClick="setMeiLCSHSubjVal_<%=key%>(\'' + json_obj[i].broader[j].label + ' (' + json_obj[i].broader[j].uri_link + ')' + '\'); return false;">' + json_obj[i].broader[j].label + '</a> &nbsp;';
                 output+= '<a href="#" onClick="setMeiSearchField_<%=key%>(\'' + json_obj[i].broader[j].label + '\'); return false"><span class="glyphicon glyphicon-search" aria-hidden="true"><span></a> &nbsp;';
                 output+='<a href="' + json_obj[i].broader[j].uri_link + '" target="_blank"><span class="glyphicon glyphicon-share" aria-hidden="true"><span></a><br />';
               }
               output+="</td><td width='35%'>";
 
-              output+='<a href="#" onClick="setMeiLCSHSubjVal_<%=key%>(\'' + json_obj[i].uri_link + '\'); return false;"><strong>' + json_obj[i].label + '</strong></a> (' + json_obj[i].count + ') &nbsp;';
+              output+='<a href="#" onClick="setMeiLCSHSubjVal_<%=key%>(\'' + json_obj[i].label + ' (' + json_obj[i].uri_link + ')' + '\'); return false;"><strong>' + json_obj[i].label + '</strong></a> (' + json_obj[i].count + ') &nbsp;';
             output+= '<a href="' + json_obj[i].uri_link + '" target="_blank"><span class="glyphicon glyphicon-share" aria-hidden="true"><span></a><br />';
 
             if(json_obj[i].variants && json_obj[i].variants != '')
@@ -156,7 +156,7 @@
 
               for (var j in json_obj[i].narrower)
               {
-                output+= '<a href="#" onClick="setMeiLCSHSubjVal_<%=key%>(\'' + json_obj[i].narrower[j].uri_link + '\'); return false;">' + json_obj[i].narrower[j].label + '</a> &nbsp;';
+                output+= '<a href="#" onClick="setMeiLCSHSubjVal_<%=key%>(\'' + json_obj[i].narrower[j].label + ' (' + json_obj[i].narrower[j].uri_link + ')' + '\'); return false;">' + json_obj[i].narrower[j].label + '</a> &nbsp;';
                 output+= '<a href="#" onClick="setMeiSearchField_<%=key%>(\'' + json_obj[i].narrower[j].label + '\'); return false"><span class="glyphicon glyphicon-search" aria-hidden="true"><span></a> &nbsp;';
                 output+='<a href="' + json_obj[i].narrower[j].uri_link + '" target="_blank"><span class="glyphicon glyphicon-share" aria-hidden="true"><span></a><br />';
               }
@@ -169,7 +169,7 @@
 
               for (var j in json_obj[i].related)
               {
-                output+= '<a href="#" onClick="setMeiLCSHSubjVal_<%=key%>(\'' + json_obj[i].related[j].uri_link + '\'); return false;">' + json_obj[i].related[j].label + '</a> &nbsp;';
+                output+= '<a href="#" onClick="setMeiLCSHSubjVal_<%=key%>(\'' + json_obj[i].related[j].label + ' (' + json_obj[i].related[j].uri_link + ')' + '\'); return false;">' + json_obj[i].related[j].label + '</a> &nbsp;';
                 output+= '<a href="#" onClick="setMeiSearchField_<%=key%>(\'' + json_obj[i].related[j].label + '\'); return false"><span class="glyphicon glyphicon-search" aria-hidden="true"><span></a> &nbsp;';
                 output+='<a href="' + json_obj[i].related[j].uri_link + '" target="_blank"><span class="glyphicon glyphicon-share" aria-hidden="true"><span></a><br />';
               }

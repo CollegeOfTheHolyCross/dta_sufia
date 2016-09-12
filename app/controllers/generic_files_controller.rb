@@ -87,6 +87,23 @@ class GenericFilesController < ApplicationController
         end
 
         #FIXME: This should be done elsewhere...
+        params[:generic_file][:lcsh_subject].each do |s|
+          s.gsub!(/^[^(]+\(/, '')
+          s.gsub!(/\)$/, '')
+        end
+
+        params[:generic_file][:homosaurus_subject].each do |s|
+          s.gsub!(/^[^(]+\(/, '')
+          s.gsub!(/\)$/, '')
+        end
+
+        params[:generic_file][:based_near].each do |s|
+          s.gsub!(/^[^(]+\(/, '')
+          s.gsub!(/\)$/, '')
+        end
+
+
+
         if params[:generic_file][:lcsh_subject].present? and !params[:generic_file][:other_subject].nil?
           params[:generic_file][:other_subject] += params[:generic_file][:lcsh_subject]
           params[:generic_file].delete(:lcsh_subject)
@@ -239,6 +256,22 @@ class GenericFilesController < ApplicationController
       params[:generic_file].delete(:lcsh_subject)
     end
 =end
+
+    params[:generic_file][:lcsh_subject].each do |s|
+      s.gsub!(/^[^(]+\(/, '')
+      s.gsub!(/\)$/, '')
+    end
+
+    params[:generic_file][:homosaurus_subject].each do |s|
+      s.gsub!(/^[^(]+\(/, '')
+      s.gsub!(/\)$/, '')
+    end
+
+    params[:generic_file][:based_near].each do |s|
+      s.gsub!(/^[^(]+\(/, '')
+      s.gsub!(/\)$/, '')
+    end
+
     if params[:generic_file][:other_subject].present?
       params[:generic_file][:other_subject].collect!{|x| x.strip || x }
       params[:generic_file][:other_subject].reject!{ |x| x.blank? }
@@ -354,6 +387,7 @@ class GenericFilesController < ApplicationController
 
         institution = Institution.find(params[:institution])
         @generic_file.institutions << [institution]
+        @generic_file.save
 
 =begin
         acquire_lock_for(params[:institution]) do
@@ -362,8 +396,8 @@ class GenericFilesController < ApplicationController
         end
 =end
         
-        @generic_file = GenericFile.find(@generic_file.id)
-        @generic_file.update_index
+        #@generic_file = GenericFile.find(@generic_file.id)
+        #@generic_file.update_index
         #raise params[:institution]
       end
     else
