@@ -130,8 +130,10 @@ class CatalogController < ApplicationController
     config.add_index_field 'institution_name_ssim', :label => 'Institution'
     config.add_index_field solr_name("creator", :stored_searchable), label: "Creator", itemprop: 'creator'
     #config.add_index_field 'date_start_tsim', :label => 'Date', :helper_method => :index_date_value
-    config.add_index_field 'date_created_tesim', :label => 'Date'
-    config.add_index_field 'date_issued_tesim', :label => 'Date'
+    config.add_index_field 'date_created_display_ssim', :label => 'Date'
+    config.add_index_field 'date_issued_display_ssim', :label => 'Date'
+    #config.add_index_field 'date_created_tesim', :label => 'Date'
+    #config.add_index_field 'date_issued_tesim', :label => 'Date'
 
 
 =begin

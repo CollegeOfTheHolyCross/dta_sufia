@@ -52,27 +52,27 @@
           </dd>
       <% end %>
 
-      <% if @document[:date_created_tesim] %>
+      <% if @document[:date_created_display_ssim] %>
           <dt>Date Created</dt>
           <dd>
-            <% @document[:date_created_tesim].each do |val| %>
+            <% @document[:date_created_display_ssim].each do |val| %>
                 <%= val %><br />
             <% end %>
           </dd>
       <% end %>
-      <% if @document[:date_issued_tesim] %>
+      <% if @document[:date_issued_display_ssim] %>
           <dt>Date Issued</dt>
           <dd>
-            <% @document[:date_issued_tesim].each do |val| %>
+            <% @document[:date_issued_display_ssim].each do |val| %>
                 <%= val %><br />
             <% end %>
           </dd>
       <% end %>
 
-      <% if @document[:date_temporal_tesim] %>
+      <% if @document[:date_temporal_display_ssim] %>
           <dt>Date Temporal</dt>
           <dd>
-            <% @document[:date_temporal_tesim].each do |val| %>
+            <% @document[:date_temporal_display_ssim].each do |val| %>
                 <%= val %><br />
             <% end %>
           </dd>

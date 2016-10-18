@@ -60,6 +60,7 @@ gem 'qa', '0.5.0'
 
 #gem 'rdf-edtf', :git=>'https://github.com/dpla/rdf-edtf.git'
 gem 'edtf'
+gem 'edtf-humanize'
 
 gem "blacklight_range_limit"
 gem "blacklight-maps"
