@@ -465,7 +465,7 @@ class GenericFile < ActiveFedora::Base
   def humanize_edtf(edtf_date)
     humanized_edtf = edtf_date.humanize
     # Capitalize the seasons
-    humanized_edtf.split(' ').map { |word| ['summer', 'winter', 'fall', 'spring'].include?(word) ? word.capitalize : word }.join(' ')
+    humanized_edtf.split(' ').map! { |word| ['summer', 'winter', 'fall', 'spring'].include?(word) ? word.capitalize : word }.join(' ')
     humanized_edtf
   end
 
