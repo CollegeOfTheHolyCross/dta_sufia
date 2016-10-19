@@ -359,7 +359,7 @@ class GenericFile < ActiveFedora::Base
 
     self.date_issued.each do |raw_date|
       date = Date.edtf(raw_date)
-      doc['date_issued_display_ssim'] << date.humanize
+      doc['date_issued_display_ssim'] << humanize_edtf(date)
       if date.class == Date
         doc['date_start_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
         doc['date_end_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
@@ -377,7 +377,7 @@ class GenericFile < ActiveFedora::Base
 
     self.date_created.each do |raw_date|
       date = Date.edtf(raw_date)
-      doc['date_created_display_ssim'] << date.humanize
+      doc['date_created_display_ssim'] << humanize_edtf(date)
       if date.class == Date
         doc['date_start_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
         doc['date_end_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
@@ -395,7 +395,7 @@ class GenericFile < ActiveFedora::Base
 
     self.temporal_coverage.each do |raw_date|
       date = Date.edtf(raw_date)
-      doc['date_temporal_display_ssim'] << date.humanize
+      doc['date_temporal_display_ssim'] << humanize_edtf(date)
     end
 
     #doc['dta_sortable_date_dtsi'] = [doc['dta_sortable_date_dtsi'].first] if doc['dta_sortable_date_dtsi'].present?
@@ -460,6 +460,13 @@ class GenericFile < ActiveFedora::Base
 
 
 
+  end
+
+  def humanize_edtf(edtf_date)
+    humanized_edtf = edtf_date.humanize
+    # Capitalize the seasons
+    humanized_edtf.split(' ').map { |word| ['summer', 'winter', 'fall', 'spring'].include?(word) ? word.capitalize : word }.join(' ')
+    humanized_edtf
   end
 
   def dta_dc_xml_output

@@ -1,11 +1,11 @@
 <table class="table">
   <tr>
     <th><span class="attribute-label h4">Collection:</span></th>
-    <td><%= work[:collection_name_ssim].first %></td>
+    <td><%= work[:collection_name_ssim].first if work[:collection_name_ssim].present? %></td>
   </tr>
   <tr>
     <th><span class="attribute-label h4">Institution:</span></th>
-    <td><%= work[:institution_name_ssim].first %></td>
+    <td><%= work[:institution_name_ssim].first if work[:institution_name_ssim].present?%></td>
   </tr>
 
   <tr>

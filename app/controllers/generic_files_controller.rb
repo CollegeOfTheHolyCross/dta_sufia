@@ -389,6 +389,10 @@ class GenericFilesController < ApplicationController
         @generic_file.institutions << [institution]
         @generic_file.save
 
+        #This seems like it might be needed... bummer if so... otherwise to_solr doesn't work right it seems
+        @generic_file = GenericFile.find(@generic_file.id)
+        @generic_file.update_index
+
 =begin
         acquire_lock_for(params[:institution]) do
           institution = Institution.find(params[:institution])
