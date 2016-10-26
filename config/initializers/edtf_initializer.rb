@@ -1,6 +1,6 @@
 Edtf::Humanize.configure do |config|
-  config.day_precision_strftime_format = "%b. %-d, %Y"
-  config.month_precision_strftime_format = "%b. %Y"
+  config.day_precision_strftime_format = "%B %-d, %Y"
+  config.month_precision_strftime_format = "%B %Y"
   config.year_precision_strftime_format = "%Y"
   config.approximate_date_prefix = "circa "
   config.uncertain_date_suffix = "?"

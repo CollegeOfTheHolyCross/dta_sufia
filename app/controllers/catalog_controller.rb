@@ -161,6 +161,9 @@ class CatalogController < ApplicationController
     config.global_search_fields << 'dta_subject_alt_searchable_tesim^6'
     config.global_search_fields << 'toc_tesim^2'
     config.global_search_fields << 'dta_ocr_tiv'
+    config.global_search_fields << 'date_temporal_search_tesim^0.2'
+    config.global_search_fields << 'date_created_search_tesim^0.5'
+    config.global_search_fields << 'date_issued_search_tesim^0.5'
 
 
 

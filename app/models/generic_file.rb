@@ -251,6 +251,10 @@ class GenericFile < ActiveFedora::Base
 
     doc['language_label_ssim'] = []
 
+    doc['date_created_search_tesim'] = []
+    doc['date_issued_search_tesim'] = []
+    doc['date_temporal_search_tesim'] = []
+
     doc['date_created_display_ssim'] = []
     doc['date_issued_display_ssim'] = []
     doc['date_temporal_display_ssim'] = []
@@ -356,9 +360,9 @@ class GenericFile < ActiveFedora::Base
     doc['dta_subject_primary_searchable_tesim'] = doc['dta_all_subject_ssim'] + doc['dta_other_subject_ssim']
     doc['dta_subject_alt_searchable_tesim'] = doc['dta_altLabel_all_subject_ssim']
 
-
     self.date_issued.each do |raw_date|
       date = Date.edtf(raw_date)
+      doc['date_issued_search_tesim'] << keyword_edtf(date)
       doc['date_issued_display_ssim'] << humanize_edtf(date)
       if date.class == Date
         doc['date_start_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
@@ -377,6 +381,7 @@ class GenericFile < ActiveFedora::Base
 
     self.date_created.each do |raw_date|
       date = Date.edtf(raw_date)
+      doc['date_created_search_tesim'] << keyword_edtf(date)
       doc['date_created_display_ssim'] << humanize_edtf(date)
       if date.class == Date
         doc['date_start_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
@@ -395,8 +400,13 @@ class GenericFile < ActiveFedora::Base
 
     self.temporal_coverage.each do |raw_date|
       date = Date.edtf(raw_date)
+      doc['date_temporal_search_tesim'] << keyword_edtf(date)
       doc['date_temporal_display_ssim'] << humanize_edtf(date)
     end
+
+    doc['date_created_search_ssim'] = doc['date_created_search_tesim']
+    doc['date_issued_search_ssim'] = doc['date_issued_search_tesim']
+    doc['date_temporal_search_ssim'] = doc['date_temporal_search_tesim']
 
     #doc['dta_sortable_date_dtsi'] = [doc['dta_sortable_date_dtsi'].first] if doc['dta_sortable_date_dtsi'].present?
 
@@ -466,6 +476,24 @@ class GenericFile < ActiveFedora::Base
     humanized_edtf = edtf_date.humanize
     # Capitalize the seasons
     humanized_edtf = humanized_edtf.split(' ').map! { |word| ['summer', 'winter', 'autumn', 'spring'].include?(word) ? word.capitalize : word }.join(' ')
+
+    #Abbreviate the Months
+    humanized_edtf = humanized_edtf.split(' ').map! { |word|  Date::MONTHNAMES.include?(word) ? "#{Date::ABBR_MONTHNAMES[Date::MONTHNAMES.find_index(word)]}." : word }.join(' ')
+
+    #Remove period from "May"
+    humanized_edtf = humanized_edtf.split(' ').map! { |word|  word.include?('May.') ? "May" : word }.join(' ')
+
+    humanized_edtf
+  end
+
+  def keyword_edtf(edtf_date)
+    humanized_edtf = edtf_date.humanize
+    # Capitalize the seasons
+    humanized_edtf = humanized_edtf.split(' ').map! { |word| ['summer', 'winter', 'autumn', 'spring'].include?(word) ? word.capitalize : word }.join(' ')
+
+    #Abbreviate the Months
+    humanized_edtf = humanized_edtf.split(' ').map! { |word|  Date::MONTHNAMES.include?(word) ? "#{Date::ABBR_MONTHNAMES[Date::MONTHNAMES.find_index(word)]} #{word}" : word }.join(' ')
+
     humanized_edtf
   end
 
