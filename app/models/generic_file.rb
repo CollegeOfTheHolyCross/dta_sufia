@@ -466,6 +466,9 @@ class GenericFile < ActiveFedora::Base
     doc['subject_geographic_tesim'] = doc['subject_geographic_ssim']
 
 
+    doc['visibility_ssi'] = self.visibility
+
+
     doc
 
 
