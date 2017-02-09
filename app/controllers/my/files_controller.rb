@@ -5,9 +5,17 @@ module My
         :show_only_generic_files
     ]
 
+    before_filter :admin_files_facets_config, :only => [:index, :facet]
+
     def index
       super
       @selected_tab = :files
+    end
+
+
+    def admin_files_facets_config
+      blacklight_config.facet_fields['publisher_ssim'].show = true
+      blacklight_config.facet_fields['publisher_ssim'].if = true
     end
 
     protected

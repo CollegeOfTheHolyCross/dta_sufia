@@ -265,6 +265,7 @@ class GenericFile < ActiveFedora::Base
 
     doc['creator_ssim'] = self.creator
     doc['contributor_ssim'] = self.contributor
+    doc['publisher_ssim'] = self.publisher
 
     self.collections.each do |collection|
       doc['collection_name_ssim'] << collection.title
