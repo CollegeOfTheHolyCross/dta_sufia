@@ -4,8 +4,9 @@ module CollectionsHelper
   def link_to_all_col_items(col_title, institution_name=nil, link_class)
     facet_params = {blacklight_config.collection_field => [col_title]}
     facet_params[blacklight_config.institution_field] = institution_name if institution_name
+#, :sort=>"dta_sortable_date_dtsi+asc%2C+title_primary_ssort+asc"
     link_to(t('blacklight.collections.browse.all'),
-            catalog_index_path(:f => facet_params),
+            catalog_index_path(:f => facet_params, :sort=>"dta_sortable_date_dtsi asc, title_primary_ssort asc"),
             :class => link_class)
   end
 

@@ -13,6 +13,9 @@ class GenericFile < ActiveFedora::Base
   has_many :old_institutions, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.hasMember, class_name: "Institution"
 
   contains "ocr"
+  contains "content2", class_name: 'FileContentDatastream'
+  contains "thumbnail2"
+
 
   property :toc, predicate: ::RDF::Vocab::DC.tableOfContents, multiple: false do |index|
     index.as :stored_searchable
@@ -369,11 +372,17 @@ class GenericFile < ActiveFedora::Base
         doc['date_start_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
         doc['date_end_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
         doc['dta_dates_ssim'] << date.year
-        doc['dta_sortable_date_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
+        #doc['dta_sortable_date_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
+        doc['dta_sortable_date_dtsi'] = "#{date.year}-#{date.month.to_s.rjust(2, '0')}-#{date.day.to_s.rjust(2, '0')}T00:00:00.000Z"
       elsif date.present?
         doc['date_start_dtsi'] = date.first.year.to_s + '-01-01T00:00:00.000Z'
         doc['date_end_dtsi'] = date.last.year.to_s + '-01-01T00:00:00.000Z'
-        doc['dta_sortable_date_dtsi'] = (((date.last.year.to_i - date.first.year.to_i) / 2) + date.first.year.to_i).to_i.to_s + '-01-01T00:00:00.000Z'
+        if date.last.year.to_i == date.first.year.to_i
+          doc['dta_sortable_date_dtsi'] = date.last.year.to_i.to_s + '-' + (((date.last.month.to_i - date.first.month.to_i) / 2) + date.first.month.to_i).to_i.to_s.rjust(2, '0') + '-01T00:00:00.000Z'
+        else
+          doc['dta_sortable_date_dtsi'] = (((date.last.year.to_i - date.first.year.to_i) / 2) + date.first.year.to_i).to_i.to_s + '-01-01T00:00:00.000Z'
+        end
+
         (date.first.year..date.last.year).step(1) do |year_step|
           doc['dta_dates_ssim'] << year_step
         end
@@ -388,11 +397,17 @@ class GenericFile < ActiveFedora::Base
         doc['date_start_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
         doc['date_end_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
         doc['dta_dates_ssim'] << date.year
-        doc['dta_sortable_date_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
+        #doc['dta_sortable_date_dtsi'] = date.year.to_s + '-01-01T00:00:00.000Z'
+        doc['dta_sortable_date_dtsi'] = "#{date.year}-#{date.month.to_s.rjust(2, '0')}-#{date.day.to_s.rjust(2, '0')}T00:00:00.000Z"
       elsif date.present?
         doc['date_start_dtsi'] = date.first.year.to_s + '-01-01T00:00:00.000Z'
         doc['date_end_dtsi'] = date.last.year.to_s + '-01-01T00:00:00.000Z'
-        doc['dta_sortable_date_dtsi'] = (((date.last.year.to_i - date.first.year.to_i) / 2) + date.first.year.to_i).to_i.to_s + '-01-01T00:00:00.000Z'
+        if date.last.year.to_i == date.first.year.to_i
+          doc['dta_sortable_date_dtsi'] = date.last.year.to_i.to_s + '-' + (((date.last.month.to_i - date.first.month.to_i) / 2) + date.first.month.to_i).to_i.to_s.rjust(2, '0') + '-01T00:00:00.000Z'
+        else
+          doc['dta_sortable_date_dtsi'] = (((date.last.year.to_i - date.first.year.to_i) / 2) + date.first.year.to_i).to_i.to_s + '-01-01T00:00:00.000Z'
+        end
+
         (date.first.year..date.last.year).step(1) do |year_step|
           doc['dta_dates_ssim'] << year_step
         end
