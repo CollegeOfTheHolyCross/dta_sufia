@@ -518,7 +518,7 @@ class GenericFile < ActiveFedora::Base
 
   def dta_dc_xml_output
     Nokogiri::XML::Builder.new do |x|
-      x.dta_dc(xmlns: 'https://www.digitaltransgenderarchive.net/dc/v1') do
+      x.dc(xmlns: 'https://www.digitaltransgenderarchive.net/dc/v1') do
         x.title(self.title[0])
 
         self.alternative.each do |alt_title|
