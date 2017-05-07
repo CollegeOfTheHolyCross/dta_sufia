@@ -606,6 +606,9 @@ class GenericFile < ActiveFedora::Base
 
         x.hosted_elsewhere(self.hosted_elsewhere) if self.hosted_elsewhere
 
+        self.institutions.each do |inst|
+          x.physicalLocation(inst.name)
+        end
 
 
       end
