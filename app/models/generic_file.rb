@@ -516,9 +516,14 @@ class GenericFile < ActiveFedora::Base
     humanized_edtf
   end
 
+  NS = {
+      "xmlns:dc"   => "https://www.digitaltransgenderarchive.net/dc/v1",
+      "xmlns:dcterms"   => "https://www.digitaltransgenderarchive.net/dcterms/v1",
+  }
+
   def dta_dc_xml_output
     Nokogiri::XML::Builder.new do |x|
-      x.dc(xmlns: 'https://www.digitaltransgenderarchive.net/dc/v1') do
+      x['dc'].dta_dc(NS) do
         x.title(self.title[0])
 
         self.alternative.each do |alt_title|
@@ -606,9 +611,14 @@ class GenericFile < ActiveFedora::Base
 
         x.hosted_elsewhere(self.hosted_elsewhere) if self.hosted_elsewhere
 
+        harvesting_ind = '1'
         self.institutions.each do |inst|
           x.physicalLocation(inst.name)
+          if self.hosted_elsewhere and not inst.name.include?('Transas City', 'Cork LGBT Archive')
+            harvesting_ind = '0'
+          end
         end
+        x.aggregatorHarvestingIndicator(harvesting_ind)
 
 
       end
