@@ -594,7 +594,15 @@ class GenericFile < ActiveFedora::Base
           x.isShownAt('https://www.digitaltransgenderarchive.net/files/' + id)
         end
 
-        x.preview("https://www.digitaltransgenderarchive.net/downloads/#{id}?file=thumbnail")
+        if obj.content.blank?
+          if self.resource_type.include?('Audio') || self.genre.include?('Sound Recordings')
+            x.preview(image_url("shared/dta_audio_icon.jpg"))
+          else
+            x.preview(image_url("default.jpg"))
+          end
+        else
+          x.preview("https://www.digitaltransgenderarchive.net/downloads/#{id}?file=thumbnail")
+        end
 
         self.related_url.each do |item|
           x.seeAlso(item)
