@@ -37,7 +37,7 @@ class OaiController < ApplicationController
 
   def list_records
     @records =
-        RSolr.connect(url: "#{ActiveFedora.config.credentials[:url].gsub('/fedora/rest', '/solr/cloneprod')}")
+        RSolr.connect(url: "#{ActiveFedora.config.credentials[:url].gsub('/fedora/rest', '/solr/production')}")
             .get('select', params: {
                 'q' => 'is_public_ssi:true AND active_fedora_model_ssi:GenericFile',
                 #'fl' => 'id,timestamp,xml',
@@ -65,7 +65,7 @@ class OaiController < ApplicationController
 
   def list_sets
     @records =
-        RSolr.connect(url: "#{ActiveFedora.config.credentials[:url].gsub('/fedora/rest', '/solr/cloneprod')}")
+        RSolr.connect(url: "#{ActiveFedora.config.credentials[:url].gsub('/fedora/rest', '/solr/production')}")
             .get('select', params: {
                 'q' => 'is_public_ssi:true AND active_fedora_model_ssi:Collection',
                 #'fl' => 'id,timestamp,xml',
@@ -92,7 +92,7 @@ class OaiController < ApplicationController
 
   def get_single_record pid
     @records =
-        RSolr.connect(url: "#{ActiveFedora.config.credentials[:url].gsub('/fedora/rest', '/solr/cloneprod')}")
+        RSolr.connect(url: "#{ActiveFedora.config.credentials[:url].gsub('/fedora/rest', '/solr/production')}")
             .get('select', params: {
                 'q' => 'is_public_ssi:true AND active_fedora_model_ssi:GenericFile AND id:' + pid,
                 #'fl' => 'id,timestamp,xml',
