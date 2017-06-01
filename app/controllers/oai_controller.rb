@@ -48,8 +48,8 @@ class OaiController < ApplicationController
               d['id'],
               d['timestamp'],
               #PBCore.new(d['xml'])
-              GenericFile.find(d['id'],
-              d['collection_name_ssim'])
+              GenericFile.find(d['id']),
+              d['collection_name_ssim']
           )
         end
 
@@ -103,8 +103,8 @@ class OaiController < ApplicationController
               d['id'],
               d['timestamp'],
               #PBCore.new(d['xml'])
-              GenericFile.find(d['id'],
-              d['collection_name_ssim'])
+              GenericFile.find(d['id']),
+              d['collection_name_ssim']
           )
         end
 
