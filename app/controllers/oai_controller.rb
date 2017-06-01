@@ -1,5 +1,5 @@
 class OaiController < ApplicationController
-  ListRecord = Struct.new(:id, :date, :dtarecord)
+  ListRecord = Struct.new(:id, :date, :dtarecord, :collections)
   SetRecord = Struct.new(:id, :date, :title, :description)
   ROWS = 100
 
@@ -48,7 +48,8 @@ class OaiController < ApplicationController
               d['id'],
               d['timestamp'],
               #PBCore.new(d['xml'])
-              GenericFile.find(d['id'])
+              GenericFile.find(d['id'],
+              d['collection_name_ssim'])
           )
         end
 
@@ -102,7 +103,8 @@ class OaiController < ApplicationController
               d['id'],
               d['timestamp'],
               #PBCore.new(d['xml'])
-              GenericFile.find(d['id'])
+              GenericFile.find(d['id'],
+              d['collection_name_ssim'])
           )
         end
 

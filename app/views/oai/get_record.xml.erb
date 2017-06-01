@@ -12,7 +12,11 @@
                 <header>
                     <identifier><%= record.id %></identifier>
                     <datestamp><%= record.date %></datestamp>
-                    <setSpec><% record.dtarecord.collections.each do |collect| %><%= collect.id %><%end%></setSpec>
+                    <% if record.dtarecord.collections.present? %>
+                        <setSpec><% record.dtarecord.collections.each do |collect| %><%= collect.id %><%end%></setSpec>
+                    <% else %>
+                        <setSpec><% record.collections.each do |collect| %><%= Collection.where(:title=>collect)[0].id %><%end%></setSpec>
+                    <% end %>
                 </header>
                 <metadata>
                     <%= record.dtarecord.dta_dc_xml_output.html_safe %>

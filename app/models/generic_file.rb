@@ -622,7 +622,7 @@ class GenericFile < ActiveFedora::Base
         harvesting_ind = '1'
         self.institutions.each do |inst|
           x.physicalLocation(inst.name)
-          if self.hosted_elsewhere and not ['Transas City', 'Cork LGBT Archive'].include?(inst.name)
+          if self.hosted_elsewhere.present? and self.hosted_elsewhere == '1' and not ['Transas City', 'Cork LGBT Archive'].include?(inst.name)
             harvesting_ind = '0'
           end
         end
