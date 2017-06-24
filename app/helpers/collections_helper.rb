@@ -14,7 +14,7 @@ module CollectionsHelper
   def link_to_cols_start_with(letter)
     link_to(letter,
             #collections_public_path(:q => 'title_info_primary_ssort:' + letter + '*'),
-            collections_public_path(:filter=>'title', :q => letter),
+            collections_public_path(:filter=>letter),
             :class => 'col_a-z_link')
   end
 
