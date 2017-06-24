@@ -35,6 +35,14 @@ $viewer_bg: #111111 !default;
 }
 
 //Collection / Institution List Style
+#collection_az_links {
+  margin: 0 auto;
+  max-width:1400px;
+  font-size: 14px;
+}
+.col_a-z_label {
+  padding-left: 40px;
+}
 
 .inst_collection_table {
   margin: 0 auto;
@@ -46,8 +54,12 @@ div.collections-list {
   #collection_az_links {
     margin-bottom: 10px;
 
-    .col_a-z_link, .col_a-z_nolink {
+    .col_a-z_link, .col_a-z_nolink, .col_a-z_matched_link {
       padding-left:7px;
+    }
+
+    .col_a-z_matched_link {
+      font-weight:bold;
     }
 
     .col_a-z_nolink {
@@ -326,7 +338,7 @@ h4.collection-provenance {
 
     #collection_az_links {
 
-      .col_a-z_link, .col_a-z_nolink {
+      .col_a-z_link, .col_a-z_nolink, .col_a-z_matched_link {
         padding-left:13px;
       }
 
@@ -402,7 +414,7 @@ h4.collection-provenance {
 
     #collection_az_links {
 
-      .col_a-z_link, .col_a-z_nolink {
+      .col_a-z_link, .col_a-z_nolink, .col_a-z_matched_link {
         padding-left:1px;
       }
 
@@ -485,7 +497,7 @@ h4.collection-provenance {
 
     #collection_az_links {
 
-      .col_a-z_link, .col_a-z_nolink {
+      .col_a-z_link, .col_a-z_nolink, .col_a-z_matched_link {
         padding-left:2px;
       }
 

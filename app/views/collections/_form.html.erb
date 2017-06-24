@@ -6,10 +6,11 @@
       <%= render :partial => "/records/edit_fields/institutions", :locals => {:f => f, :key=>:institution_ids} %>
 
       <% f.object.terms.each do |term| %>
-         <% if term.to_s != 'institutions' %>
+         <% if term.to_s != 'institutions' and term.to_s != 'thumbnail_ident' %>
         <%= render_edit_field_partial term, f: f %>
               <% end %>
       <% end %>
+
     </div><!-- /well -->
   </div>
   <%= hidden_field_tag :type, params[:type] %>

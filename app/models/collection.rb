@@ -1,5 +1,6 @@
 class Collection < Sufia::Collection
   has_and_belongs_to_many :institutions, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.isMemberOfCollection, class_name: "Institution"
+
   #has_many :institutions, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.isMemberOfCollection, class_name: "Institution"
 
 =begin
@@ -22,12 +23,17 @@ class Collection < Sufia::Collection
     index.as :stored_searchable
   end
 
+  property :thumbnail_ident, predicate: ::RDF::URI.new("http://digitaltransgenderarchive.net/ns/collectionThumbnail"), multiple: false do |index|
+  end
+
   def update_permissions
     self.visibility = "open" unless self.visibility == 'restricted'
   end
 
   def to_solr(doc = {} )
     doc = super(doc)
+
+    doc['thumbnail_ident_ss'] = self.thumbnail_ident if self.thumbnail_ident.present?
 
     doc['is_public_ssi'] = self.public?.to_s
 

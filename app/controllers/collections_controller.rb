@@ -118,7 +118,25 @@ class CollectionsController < CatalogController
     @nav_li_active = 'explore'
     self.search_params_logic += [:collections_filter]
     #self.search_params_logic += [:flagged_filter] unless self.search_params_logic.include?(:flagged_filter)
-    (@response, @document_list) = search_results({:f => {'active_fedora_model_ssi' => 'Collection'},:rows => 100, :sort => 'title_primary_ssort asc'}, search_params_logic)
+    #if params[:filter].blank?
+      (@response, @document_list) = search_results({:f => {'active_fedora_model_ssi' => 'Collection'},:rows => 100, :sort => 'title_primary_ssort asc'}, search_params_logic)
+=begin
+    else
+      solr_parameters[:fq] << "+title_primary_ssort:#{params[:filter]}*"
+      (@response, @document_list) = search_results({:f => {'active_fedora_model_ssi' => 'Collection'},:rows => 100, :sort => 'title_primary_ssort asc'}, search_params_logic)
+    end
+=end
+
+    if params[:filter].present?
+      new_doc_list = []
+      @document_list.each do |doc|
+        new_doc_list << doc if doc['title_primary_ssi'].upcase[0] == params[:filter]
+      end
+      @document_list = new_doc_list
+    end
+
+
+
 =begin
     term_query = Collection.find_with_conditions("*:*", rows: '10000', fl: 'id,title_tesim' )
     term_query = term_query.sort_by { |term| term["title_tesim"].first }
@@ -152,6 +170,7 @@ class CollectionsController < CatalogController
   end
 
   def edit
+    @collection_id = @collection.id
     term_query = Institution.find_with_conditions("*:*", rows: '10000', fl: 'id,name_ssim' )
     term_query = term_query.sort_by { |term| term["name_ssim"].first }
     @all_institutions = []
@@ -231,6 +250,19 @@ class CollectionsController < CatalogController
 
   def form_class
     MyCollectionEditForm
+  end
+
+
+  def collection_thumbnail_set
+    if @collection.thumbnail_ident != params[:item_id]
+      @collection.thumbnail_ident = params[:item_id]
+      @collection.save
+      flash[:notice] = "Collection Image Was Set!"
+    else
+      flash[:notice] = "Could not set collection image (perhaps this was already set?)"
+    end
+
+    redirect_to request.referrer
   end
 
   def change_member_visibility

@@ -13,13 +13,14 @@ module CollectionsHelper
   # link to collections starting with a specific letter
   def link_to_cols_start_with(letter)
     link_to(letter,
-            collections_public_path(:q => 'title_info_primary_ssort:' + letter + '*'),
+            #collections_public_path(:q => 'title_info_primary_ssort:' + letter + '*'),
+            collections_public_path(:filter=>'title', :q => letter),
             :class => 'col_a-z_link')
   end
 
   # whether the A-Z link menu should be displayed in collections#index
   def should_render_col_az?
-    false
+    true
   end
 
   def make_links_clickable(str)

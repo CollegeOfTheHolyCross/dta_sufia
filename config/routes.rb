@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   get 'collections/member_visibility/:id' => 'collections#change_member_visibility', as: :collection_member_visibility
   get 'collections/collection_invisible/:id' => 'collections#collection_invisible', as: :collection_invisible
   get 'collections/collection_visible/:id' => 'collections#collection_visible', as: :collection_visible
+  get 'collections/collection_thumbnail_set/:id/:item_id' => 'collections#collection_thumbnail_set', as: :collection_thumbnail_set
 
   #Static Paths
   resources :abouts, only: [:new, :edit, :create, :update, :show], :path => :about
