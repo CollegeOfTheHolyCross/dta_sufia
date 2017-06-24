@@ -7,7 +7,7 @@
       <% ('A'..'Z').each do |letter| %>
           <% if ['Q','X'].include? letter %>
               <%= content_tag(:span, letter, :class => 'col_a-z_nolink') %>
-          <% elsif letter.include?(params[:filter])%>
+          <% elsif params.has_key?(:filter) and letter.include?(params[:filter])%>
                   <%= content_tag(:span, letter, :class => 'col_a-z_matched_link') %>
           <% else %>
               <%= link_to_cols_start_with(letter) %>
