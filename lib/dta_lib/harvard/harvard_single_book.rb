@@ -49,7 +49,7 @@ module Harvard
       @institution = ActiveFedora::Base.find(@upload_institution_id)
 
       @harvard_id = @record_meta_xml.xpath(".//recordIdentifier[@source='MH:VIA']").text.strip.split("_").first
-      show_location = "https://id.lib.harvard.edu/images/#{@harvard_id}/catalog"
+      show_location = "http://id.lib.harvard.edu/images/#{@harvard_id}/catalog"
       full_escaped_uri = solr_clean(show_location)
       solr_response = GenericFile.find_with_conditions("identifier_ssim:#{full_escaped_uri}", rows: '25', fl: 'id' )
       if solr_response.blank?
