@@ -166,6 +166,7 @@ Sufia.config do |config|
       "Physical Objects" => "Physical Objects",
       "Poetry" => "Poetry",
       "Posters" => "Posters",
+      "Press Releases" => "Press Releases",
       "Prints" => "Prints",
       "Programs" => "Programs",
       "Records" => "Records",

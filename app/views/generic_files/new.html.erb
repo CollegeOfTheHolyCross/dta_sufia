@@ -5,6 +5,7 @@
   <li class="active" id="singlefile_tab" title="<%= t('sufia.upload.single_file_computer.sr_tab_label')+' '+ t('sufia.upload.single_file_computer.tab_label') %>"><a role="tab" href="#singlefile" data-toggle="tab"><i class="glyphicon glyphicon-file" aria-hidden="true"></i> <%= t('sufia.upload.single_file_computer.tab_label')%></a></li>
   <li id="computer_tab" title="<%= t('sufia.upload.my_computer.sr_tab_label')+' '+ t('sufia.upload.my_computer.tab_label') %>"><a role="tab" href="#local" data-toggle="tab"><i class="glyphicon glyphicon-folder-open" aria-hidden="true"></i> <%= t('sufia.upload.my_computer.tab_label')%></a></li>
   <li id="internetarchive_tab" title="<%= t('sufia.upload.internetarchive_computer.sr_tab_label')+' '+ t('sufia.upload.internetarchive_computer.tab_label') %>"><a role="tab" href="#internetarchive" data-toggle="tab"><i class="glyphicon glyphicon-file" aria-hidden="true"></i> <%= t('sufia.upload.internetarchive_computer.tab_label')%></a></li>
+  <li id="harvardbooks_tab" title="<%= t('sufia.upload.harvardbooks_computer.sr_tab_label')+' '+ t('sufia.upload.harvardbooks_computer.tab_label') %>"><a role="tab" href="#harvardbooks" data-toggle="tab"><i class="glyphicon glyphicon-file" aria-hidden="true"></i> <%= t('sufia.upload.harvardbooks_computer.tab_label')%></a></li>
   <% if Sufia.config.browse_everything %>
       <li id="browse_everything_tab" title="<%= t('sufia.upload.browse_everything.sr_tab_label')+' '+ t('sufia.upload.browse_everything.tab_label') %>" aria-activedescendant="browse_everything_link"><a role="tab" href="#browse_everything" data-toggle="tab" id="browse_everything_link" ><i class="glyphicon glyphicon-cloud-download" aria-hidden="true"></i> <%= t('sufia.upload.browse_everything.tab_label')%></a></li>
   <% end %>
@@ -27,6 +28,11 @@
   <div class="tab-pane" id="internetarchive" aria-labelledby="internetarchive_tab" role="tabpanel">
     <span class="sr-only">&nbsp;</span>
     <%= render partial: 'internet_archive' %>
+  </div>
+
+  <div class="tab-pane" id="harvardbooks" aria-labelledby="harvardbooks_tab" role="tabpanel">
+    <span class="sr-only">&nbsp;</span>
+    <%= render partial: 'ingest_harvard_books' %>
   </div>
 
   <% if Sufia.config.browse_everything %>

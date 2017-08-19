@@ -78,6 +78,28 @@ class GenericFilesController < ApplicationController
       #redirect_to sufia.dashboard_files_path, notice: render_to_string(partial: 'generic_files/asset_updated_flash', locals: { generic_file: @generic_file })
       flash[:notice] = "Internet archive ingest started in background!"
       redirect_to sufia.dashboard_files_path
+    elsif params.key?(:upload_type) and params[:upload_type] == 'harvardbooks'
+      @start = 0
+      @step = 250
+      @end_val = 9999999
+      #@url = "http://archive.org/advancedsearch.php?q=collection%3A%22#{collection_id}%22&fl%5B%5D=identifier&output=json&rows=10000"
+
+      while @end_val >= @start do
+        @url = "https://api.lib.harvard.edu/v2/items?q=mc614%2520demaios&physicalLocation=Schlesinger&limit=#{@step}&start=#{@start}"
+
+        list_response = Typhoeus::Request.get(@url, ssl_verifypeer: false)
+        response_xml = Nokogiri::XML(list_response.body)
+        response_xml.remove_namespaces!
+
+        @end_val =  response_xml.xpath("//numFound").text.to_i
+        @start = @start + @step
+
+        response_xml.xpath("//mods").each do |record_meta_xml|
+          result = Resque.enqueue(Harvard::HarvardSingleBook, :metadata=>record_meta_xml.to_s, :collection_id=>params[:collection_harvard_books], :institution_id=>params[:institution_harvard_books], :depositor=>current_user.user_key)
+        end
+      end
+        flash[:notice] = "Harvard Books ingest started in background!"
+        redirect_to sufia.dashboard_files_path
     elsif params.key?(:upload_type) and params[:upload_type] == 'single'
       if !validate_metadata(params, 'create')
 

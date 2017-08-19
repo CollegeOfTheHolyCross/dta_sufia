@@ -39,6 +39,9 @@ en:
       internetarchive_computer:
           sr_tab_label: ""
           tab_label: "Internet Archive Upload"
+      harvardbooks_computer:
+          sr_tab_label: ""
+          tab_label: "Harvard Books Ingest"
       single_file_computer:
           sr_tab_label: ""
           tab_label: "Single File Upload"
