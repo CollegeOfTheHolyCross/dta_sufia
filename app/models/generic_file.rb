@@ -115,7 +115,11 @@ class GenericFile < ActiveFedora::Base
 
               text_content = []
               reader.pages.each do |page|
-                text_content << page.text
+                begin
+                 text_content << page.text
+                rescue NoMethodError
+                  # Ignored for now. Was "undefined method `/' for nil:NilClass"
+                end
               end
               #cntrl is for control characters. Taken from: https://github.com/sunspot/sunspot/issues/570
               text_content = text_content.join(" ").gsub(/\n/, ' ').gsub(/\uFFFF/, ' ').gsub(/[[:cntrl:]]/,' ').squish
