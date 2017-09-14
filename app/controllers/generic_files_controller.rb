@@ -22,6 +22,7 @@ class GenericFilesController < ApplicationController
     else
       respond_to do |format|
         format.html do
+          setup_next_and_previous_documents
           @events = @generic_file.events(100)
           @presenter = presenter
           @audit_status = audit_service.human_readable_audit_status
