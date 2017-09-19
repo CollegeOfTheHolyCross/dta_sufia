@@ -45,6 +45,23 @@
     background-color: #f5f5f5;
     margin-bottom: 20px;
   }
+
+  div.show-bot-navigation {
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    /*    margin-bottom: 20px;
+        padding-bottom: 15px;
+        padding-top: 15px;*/
+    height: 36px;
+    background-color: #f5f5f5;
+    margin-top: 15px;
+    margin-bottom: -4px;
+  }
+
+  div.show-bot-navigation ul.breadcrumb {
+    margin-bottom: 0px;
+  }
 </style>
 
 
@@ -91,9 +108,16 @@
 
 <%# render_breadcrumbs builder: Sufia::BootstrapBreadcrumbsBuilder %>
 
-
+<% if @previous_document || @next_document || current_search_session %>
 <div id='previousNextDocument' class='show-top-navigation'>
-  <%= render_breadcrumbs builder: Sufia::BootstrapBreadcrumbsBuilder %>
+  <% back_content = render_breadcrumbs builder: Sufia::BootstrapBreadcrumbsBuilder %>
+  <% if back_content.present? and back_content.to_s.include?('My Dashboard') %>
+    <%= back_content %>
+  <% else %>
+      <ul class="breadcrumb">
+        <li><%= link_back_to_catalog label: 'Back to search results' %></li>
+      </ul>
+  <% end %>
   <% if @previous_document || @next_document %>
       <div class="page_links pull-right">
         <%= link_to_previous_document @previous_document %> |
@@ -104,7 +128,7 @@
       </div>
   <% end %>
 </div>
-
+<% end %>
 
 
 
@@ -149,3 +173,25 @@
   </div><!-- /columns second -->
 </div> <!-- /.row -->
 </div><!-- /.container-fluid -->
+
+<% if @previous_document || @next_document || current_search_session %>
+<div id='previousNextDocumentBot' class='show-bot-navigation'>
+  <% back_content = render_breadcrumbs builder: Sufia::BootstrapBreadcrumbsBuilder %>
+  <% if back_content.present? and back_content.to_s.include?('My Dashboard') %>
+      <%= back_content %>
+  <% else %>
+      <ul class="breadcrumb">
+        <li><%= link_back_to_catalog label: 'Back to search results' %></li>
+      </ul>
+  <% end %>
+  <% if @previous_document || @next_document %>
+      <div class="page_links pull-right">
+        <%= link_to_previous_document @previous_document %> |
+
+        <%= item_page_entry_info %> |
+
+        <%= link_to_next_document @next_document %>
+      </div>
+  <% end %>
+</div>
+<% end %>

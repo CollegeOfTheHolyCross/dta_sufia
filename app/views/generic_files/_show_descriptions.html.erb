@@ -88,7 +88,7 @@
       <% end %>
 
       <% if @document[:dta_other_subject_ssim] %>
-          <dt>People / Organizations</dt>
+          <dt>Subject(s)</dt>
           <dd>
             <% @document[:dta_other_subject_ssim].each do |val| %>
                 <%= link_to_facet(val, 'dta_other_subject_ssim') %><br />
@@ -194,15 +194,6 @@
             For more information on copyright, please read our <a href="https://www.digitaltransgenderarchive.net/about/policies" title="See our policies">policies</a><br/>
           </dd>
       <% end %>
-
-
-
-
-
-
-
-
-
 
 
 
