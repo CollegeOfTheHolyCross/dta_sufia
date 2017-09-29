@@ -196,7 +196,12 @@ class GenericFilesController < ApplicationController
         @generic_file.institutions << [institution]
 
         update_metadata
+
+        @generic_file.save!
+        @generic_file.reload
+        actor.add_file_to_collection(params[:collection]) if params[:collection].present?
         @generic_file.update_index
+        Sufia.queue.push(CharacterizeJob.new(@generic_file.id))
 
         #@generic_file.edit_groups += ['admin', 'superuser']
 
