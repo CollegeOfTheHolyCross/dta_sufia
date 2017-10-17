@@ -101,6 +101,17 @@ class GenericFilesController < ApplicationController
       end
         flash[:notice] = "Harvard Books ingest started in background!"
         redirect_to sufia.dashboard_files_path
+    elsif params.key?(:upload_type) and params[:upload_type] == 'antoniobooks'
+      @client = OAI::Client.new "http://digital.utsa.edu/oai/oai.php"
+      opts = {}
+      opts[:metadata_prefix] = "oai_dc"
+      opts[:set] = "p15125coll9"
+      response = @client.list_records(opts).full
+      response.each_with_index do |result, index|
+        result = Resque.enqueue(SanAntonio::SingleObject, :metadata=>result.metadata.to_s, :collection_id=>params[:collection_antonio_books], :institution_id=>params[:institution_antonio_books], :depositor=>current_user.user_key, :record_id=>result.header.identifier)
+      end
+      flash[:notice] = "San Anontio ingest started in background!"
+      redirect_to sufia.dashboard_files_path
     elsif params.key?(:upload_type) and params[:upload_type] == 'single'
       if !validate_metadata(params, 'create')
 

@@ -52,7 +52,9 @@ module Harvard
       show_location = "http://id.lib.harvard.edu/images/#{@harvard_id}/catalog"
       full_escaped_uri = solr_clean(show_location)
       solr_response = GenericFile.find_with_conditions("identifier_ssim:#{full_escaped_uri}", rows: '25', fl: 'id' )
-      if solr_response.blank?
+      if solr_response.present?
+        raise "Duplicate for #{show_location}. This id is #{solr_response.first["id"]}. This full id is: #{@record_meta_xml.xpath(".//recordIdentifier[@source='MH:VIA']").text.strip}"
+      elsif solr_response.blank?
 
         @generic_file = ::GenericFile.new
         @generic_file.depositor = @depositor

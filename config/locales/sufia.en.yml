@@ -42,6 +42,9 @@ en:
       harvardbooks_computer:
           sr_tab_label: ""
           tab_label: "Harvard Books Ingest"
+      antonio_computer:
+          sr_tab_label: ""
+          tab_label: "San Antonio Ingest"
       single_file_computer:
           sr_tab_label: ""
           tab_label: "Single File Upload"

@@ -28,6 +28,11 @@ class CollectionsController < CatalogController
     super
   end
 
+  def destroy
+    raise "Operation not supported... to be fixed October 18th"
+    #super
+  end
+
   #override
   def add_members_to_collection collection = nil
     collection ||= @collection
