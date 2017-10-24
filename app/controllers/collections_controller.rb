@@ -29,8 +29,11 @@ class CollectionsController < CatalogController
   end
 
   def destroy
-    raise "Operation not supported... to be fixed October 18th"
-    #super
+    if @collection.member_ids.present?
+      raise "Cannot delete a collection with items associated with it"
+    end
+
+    super
   end
 
   #override

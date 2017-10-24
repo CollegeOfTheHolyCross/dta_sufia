@@ -67,12 +67,21 @@ class Homosaurus < ActiveFedora::Base
 
     doc['dta_homosaurus_lcase_prefLabel_ssi'] = self.prefLabel.downcase
     doc['dta_homosaurus_lcase_altLabel_ssim'] = []
+    doc['topConcept_ssim'] = []
     self.altLabel.each do |alt|
       doc['dta_homosaurus_lcase_altLabel_ssim'] << alt
     end
 
     doc['dta_homosaurus_lcase_comment_tesi'] = self.description
 
+    self.broader.each do |current_broader|
+      if current_broader.present?
+        while current_broader.broader.present?
+          current_broader = current_broader.broader
+        end
+        doc['topConcept_ssim'] << current_broader.id.split('/').last
+      end
+    end
 
     doc
 
