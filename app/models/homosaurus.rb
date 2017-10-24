@@ -74,17 +74,21 @@ class Homosaurus < ActiveFedora::Base
 
     doc['dta_homosaurus_lcase_comment_tesi'] = self.description
 
-    self.broader.each do |current_broader|
-      if current_broader.present?
-        while current_broader.broader.present?
-          current_broader = current_broader.broader
-        end
-        doc['topConcept_ssim'] << current_broader.id.split('/').last
-      end
-    end
-
+    @broadest_terms = []
+    get_broadest(self)
+    doc['topConcept_ssim'] = @broadest_terms if @broadest_terms.present?
     doc
 
+  end
+
+  def get_broadest(item)
+    if item.broader.blank?
+      @broadest_terms << item.id.split('/').last
+    else
+      item.broader.each do |current_broader|
+        get_broadest(current_broader)
+      end
+    end
   end
 
 end
