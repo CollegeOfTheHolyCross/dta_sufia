@@ -110,14 +110,15 @@
 
 <% if @previous_document || @next_document || current_search_session %>
 <div id='previousNextDocument' class='show-top-navigation'>
-  <% back_content = render_breadcrumbs builder: Sufia::BootstrapBreadcrumbsBuilder %>
-  <% if back_content.present? and back_content.to_s.include?('My Dashboard') %>
-    <%= back_content %>
-  <% else %>
+
+      <% if current_search_session[:query_params][:controller].present? and current_search_session[:query_params][:controller].include? 'my/files' %>
+        <% back_content = render_breadcrumbs builder: Sufia::BootstrapBreadcrumbsBuilder %>
+        <%= back_content %>
+      <% else %>
       <ul class="breadcrumb">
         <li><%= link_back_to_catalog label: 'Back to search results' %></li>
       </ul>
-  <% end %>
+      <% end %>
   <% if @previous_document || @next_document %>
       <div class="page_links pull-right">
         <%= link_to_previous_document @previous_document %> |
@@ -176,8 +177,8 @@
 
 <% if @previous_document || @next_document || current_search_session %>
 <div id='previousNextDocumentBot' class='show-bot-navigation'>
-  <% back_content = render_breadcrumbs builder: Sufia::BootstrapBreadcrumbsBuilder %>
-  <% if back_content.present? and back_content.to_s.include?('My Dashboard') %>
+  <% if current_search_session[:query_params][:controller].present? and current_search_session[:query_params][:controller].include? 'my/files' %>
+      <% back_content = render_breadcrumbs builder: Sufia::BootstrapBreadcrumbsBuilder %>
       <%= back_content %>
   <% else %>
       <ul class="breadcrumb">

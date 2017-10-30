@@ -3,6 +3,7 @@ class GenericFilesController < ApplicationController
   include Sufia::FilesControllerBehavior
   include Sufia::Lockable
   include DtaStaticBuilder
+  include DtaSearchBuilder
 
   before_action :get_latest_content
 
@@ -13,6 +14,9 @@ class GenericFilesController < ApplicationController
 
   #Needed because it attempts to load from Solr in: load_resource_from_solr of Sufia::FilesControllerBehavior
   skip_load_and_authorize_resource :only=> [:create, :swap_visibility, :show] #FIXME: Why needed for swap visibility exactly?
+
+  GenericFilesController.search_params_logic += [:add_access_controls_to_solr_params, :add_advanced_parse_q_to_solr, :exclude_unwanted_models]
+
 
   # routed to /files/:id
   def show
@@ -158,15 +162,15 @@ class GenericFilesController < ApplicationController
         session[:unsaved_generic_file] = params[:generic_file]
         redirect_to sufia.new_generic_file_path
       else
-        Batch.find_or_create(params[:batch_id])
+        #Batch.find_or_create(params[:batch_id])
         #Actor sets @generic_file to blank...
         @generic_file = ::GenericFile.new
-        @generic_file.depositor = current_user.user_key
-        @generic_file.permissions_attributes = [{ type: 'group', name: 'public', access: 'read' }, {type: 'group', name: 'admin', access: 'edit'}, {type: 'group', name: 'superuser', access: 'edit'}]
+
         @generic_file.title = [params[:generic_file][:title]]
         @generic_file.label = params[:generic_file][:title]
 
-        actor.create_metadata(params[:batch_id])
+        #actor.create_metadata(params[:batch_id])
+        self.add_default_metadata
 
         if params[:generic_file][:hosted_elsewhere] != "0"
           if params.key?(:filedata)
@@ -182,52 +186,64 @@ class GenericFilesController < ApplicationController
 
 
 
-            actor.create_content(StringIO.open(thumb.to_blob), File.basename(file.original_filename,File.extname(file.original_filename)), file_path, 'image/jpeg', params[:collection])
+            self.create_content(StringIO.open(thumb.to_blob), File.basename(file.original_filename,File.extname(file.original_filename)), file_path, 'image/jpeg', params[:collection])
           else
+=begin
             saved = actor.save_characterize_and_record_committer
             if saved
               actor.add_file_to_collection(params[:collection])
             end
+=end
 
           end
         else
           file = params[:filedata]
-          actor.create_content(file, file.original_filename, file_path, file.content_type, params[:collection])
+          self.create_content(file, file.original_filename, file_path, file.content_type, params[:collection])
         end
 
-        #FIXME
-=begin
-        acquire_lock_for(params[:institution]) do
-          institution = Institution.find(params[:institution])
-          institution.files << [@generic_file]
-          institution.save
+
+        @generic_file.save!
+
+        acquire_lock_for(@upload_collection_id) do
+          collection = ::Collection.find(params[:collection]) if params[:collection].present?
+          collection.add_members [@generic_file.id]
+          collection.save!
         end
-=end
+
         institution = Institution.find(params[:institution])
         @generic_file.institutions << [institution]
 
-        update_metadata
+        self.update_metadata
 
         @generic_file.save!
+        @generic_file.record_version_committer(current_user)
         @generic_file.reload
-        actor.add_file_to_collection(params[:collection]) if params[:collection].present?
-        @generic_file.update_index
+        @generic_file.save!
         Sufia.queue.push(CharacterizeJob.new(@generic_file.id))
 
-        #@generic_file.edit_groups += ['admin', 'superuser']
-
         redirect_to sufia.dashboard_files_path, notice: render_to_string(partial: 'generic_files/asset_updated_flash', locals: { generic_file: @generic_file })
-
-        #redirect_to sufia.dashboard_files_path(:utf8=>'✓',:sort=>'date_uploaded_dtsi+desc'), notice:
-        #render_to_string(partial: 'generic_files/asset_updated_flash', locals: { generic_file: @generic_file })
-        #redirect_to sufia.edit_generic_file_path(tab: params[:redirect_tab]), notice:
-        #render_to_string(partial: 'generic_files/asset_updated_flash', locals: { generic_file: @generic_file })
       end
 
 
     else
       create_from_upload(params)
     end
+  end
+
+  def add_default_metadata
+    @generic_file.depositor = current_user.user_key
+    @generic_file.permissions_attributes = [{ type: 'group', name: 'public', access: 'read' }, {type: 'group', name: 'admin', access: 'edit'}, {type: 'group', name: 'superuser', access: 'edit'}]
+
+    @generic_file.apply_depositor_metadata(current_user)
+    time_in_utc = DateTime.now.new_offset(0)
+    @generic_file.date_uploaded = time_in_utc
+    @generic_file.date_modified = time_in_utc
+  end
+
+  def create_content(file, file_name, path, mime_type, collection_id = nil)
+    @generic_file.add_file(file, path: path, original_name: file_name, mime_type: mime_type)
+    @generic_file.label ||= file_name
+    @generic_file.title = [@generic_file.label] if @generic_file.title.blank?
   end
 
 
@@ -346,7 +362,10 @@ class GenericFilesController < ApplicationController
     end
 
     file_attributes = edit_form_class.model_attributes(params[:generic_file])
-    actor.update_metadata(file_attributes, params[:visibility])
+    #actor.update_metadata(file_attributes, params[:visibility])
+    @generic_file.attributes = file_attributes
+    @generic_file.visibility = params[:visibility]
+    @generic_file.date_modified = DateTime.now
   end
 
   def edit
@@ -384,7 +403,9 @@ class GenericFilesController < ApplicationController
           thumb = img.resize_to_fit(500,600) #FIXME?
         end
         @generic_file.add_file(StringIO.open(thumb.to_blob), path: file_path, original_name: File.basename(file.original_filename,File.extname(file.original_filename)), mime_type: 'image/jpeg')
-        actor.save_characterize_and_record_committer
+        #actor.save_characterize_and_record_committer
+        @generic_file.save!
+        @generic_file.record_version_committer(current_user)
 
         redirect_to sufia.edit_generic_file_path(tab: params[:redirect_tab]), notice:
             render_to_string(partial: 'generic_files/asset_updated_flash', locals: { generic_file: @generic_file })
@@ -421,12 +442,12 @@ class GenericFilesController < ApplicationController
         acquire_lock_for(params[:collection]) do
           collection = Collection.find(params[:collection])
           collection.members << [@generic_file]
-          collection.save
+          collection.save!
         end
 
         institution = Institution.find(params[:institution])
         @generic_file.institutions << [institution]
-        @generic_file.save
+        @generic_file.save!
 
         #This seems like it might be needed... bummer if so... otherwise to_solr doesn't work right it seems
         @generic_file = GenericFile.find(@generic_file.id)
