@@ -64,6 +64,8 @@ class CatalogController < ApplicationController
     #set default per-page
     config.default_per_page = 20
 
+    config.max_per_page = 300
+
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = {
       qt: "search",

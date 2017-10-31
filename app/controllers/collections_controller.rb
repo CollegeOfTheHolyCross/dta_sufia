@@ -127,7 +127,7 @@ class CollectionsController < CatalogController
     self.search_params_logic += [:collections_filter]
     #self.search_params_logic += [:flagged_filter] unless self.search_params_logic.include?(:flagged_filter)
     #if params[:filter].blank?
-      (@response, @document_list) = search_results({:f => {'active_fedora_model_ssi' => 'Collection'},:rows => 300, :sort => 'title_primary_ssort asc'}, search_params_logic)
+      (@response, @document_list) = search_results({:f => {'active_fedora_model_ssi' => 'Collection'}, :rows => 300, :sort => 'title_primary_ssort asc'}, search_params_logic)
 =begin
     else
       solr_parameters[:fq] << "+title_primary_ssort:#{params[:filter]}*"
