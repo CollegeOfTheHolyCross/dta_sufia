@@ -24,22 +24,25 @@
       <% end %>
     </div>
   <% end  %>
-  <div class="col-xs-6 col-sm-2 heading-tile">
-    <%= link_to sufia.dashboard_collections_path, id: "hydra-collection-view" do %>
-        <span class="glyphicon glyphicon-th"></span>
-        <%= t("sufia.dashboard.view_collections") %>
-    <% end %>
-  </div>
-  <div class="col-xs-6 col-sm-2 heading-tile">
-    <%= link_to sufia.dashboard_files_path  do %>
-        <span class="glyphicon glyphicon-eye-open"></span>
-        <%= t("sufia.dashboard.view_files") %>
-    <% end %>
-  </div>
 
-  <% if current_user.admin? %>
+  <% if current_user.contributor? %>
       <div class="col-xs-6 col-sm-2 heading-tile">
-        <%= link_to homosaurus_path do %>
+        <%= link_to sufia.dashboard_collections_path, id: "hydra-collection-view" do %>
+            <span class="glyphicon glyphicon-th"></span>
+            <%= t("sufia.dashboard.view_collections") %>
+        <% end %>
+      </div>
+      <div class="col-xs-6 col-sm-2 heading-tile">
+        <%= link_to sufia.dashboard_files_path  do %>
+            <span class="glyphicon glyphicon-eye-open"></span>
+            <%= t("sufia.dashboard.view_files") %>
+        <% end %>
+      </div>
+  <% end %>
+
+  <% if current_user.homosaurus? %>
+      <div class="col-xs-6 col-sm-2 heading-tile">
+        <%= link_to homosaurus_v2_index_path do %>
             <span class="glyphicon glyphicon-text-background"></span>
             Manage Homosaurus
         <% end %>

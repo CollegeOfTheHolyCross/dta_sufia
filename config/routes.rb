@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   resources :homosaurus
 
+  resources :homosaurus_v2
+
   resources :posts, path: :news
 
   mount Qa::Engine => '/qa'

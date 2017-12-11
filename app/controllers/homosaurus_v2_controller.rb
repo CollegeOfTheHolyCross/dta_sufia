@@ -1,24 +1,18 @@
-class HomosaurusController < ApplicationController
-  #before_action :verify_admin
-  before_action :disallow_all
+class HomosaurusV2Controller < ApplicationController
+  before_action :verify_homosaurus
   include DtaStaticBuilder
 
   before_action :get_latest_content
 
-  def disallow_all
-    raise 'Editing of Homosaurus V1 disabled for the time being'
-    redirect_to root_path
-  end
-
   def index
-    #@terms = Homosaurus.all.sort_by { |term| term.preferred_label }
-    #@terms = Homosaurus.all
-    @terms = Homosaurus.find_with_conditions("*:*", rows: '10000', fl: 'id,prefLabel_tesim' )
+    #@terms = HomosaurusV2.all.sort_by { |term| term.preferred_label }
+    #@terms = HomosaurusV2.all
+    @terms = HomosaurusV2.find_with_conditions("*:*", rows: '10000', fl: 'id,prefLabel_tesim' )
     @terms = @terms.sort_by { |term| term["prefLabel_tesim"].first }
   end
 
   def show
-    @homosaurus = Homosaurus.find(params[:id])
+    @homosaurus = HomosaurusV2.find(params[:id])
 
     respond_to do |format|
       format.html
@@ -28,8 +22,8 @@ class HomosaurusController < ApplicationController
   end
 
   def new
-    @homosaurus = Homosaurus.new
-    term_query = Homosaurus.find_with_conditions("*:*", rows: '10000', fl: 'id,identifier_ssi' )
+    @homosaurus = HomosaurusV2.new
+    term_query = HomosaurusV2.find_with_conditions("*:*", rows: '10000', fl: 'id,identifier_ssi' )
     term_query = term_query.sort_by { |term| term["identifier_ssi"] }
     @all_terms = []
     term_query.each { |term| @all_terms << [term["identifier_ssi"], term["id"]] }
@@ -41,14 +35,14 @@ class HomosaurusController < ApplicationController
       redirect_to new_homosauru_path, notice: "Please use camel case for identifier like 'discrimationWithAbleism'... do not use spaces. Contact K.J. if this is seen for some other valid entry."
     else
 
-      id = 'homosaurus/terms/' + params[:homosaurus][:identifier]
+      id = 'homosaurus/terms/v2/' + params[:homosaurus][:identifier]
 
-      @homosaurus = Homosaurus.new(id)
+      @homosaurus = HomosaurusV2.new(id)
 
       if params[:homosaurus][:broader_ids].present?
         params[:homosaurus][:broader_ids].each do |broader|
           if broader.present?
-            broader_object = Homosaurus.find(broader)
+            broader_object = HomosaurusV2.find(broader)
             @homosaurus.broader = @homosaurus.broader + [broader_object]
             broader_object.narrower = broader_object.narrower + [@homosaurus]
             broader_object.save
@@ -59,7 +53,7 @@ class HomosaurusController < ApplicationController
       if params[:homosaurus][:narrower_ids].present?
         params[:homosaurus][:narrower_ids].each do |narrower|
           if narrower.present?
-            narrower_object = Homosaurus.find(narrower)
+            narrower_object = HomosaurusV2.find(narrower)
             @homosaurus.narrower = @homosaurus.narrower + [narrower_object]
             narrower_object.broader = narrower_object.broader + [@homosaurus]
             narrower_object.save
@@ -71,7 +65,7 @@ class HomosaurusController < ApplicationController
       if params[:homosaurus][:related_ids].present?
         params[:homosaurus][:related_ids].each do |related|
           if related.present?
-            related_object = Homosaurus.find(related)
+            related_object = HomosaurusV2.find(related)
             @homosaurus.related = @homosaurus.related + [related_object]
             related_object.related = related_object.related + [@homosaurus]
             related_object.save
@@ -94,8 +88,8 @@ class HomosaurusController < ApplicationController
   end
 
   def edit
-    @homosaurus = Homosaurus.find(params[:id])
-    term_query = Homosaurus.find_with_conditions("*:*", rows: '100000', fl: 'id,identifier_ssi' )
+    @homosaurus = HomosaurusV2.find(params[:id])
+    term_query = HomosaurusV2.find_with_conditions("*:*", rows: '100000', fl: 'id,identifier_ssi' )
     @all_terms = []
     term_query.each { |term|
       if params[:id] != term["id"]
@@ -109,7 +103,7 @@ class HomosaurusController < ApplicationController
       redirect_to homosauru_path(:id => params[:id]), notice: "Please use camel case for identifier like 'discrimationWithAbleism'... do not use spaces. Contact K.J. if this is seen for some other valid entry."
     else
 
-      @homosaurus = Homosaurus.find(params[:id])
+      @homosaurus = HomosaurusV2.find(params[:id])
 
       #FIXME: Only do this if changed...
       @homosaurus.broader.each do |broader|
@@ -134,7 +128,7 @@ class HomosaurusController < ApplicationController
       @homosaurus.narrower = []
       @homosaurus.related = []
 
-      id = 'homosaurus/terms/' + params[:homosaurus][:identifier]
+      id = 'homosaurus/terms/v2/' + params[:homosaurus][:identifier]
 
       if @homosaurus.id != id
 =begin
@@ -156,14 +150,14 @@ class HomosaurusController < ApplicationController
 
         @homosaurus.delete
 
-        @homosaurus = Homosaurus.new(id)
+        @homosaurus = HomosaurusV2.new(id)
         @homosaurus.issued = RDF::Literal::Date.new(Time.now)
       end
 
       if params[:homosaurus][:broader_ids].present?
         params[:homosaurus][:broader_ids].each do |broader|
           if broader.present?
-            broader_object = Homosaurus.find(broader)
+            broader_object = HomosaurusV2.find(broader)
             @homosaurus.broader = @homosaurus.broader + [broader_object]
             broader_object.narrower = broader_object.narrower + [@homosaurus]
             broader_object.save
@@ -174,7 +168,7 @@ class HomosaurusController < ApplicationController
       if params[:homosaurus][:narrower_ids].present?
         params[:homosaurus][:narrower_ids].each do |narrower|
           if narrower.present?
-            narrower_object = Homosaurus.find(narrower)
+            narrower_object = HomosaurusV2.find(narrower)
             @homosaurus.narrower = @homosaurus.narrower + [narrower_object]
             narrower_object.broader = narrower_object.broader + [@homosaurus]
             narrower_object.save
@@ -186,7 +180,7 @@ class HomosaurusController < ApplicationController
       if params[:homosaurus][:related_ids].present?
         params[:homosaurus][:related_ids].each do |related|
           if related.present?
-            related_object = Homosaurus.find(related)
+            related_object = HomosaurusV2.find(related)
             @homosaurus.related = @homosaurus.related + [related_object]
             related_object.related = related_object.related + [@homosaurus]
             related_object.save
@@ -200,17 +194,17 @@ class HomosaurusController < ApplicationController
       @homosaurus.update(homosaurus_params)
 
       if @homosaurus.save
-        #flash[:success] = "Homosaurus term was updated!"
-        redirect_to homosauru_path(:id => @homosaurus.id), notice: "Homosaurus term was updated!"
+        #flash[:success] = "HomosaurusV2 term was updated!"
+        redirect_to homosaurus_v2_path(:id => @homosaurus.id), notice: "HomosaurusV2 term was updated!"
       else
-        redirect_to homosauru_path(:id => @homosaurus.id), notice: "Failure! Term was not updated."
+        redirect_to homosaurus_v2_path(:id => @homosaurus.id), notice: "Failure! Term was not updated."
       end
     end
   end
 
   def destroy
 
-    @homosaurus = Homosaurus.find(params[:id])
+    @homosaurus = HomosaurusV2.find(params[:id])
 
     @homosaurus.broader.each do |broader|
       broader.narrower.delete(@homosaurus)
@@ -235,9 +229,9 @@ class HomosaurusController < ApplicationController
     @homosaurus.related = []
 
     @homosaurus.delete
-    Homosaurus.eradicate(params[:id])
-    #flash[:success] = "Homosaurus Term deleted"
-    redirect_to homosaurus_path, notice: "Homosaurus term was deleted!"
+    HomosaurusV2.eradicate(params[:id])
+    #flash[:success] = "HomosaurusV2 Term deleted"
+    redirect_to homosaurus_v2_index_path, notice: "HomosaurusV2 term was deleted!"
   end
 
 

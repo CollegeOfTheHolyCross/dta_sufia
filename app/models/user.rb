@@ -40,6 +40,10 @@ class User < ActiveRecord::Base
     roles.where(name: 'contributor').exists? || roles.where(name: 'admin').exists? || roles.where(name: 'superuser').exists?
   end
 
+  def homosaurus?
+    roles.where(name: 'homosaurus').exists? || roles.where(name: 'admin').exists? || roles.where(name: 'superuser').exists?
+  end
+
   #FIXME: Cache this...
   def groups
     groups = []
