@@ -9,7 +9,24 @@
     <% else %>
         <dt style="padding-left:0px;width:80px;">Download</dt>
         <dd style="padding-left:0px;margin-left: 100px;">
-          <%= link_to "File", sufia.download_path(@generic_file), download: @document['title_tesim'].first + ".pdf" %>
+          <% if @document['mime_type_tesim'][0].downcase.include? 'image' %>
+              <%= link_to "Image File", sufia.download_path(@generic_file), download: @document['title_tesim'].first %>
+          <% elsif @document['mime_type_tesim'][0].downcase.include? 'pdf' %>
+              <%= link_to "PDF File", sufia.download_path(@generic_file), download: @document['title_tesim'].first + ".pdf" %>
+          <% else %>
+              <%= link_to "File", sufia.download_path(@generic_file), download: @document['title_tesim'].first %>
+          <% end %>
+
+        </dd>
+    <% end %>
+
+    <% if @document['mime_type_tesim'][0].downcase.include? 'image' and @document["hosted_elsewhere_tesim"].first != "1" %>
+        <dt style="padding-left:0px;width:80px;">View Online</dt>
+        <dd style="padding-left:0px;margin-left: 100px;">
+          <%= link_to('Image Viewer', '#', :id => 'img_viewer_link2',
+                :class => 'img_viewer_link',
+                :title => 'View this image online in a dynamic interface.',
+                :rel => 'nofollow') %>
         </dd>
     <% end %>
 

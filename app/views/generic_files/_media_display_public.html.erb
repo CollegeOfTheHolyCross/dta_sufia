@@ -1,6 +1,11 @@
 <% if @generic_file.image? %>
 
   <%= render_download_icon "Download the full-sized image" %>
+   <%# openseadragon_picture_tag 'https://www.digitaltransgenderarchive.net/downloads/cv43nw890' %>
+    <%# link_to('https://www.digitaltransgenderarchive.net/downloads/cv43nw890', '#', :id => 'img_viewer_link',
+                :class => 'img_viewer_link',
+                :title => t('blacklight.images.zoom'),
+                :rel => 'nofollow') %>
 
 <% elsif @generic_file.video? %>
 

@@ -155,6 +155,13 @@ class GenericFile < ActiveFedora::Base
     end
   end
 
+  def iiif_id
+    workpls = GenericFile.find(self.id)
+    path = workpls.content.digest[0].object[:path].split(':').last
+    path = path[0..1] + '%2F' + path[2..3]  + '%2F' + path[4..5] + '%2F' + path
+    path
+  end
+
   def remove_collection
 
   end
@@ -302,8 +309,8 @@ class GenericFile < ActiveFedora::Base
     self.subject.each do |subject|
       if subject.match(/http:\/\/homosaurus\.org\/terms\//)
         term = Homosaurus.find('homosaurus/terms/' + subject.split('/').last)
-        doc['dta_homosaurus_subject_ssim'] << term.prefLabel
-        doc['dta_all_subject_ssim'] << term.prefLabel
+        doc['dta_homosaurus_subject_ssim'] << (term.prefLabel[0].upcase + term.prefLabel[1..-1])
+        doc['dta_all_subject_ssim'] << (term.prefLabel[0].upcase + term.prefLabel[1..-1])
         term.altLabel.each do |alt|
           doc['dta_altLabel_all_subject_ssim'] << alt
         end
