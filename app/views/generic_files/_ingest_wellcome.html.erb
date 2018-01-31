@@ -1,0 +1,19 @@
+<%= simple_form_for [sufia, @form], html: { multipart: true, id: 'wellcome' } do |f| %>
+    <%= hidden_field_tag 'upload_type', 'wellcome' %>
+    <%= hidden_field_tag 'terms_of_service', 1%>
+    <%= hidden_field_tag 'batch_id', @batch_id %>
+    <%= hidden_field_tag "file_coming_from", "local" %>
+    <%= hidden_field_tag "visibility", Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE %>
+
+    <div class="well">
+    <% if Sufia.config.upload_to_collection %>
+        <%= render partial: 'generic_files/upload/to_collection5' %>
+    <% end %>
+    </div>
+
+    <div>
+      <%= button_tag class: 'btn btn-primary btn-lg', id: "upload_submit", name: "update_descriptions", data: { disable_with: "Please wait..." } do %>
+          <i class="glyphicon glyphicon-floppy-disk"></i> Ingest Wellcome Items
+      <% end %>
+    </div>
+<% end %>

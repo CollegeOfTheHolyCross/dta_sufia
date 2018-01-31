@@ -45,6 +45,9 @@ en:
       antonio_computer:
           sr_tab_label: ""
           tab_label: "San Antonio Ingest"
+      wellcome_computer:
+          sr_tab_label: ""
+          tab_label: "Wellcome Ingest"
       single_file_computer:
           sr_tab_label: ""
           tab_label: "Single File Upload"

@@ -460,6 +460,11 @@ class GenericFile < ActiveFedora::Base
       r = RestClient.get 'http://api.geonames.org/getJSON', {:params => {:geonameId=>"#{spatial.split('/').last}", :username=>"boston_library"}, accept: :json}
       result = JSON.parse(r)
 
+      # FIXME: This indicates a bad geographic element... need to verify on input
+      if result['name'].blank? || result['lng'].blank?
+        raise "Error: Geonames value of #{spatial} is invalid for #{self.id}"
+      end
+
       geojson_hash_base[:geometry][:coordinates] = [result['lng'],result['lat']]
       doc['subject_coordinates_geospatial'] << "#{result['lat']},#{result['lng']}"
 
