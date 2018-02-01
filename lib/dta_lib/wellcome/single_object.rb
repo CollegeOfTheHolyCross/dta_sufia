@@ -148,9 +148,10 @@ module Wellcome
         end
 
         date_text = @record_meta_xml.xpath("//datePublished").text.strip.gsub('-','/')
+        date_text = '1900/1927?~' if date_text == '[not after 1927]'
         date_text = '1900/1910~' if date_text == '[190/?]' # Was - but gsub
         date_text = '1920/1930~' if date_text == '[192/]' # Was - but gsub
-        date_texr = '1930/1940~' if date_text == '[193/?]' # Was - but gsub
+        date_texr = '1930/1940~' if date_text == '[193/?]' || date_text == '[193-?]' # Was - but gsub
         date_text = '1945/1950~' if date_text == '[between ca. 1945 and ca. 1950?]'
         date_text = '1910/1919' if date_text == 'between 1910 and 1919'
         date_text = '1912/1914~' if date_text == '[between ca. 1912 and ca. 1914]'
