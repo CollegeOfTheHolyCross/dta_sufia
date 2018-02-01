@@ -20,7 +20,7 @@
         </dd>
     <% end %>
 
-    <% if @document['mime_type_tesim'][0].downcase.include? 'image' and @document["hosted_elsewhere_tesim"].first != "1" %>
+    <% if @document['mime_type_tesim'].present? && @document['mime_type_tesim'][0].downcase.include?('image') && @document["hosted_elsewhere_tesim"].first != "1" %>
         <dt style="padding-left:0px;width:80px;">View Online</dt>
         <dd style="padding-left:0px;margin-left: 100px;">
           <%= link_to('Image Viewer', '#', :id => 'img_viewer_link2',
