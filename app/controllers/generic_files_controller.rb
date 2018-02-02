@@ -138,21 +138,21 @@ class GenericFilesController < ApplicationController
         end
 
         #FIXME: This should be done elsewhere...
-        params[:generic_file][:lcsh_subject].each do |s|
+        params[:generic_file][:lcsh_subject].each_with_index do |s, index|
           #s.gsub!(/^[^(]+\(/, '')
-          s = s.split('(').last
-          s.gsub!(/\)$/, '')
+          params[:generic_file][:lcsh_subject][index] = s.split('(').last
+          params[:generic_file][:lcsh_subject][index].gsub!(/\)$/, '')
         end
 
         params[:generic_file][:homosaurus_subject].each do |s|
-          #s.gsub!(/^[^(]+\(/, '')
-          s = s.split('(').last
+          s.gsub!(/^[^(]+\(/, '')
+          #s = s.split('(').last
           s.gsub!(/\)$/, '')
         end
 
         params[:generic_file][:based_near].each do |s|
-          #s.gsub!(/^[^(]+\(/, '')
-          s = s.split('(').last
+          s.gsub!(/^[^(]+\(/, '')
+          #s = s.split('(').last
           s.gsub!(/\)$/, '')
         end
 
@@ -328,21 +328,21 @@ class GenericFilesController < ApplicationController
     end
 =end
 
-    params[:generic_file][:lcsh_subject].each do |s|
+    params[:generic_file][:lcsh_subject].each_with_index do |s, index|
       #s.gsub!(/^[^(]+\(/, '')
-      s = s.split('(').last
-      s.gsub!(/\)$/, '')
+      params[:generic_file][:lcsh_subject][index] = s.split('(').last
+      params[:generic_file][:lcsh_subject][index].gsub!(/\)$/, '')
     end
 
     params[:generic_file][:homosaurus_subject].each do |s|
-      #s.gsub!(/^[^(]+\(/, '')
-      s = s.split('(').last
+      s.gsub!(/^[^(]+\(/, '')
+      #s = s.split('(').last
       s.gsub!(/\)$/, '')
     end
 
     params[:generic_file][:based_near].each do |s|
-      #s.gsub!(/^[^(]+\(/, '')
-      s = s.split('(').last
+      s.gsub!(/^[^(]+\(/, '')
+      #s = s.split('(').last
       s.gsub!(/\)$/, '')
     end
 
