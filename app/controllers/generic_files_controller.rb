@@ -139,17 +139,20 @@ class GenericFilesController < ApplicationController
 
         #FIXME: This should be done elsewhere...
         params[:generic_file][:lcsh_subject].each do |s|
-          s.gsub!(/^[^(]+\(/, '')
+          #s.gsub!(/^[^(]+\(/, '')
+          s = s.split('(').last
           s.gsub!(/\)$/, '')
         end
 
         params[:generic_file][:homosaurus_subject].each do |s|
-          s.gsub!(/^[^(]+\(/, '')
+          #s.gsub!(/^[^(]+\(/, '')
+          s = s.split('(').last
           s.gsub!(/\)$/, '')
         end
 
         params[:generic_file][:based_near].each do |s|
-          s.gsub!(/^[^(]+\(/, '')
+          #s.gsub!(/^[^(]+\(/, '')
+          s = s.split('(').last
           s.gsub!(/\)$/, '')
         end
 
@@ -326,17 +329,20 @@ class GenericFilesController < ApplicationController
 =end
 
     params[:generic_file][:lcsh_subject].each do |s|
-      s.gsub!(/^[^(]+\(/, '')
+      #s.gsub!(/^[^(]+\(/, '')
+      s = s.split('(').last
       s.gsub!(/\)$/, '')
     end
 
     params[:generic_file][:homosaurus_subject].each do |s|
-      s.gsub!(/^[^(]+\(/, '')
+      #s.gsub!(/^[^(]+\(/, '')
+      s = s.split('(').last
       s.gsub!(/\)$/, '')
     end
 
     params[:generic_file][:based_near].each do |s|
-      s.gsub!(/^[^(]+\(/, '')
+      #s.gsub!(/^[^(]+\(/, '')
+      s = s.split('(').last
       s.gsub!(/\)$/, '')
     end
 

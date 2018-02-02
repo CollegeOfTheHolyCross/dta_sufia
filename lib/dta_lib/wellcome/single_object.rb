@@ -54,7 +54,7 @@ module Wellcome
 
       @wellcome_id = args["id"]
       # http://wellcomelibrary.org/item/b20642994
-      show_location = "http://wellcomelibrary.org/item/#{@wellcome_id}"
+      show_location = "https://wellcomelibrary.org/item/#{@wellcome_id}"
       full_escaped_uri = solr_clean(show_location)
       solr_response = GenericFile.find_with_conditions("identifier_ssim:#{full_escaped_uri}", rows: '25', fl: 'id' )
       if solr_response.present?
@@ -127,7 +127,7 @@ module Wellcome
             else
               # Check all labels
               solr_response = Homosaurus.find_with_conditions("dta_homosaurus_lcase_altLabel_ssim:#{solr_clean(subject_element_clean.downcase)}", rows: '25', fl: 'identifier_ssi, prefLabel_ssim, altLabel_ssim, narrower_ssim, broader_ssim, related_ssim' ) unless subject_element_clean.include?('(')
-              if solr_response.present? and solr_response.count == 1
+              if solr_response.present? and solr_response.count == 1 and subject_element_clean.downcase != 'female impersonators'
                 @generic_file.homosaurus_subject += ['http://homosaurus.org/terms/' + solr_response.first['identifier_ssi']]
               elsif  solr_response.present? and solr_response.count > 1
                 raise "Solr count mismatch for " + @wellcome_id
@@ -181,16 +181,6 @@ module Wellcome
           @generic_file.date_issued = [date.to_s]
         elsif date_text.present?
           raise "Could not parse date for: " + @record_meta_xml.xpath("//datePublished").text.strip
-        end
-
-        date_text = @record_meta_xml.xpath("//dateCreated").text.strip.gsub('-','/')
-        date_text = "#{date_text.split(' ')[1]}/#{date_text.split(' ')[3].gsub(']', '')}" if date_text.starts_with? '[between'
-        date = Date.edtf(date_text)
-
-        if date.present?
-          @generic_file.date_created = [date.to_s]
-        elsif date_text.present?
-          raise "Could not parse date for: " + @record_meta_xml.xpath("dateCreated").text.strip
         end
 
         type_of_resource = 'Still Image' if @record_meta_xml.xpath('//name').first.parent.name == 'StillImage'
@@ -279,7 +269,11 @@ module Wellcome
             collection.save
           end
 
-          acquire_lock_for(@upload_institution_id) do
+
+        @generic_file.institutions << ::Institution.find(@upload_institution_id)
+
+         # This may be wrong... but San Antonio this way?
+         acquire_lock_for(@upload_institution_id) do
             institution = ::Institution.find(@upload_institution_id)
             institution.files << ActiveFedora::Base.find([@generic_file.id])
             institution.save
