@@ -9,9 +9,9 @@
     <% else %>
         <dt style="padding-left:0px;width:80px;">Download</dt>
         <dd style="padding-left:0px;margin-left: 100px;">
-          <% if @document['mime_type_tesim'][0].downcase.include? 'image' %>
+          <% if @document['mime_type_tesim'].present? && @document['mime_type_tesim'][0].downcase.include? 'image' %>
               <%= link_to "Image File", sufia.download_path(@generic_file), download: @document['title_tesim'].first %>
-          <% elsif @document['mime_type_tesim'][0].downcase.include? 'pdf' %>
+          <% elsif @document['mime_type_tesim'].present? && @document['mime_type_tesim'][0].downcase.include? 'pdf' %>
               <%= link_to "PDF File", sufia.download_path(@generic_file), download: @document['title_tesim'].first + ".pdf" %>
           <% else %>
               <%= link_to "File", sufia.download_path(@generic_file), download: @document['title_tesim'].first %>
