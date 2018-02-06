@@ -157,8 +157,12 @@ class GenericFile < ActiveFedora::Base
 
   def iiif_id
     workpls = GenericFile.find(self.id)
-    path = workpls.content.digest[0].object[:path].split(':').last
-    path = path[0..1] + '%2F' + path[2..3]  + '%2F' + path[4..5] + '%2F' + path
+    if workpls.content.digest,present?
+      path = workpls.content.digest[0].object[:path].split(':').last
+      path = path[0..1] + '%2F' + path[2..3]  + '%2F' + path[4..5] + '%2F' + path
+    else
+      path = 'doesnotexist'
+    end
     path
   end
 
