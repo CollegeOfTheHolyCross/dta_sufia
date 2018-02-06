@@ -19,13 +19,13 @@ module GenericFileHelper
       end
     else
       if title.nil?
-        if @document.present? && @document['mime_type_tesim'].include?('image/')
+        if @document.present? && (@document['mime_type_tesim'].include?('image/tiff') || @document['mime_type_tesim'].include?('image/jpeg') || @document['mime_type_tesim'].include?('image/jpg')  || @document['mime_type_tesim'].include?('image/png'))
           link_to download_image_tag, '#', target: "_blank", title: "View in image viewer", id: "img_viewer_link", data: { label: @generic_file.id }, :rel => 'nofollow'
         else
           link_to download_image_tag, sufia.download_path(@generic_file), target: "_blank", title: "Download the document", id: "file_download", data: { label: @generic_file.id }
         end
       else
-        if @document.present? && @document['mime_type_tesim'].include?('image/') # was 'image/tiff'
+        if @document.present? && (@document['mime_type_tesim'].include?('image/tiff') || @document['mime_type_tesim'].include?('image/jpeg') || @document['mime_type_tesim'].include?('image/jpg')  || @document['mime_type_tesim'].include?('image/png'))
           label = download_image_tag(title)
           link_to label, '#', target: "_blank", title: "View in image viewer", id: "img_viewer_link", data: { label: @generic_file.id }, :rel => 'nofollow'
         else
