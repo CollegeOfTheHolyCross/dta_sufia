@@ -140,8 +140,10 @@ class GenericFilesController < ApplicationController
         #FIXME: This should be done elsewhere...
         params[:generic_file][:lcsh_subject].each_with_index do |s, index|
           #s.gsub!(/^[^(]+\(/, '')
-          params[:generic_file][:lcsh_subject][index] = s.split('(').last
-          params[:generic_file][:lcsh_subject][index].gsub!(/\)$/, '')
+          if s.present?
+            params[:generic_file][:lcsh_subject][index] = s.split('(').last
+            params[:generic_file][:lcsh_subject][index].gsub!(/\)$/, '')
+          end
         end
 
         params[:generic_file][:homosaurus_subject].each do |s|
@@ -330,8 +332,10 @@ class GenericFilesController < ApplicationController
 
     params[:generic_file][:lcsh_subject].each_with_index do |s, index|
       #s.gsub!(/^[^(]+\(/, '')
-      params[:generic_file][:lcsh_subject][index] = s.split('(').last
-      params[:generic_file][:lcsh_subject][index].gsub!(/\)$/, '')
+      if s.present?
+        params[:generic_file][:lcsh_subject][index] = s.split('(').last
+        params[:generic_file][:lcsh_subject][index].gsub!(/\)$/, '')
+      end
     end
 
     params[:generic_file][:homosaurus_subject].each do |s|
