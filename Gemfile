@@ -35,7 +35,7 @@ gem "rest-client-components" #Broken in RestClient 2.0: https://github.com/crohr
 gem "rack-cache"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.6'
+gem 'rails', '4.2.9'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use SCSS for stylesheets
